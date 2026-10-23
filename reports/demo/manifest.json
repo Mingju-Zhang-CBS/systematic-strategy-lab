@@ -1,0 +1,39 @@
+{
+  "generated_utc": "2026-10-23T21:25:08.695603+00:00",
+  "data_kind": "synthetic",
+  "input_sha256": "a3171a2ad934bc05aaf6abc78f7c7125e60790a44c9459cb3f1f590801ad19e8",
+  "configuration": {
+    "lookback": 252,
+    "skip": 21,
+    "covariance_window": 126,
+    "vol_target": 0.1,
+    "asset_cap": 0.5,
+    "gross_cap": 0.99,
+    "cost_bps": 3.0,
+    "execution_delay": 1,
+    "dividend_payment_lag": 20,
+    "initial_nav": 100000.0
+  },
+  "source_sha256": {
+    "__init__.py": "41362a5ea4931c546433d4c48290c5707bf02dbbea1c3aafa9f43d1225e47003",
+    "__main__.py": "8175adcb3fd81f0dc0cccaefeb43c7343a20596c6b789a61718342192c77bacd",
+    "core.py": "de303ded627e035a3c4b1911496245b3b76437b95a361b0899ceebba61a81cde",
+    "runtime.py": "f13a499971d7a1d51ea7409b0e02d50129167868fa4adfa39e236dae0b6a8db7"
+  },
+  "environment": {
+    "python": "3.12.6",
+    "os": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "numpy": "2.1.2",
+      "pandas": "2.2.3",
+      "scipy": "1.14.1",
+      "scikit-learn": "1.5.2",
+      "lightgbm": "4.6.0",
+      "catboost": "1.2.8",
+      "matplotlib": "3.9.2",
+      "psutil": "6.0.0"
+    }
+  },
+  "measurement_note": "Wall time and process RSS sampled every 10ms; timing is machine-specific; brief peaks may be missed."
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="248" viewBox="0 0 1200 248" role="img" aria-labelledby="title desc">
+<title id="title">Systematic Strategy Lab</title><desc id="desc">Signals become investable only through an explicit account model.. 4 STRATEGY CONTROLS   /   6 STRESS CASES   /   DAILY NAV RECONCILIATION</desc>
+<rect width="1200" height="248" rx="18" fill="#101f32"/>
+<rect x="32" y="31" width="42" height="4" rx="2" fill="#55c6b0"/>
+<text x="89" y="39" fill="#aac3d5" font-family="Arial, Helvetica, sans-serif" font-size="14" letter-spacing="2">QUANTITATIVE FINANCE  /  STUDY 02</text>
+<text x="42" y="104" fill="#f5f8fb" font-family="Arial, Helvetica, sans-serif" font-size="43" font-weight="700">Systematic Strategy Lab</text>
+<text x="44" y="146" fill="#c0d0df" font-family="Arial, Helvetica, sans-serif" font-size="20">Signals become investable only through an explicit account model.</text>
+<line x1="44" y1="176" x2="1156" y2="176" stroke="#31445a"/>
+<text x="44" y="211" fill="#76d5c2" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing=".5">4 STRATEGY CONTROLS   /   6 STRESS CASES   /   DAILY NAV RECONCILIATION</text>
+</svg>

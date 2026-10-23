@@ -1,0 +1,124 @@
+{
+  "data_kind": "synthetic",
+  "strategies": {
+    "momentum": {
+      "total_return": 0.13646056479930002,
+      "cagr": 0.026840446732049328,
+      "excess_sharpe": 0.04890035106037052,
+      "max_drawdown": -0.17608738207808716,
+      "annualized_gross_turnover": 4.055899812902579,
+      "total_cost": 701.9222498680734,
+      "min_cash": 998.9829899751924,
+      "max_abs_bridge_error": 2.721020631035742e-11
+    },
+    "static": {
+      "total_return": 0.09350603017540893,
+      "cagr": 0.018681055217293574,
+      "excess_sharpe": -0.06527635184093843,
+      "max_drawdown": -0.16935012052564158,
+      "annualized_gross_turnover": 0.4056869578103211,
+      "total_cost": 63.16660043331446,
+      "min_cash": 971.941034899936,
+      "max_abs_bridge_error": 2.8077040692409128e-11
+    },
+    "spy": {
+      "total_return": 0.14530202022602645,
+      "cagr": 0.028489476808012837,
+      "excess_sharpe": 0.08650922653943426,
+      "max_drawdown": -0.24720070324293453,
+      "annualized_gross_turnover": 0.20493695959858158,
+      "total_cost": 29.695048527788835,
+      "min_cash": 1018.2677058147674,
+      "max_abs_bridge_error": 2.7570279392818975e-11
+    },
+    "qqq": {
+      "total_return": 0.8503026813273289,
+      "cagr": 0.13588589819687846,
+      "excess_sharpe": 0.6006261797146679,
+      "max_drawdown": -0.36954723845105486,
+      "annualized_gross_turnover": 0.20494605995905255,
+      "total_cost": 29.696367155948124,
+      "min_cash": 1013.8709599889698,
+      "max_abs_bridge_error": 2.8143737340613484e-11
+    }
+  },
+  "sensitivity": [
+    {
+      "delay_sessions": 1,
+      "cost_bps": 0.0,
+      "total_return": 0.14300930595672057,
+      "cagr": 0.028062832096170887,
+      "excess_sharpe": 0.06595092538136657,
+      "max_drawdown": -0.17370068105309866,
+      "annualized_gross_turnover": 4.053797889254754,
+      "total_cost": 0.0,
+      "min_cash": 1054.0494915912573,
+      "max_abs_bridge_error": 3.079841937037031e-11
+    },
+    {
+      "delay_sessions": 1,
+      "cost_bps": 3.0,
+      "total_return": 0.13646056479930002,
+      "cagr": 0.026840446732049328,
+      "excess_sharpe": 0.04890035106037052,
+      "max_drawdown": -0.17608738207808716,
+      "annualized_gross_turnover": 4.055899812902579,
+      "total_cost": 701.9222498680734,
+      "min_cash": 998.9829899751924,
+      "max_abs_bridge_error": 2.721020631035742e-11
+    },
+    {
+      "delay_sessions": 1,
+      "cost_bps": 10.0,
+      "total_return": 0.1209959317656164,
+      "cagr": 0.023931500168664632,
+      "excess_sharpe": 0.008307847010008071,
+      "max_drawdown": -0.181578169587575,
+      "annualized_gross_turnover": 4.055938672472395,
+      "total_cost": 2324.0568354688376,
+      "min_cash": 983.1897131072037,
+      "max_abs_bridge_error": 3.144151605738443e-11
+    },
+    {
+      "delay_sessions": 2,
+      "cost_bps": 0.0,
+      "total_return": 0.134400979514111,
+      "cagr": 0.0264548509320488,
+      "excess_sharpe": 0.04354914516232416,
+      "max_drawdown": -0.1776231675843175,
+      "annualized_gross_turnover": 4.058048538983071,
+      "total_cost": 0.0,
+      "min_cash": 1046.289353173655,
+      "max_abs_bridge_error": 3.1366381714192926e-11
+    },
+    {
+      "delay_sessions": 2,
+      "cost_bps": 3.0,
+      "total_return": 0.12767791858225497,
+      "cagr": 0.025192282767553698,
+      "excess_sharpe": 0.025952799482374708,
+      "max_drawdown": -0.18011846766253603,
+      "annualized_gross_turnover": 4.056769249189081,
+      "total_cost": 700.8822731271292,
+      "min_cash": 954.1305776431959,
+      "max_abs_bridge_error": 2.6478375048100133e-11
+    },
+    {
+      "delay_sessions": 2,
+      "cost_bps": 10.0,
+      "total_return": 0.11217384468816682,
+      "cagr": 0.022257755507555377,
+      "excess_sharpe": -0.014964351671247506,
+      "max_drawdown": -0.18594891473617248,
+      "annualized_gross_turnover": 4.056411877522749,
+      "total_cost": 2320.3220316256065,
+      "min_cash": 1006.8556206657668,
+      "max_abs_bridge_error": 3.065281362069072e-11
+    }
+  ],
+  "measurement": {
+    "seconds": 0.6940989000140689,
+    "sampled_peak_rss_mb": 98.546875,
+    "rss_increase_mb": 5.29296875
+  }
+}
