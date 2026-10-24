@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "systematic-strategy-lab"
-version = "0.1.0"
+version = "0.2.0"
 description = "Independent, reproducible quantitative finance portfolio research"
 requires-python = ">=3.12,<3.13"
 license = {file = "LICENSE"}
@@ -20,6 +20,9 @@ test = ["pytest>=8,<10"]
 
 [tool.setuptools.packages.find]
 include = ["strategy_lab*"]
+
+[tool.setuptools.package-data]
+strategy_lab = ["data/*.csv", "data/*.json", "data/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,68 @@
+{
+  "generated_utc": "2026-10-24T01:29:11.994863+00:00",
+  "data_kind": "public-real",
+  "input_sha256": "e3344ae702e632f1e5d4ec3a8640548f56fb01b9c35ad5426a79a1fb7e838df2",
+  "configuration": {
+    "lookback": 252,
+    "skip": 21,
+    "covariance": 126,
+    "vol_target": 0.1,
+    "asset_cap": 0.5,
+    "risky_cap": 0.99,
+    "publication_lag": 1,
+    "execution_delay": 2,
+    "cost_bps": 3.0,
+    "initial_nav": 100000.0,
+    "start": "2004-07-01"
+  },
+  "source_sha256": {
+    "__init__.py": "41362a5ea4931c546433d4c48290c5707bf02dbbea1c3aafa9f43d1225e47003",
+    "__main__.py": "031f0193dd7aa64c01ed24a23678c15bd0fc87c65b2c2f437b64bec338e0eb17",
+    "core.py": "de303ded627e035a3c4b1911496245b3b76437b95a361b0899ceebba61a81cde",
+    "real_data.py": "1d79bed08a16a6c29afc21914fc66bbbc53e8d94b15b717484d10062025bffb8",
+    "real_report.py": "053f9cb2b52e758dae827818c04a29ad863b8024d691dea0535b298cf77e20ed",
+    "real_research.py": "c839b7b17d7878e765d13fdcf5a954ef2f271e1c2f5da956005a48969859a876",
+    "runtime.py": "f13a499971d7a1d51ea7409b0e02d50129167868fa4adfa39e236dae0b6a8db7"
+  },
+  "environment": {
+    "python": "3.12.6",
+    "os": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "numpy": "2.1.2",
+      "pandas": "2.2.3",
+      "matplotlib": "3.9.2",
+      "psutil": "6.0.0"
+    }
+  },
+  "measurement_note": "Wall time and process RSS sampled every 10ms; timing is machine-specific; brief peaks may be missed.",
+  "protocol_sha256": "ca75e8a11a35522f57df0f91f2aa03eb57ee5c2b8d269b005acd184a5e3f425b",
+  "source_record_sha256": "5e4dca6a59edb17da39c0ce5a5bd0999c720af900f4faecdcfa06e90fbeaee98",
+  "outputs_sha256": {
+    "allocation.png": "92ec795a9fc90f46e4ab23228c632f922272e6f97bca243987bf6e60525183ff",
+    "C_buy_hold/decisions.csv": "33123a90a9a1fdec4c344bba344f5373961c6555a409e057ffb92a40a2379179",
+    "C_buy_hold/ledger.csv": "08fa528976b809e8a60648f7c410aec1b7a36ad227a4b4ed45497e33b1354d75",
+    "C_buy_hold/orders.csv": "966c6f5c001c067d33b827678f6d78549901f7be0016defa2e2ee5195ecba394",
+    "cost_delay.png": "fd0e4adafb1170f10967ced1583cc051d2b8d7d630712b12b057710cf65d34bd",
+    "G_buy_hold/decisions.csv": "54af9655b0d209d2d38bcd56cd25b7b41d842beee00acce24f0bddbe7538a1e0",
+    "G_buy_hold/ledger.csv": "b4c32f26e13fd4eb553a61d9bb350f076a13437bca78ace03b1e5d8e17f6c3f6",
+    "G_buy_hold/orders.csv": "01e1580d22ac4a1c3e7cff8482196c07652c722ae75c699af8d69b3c80b41f4d",
+    "metrics.json": "d9fb9b0aa9150d3308e5e0a09b1b8f7fd46948e6d0dbbf6eccdca67f14010e20",
+    "momentum/decisions.csv": "dcfd0de6cc53f886dd0dcec85373152fb20d9b91f62448794463b1144c23fde8",
+    "momentum/ledger.csv": "52a475088a7dbade36bc33be3ed7d6f4bd22858b7268c285b1c37853a43ef7d3",
+    "momentum/orders.csv": "b54b743fc01b24ba58dd38b9ffadb8af3eb3aa8f6d42c31451e6e2d83398b92b",
+    "performance.png": "13e474f70799867624603eebf31b73c6bf98cb8c48bb60131dd2c2623ac62a5e",
+    "protocol.json": "a847fb22d1ee53a9c84b8786918d06cebf8d9534fd2781391d88c5569eb0a5e4",
+    "REPORT.md": "15876cd7d5669d61515f0fa4968ab77241a345a067f43317d7a14e703e0c540d",
+    "risk_matched_static/decisions.csv": "c09fa4ffa208bd641d99d1df80899cf944ec791d828c7a0fda9d5c91cce204e8",
+    "risk_matched_static/ledger.csv": "e1c566e3b1405775f24f1d4dc8372468cdb9dd234c3a767456dc8bf46ef7893f",
+    "risk_matched_static/orders.csv": "e4a74a6c7504841d424a07be63e2f426fd257576e9fad3de28d482cf933f030d",
+    "sensitivity.csv": "3cdaab8e528557472cb3fc93eaffdf7a92f157f8a00a1dd56b55db2dec7f9e68",
+    "source.json": "66cba0dac6a171ee6ce3a5cc082ba7f0679ef9ef2b1727b30047a44e8f486853",
+    "summary.csv": "ec8e47a13b6cfa98dad4105d885c13afd7e787c1a16065a5a5f779ea16f88eb0",
+    "uncertainty.png": "a33af6d75dc37fe5e6fbf30185db6ead8c98955026467de98047caeed0d85ca5",
+    "yearly.csv": "81032072c7d05d3990e793985a7be48c02275d9390888341dbbc8ee81edbb499",
+    "yearly.png": "bc589df25c0aa583844f80a25146ed60b730b8b9e4f6bb3a70cbc4e8a5f9cc0e"
+  },
+  "calendar_note": "Supplied official valuation sessions; no price filling or fabricated holiday returns."
+}

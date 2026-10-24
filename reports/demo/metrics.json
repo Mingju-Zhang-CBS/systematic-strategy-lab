@@ -117,8 +117,8 @@
     }
   ],
   "measurement": {
-    "seconds": 0.6940989000140689,
-    "sampled_peak_rss_mb": 98.546875,
-    "rss_increase_mb": 5.29296875
+    "seconds": 0.8314767999981996,
+    "sampled_peak_rss_mb": 98.765625,
+    "rss_increase_mb": 6.96875
   }
 }

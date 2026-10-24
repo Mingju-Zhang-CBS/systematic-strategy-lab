@@ -78,7 +78,14 @@ See `manifest.json`, `metrics.json` and the per-strategy ledgers for configurati
 def main():
     p=argparse.ArgumentParser(description="Offline multi-asset account simulation")
     p.add_argument("--csv",help="User-supplied long-form OHLC/dividend CSV; never bundled")
+    p.add_argument("--real",action="store_true",help="Run the frozen real TSP NAV allocation study, entirely offline")
     p.add_argument("--output",default="local-runs/demo")
-    a=p.parse_args();run(a.output,a.csv)
+    a=p.parse_args()
+    if a.real:
+        if a.csv:p.error("--real uses the packaged NAV snapshot; --csv is the separate legacy raw-price simulation")
+        from .real_report import run_real
+        run_real(a.output)
+    else:
+        run(a.output,a.csv)
 
 if __name__=="__main__":main()

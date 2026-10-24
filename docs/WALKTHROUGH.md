@@ -1,59 +1,39 @@
-# Walkthrough: decisions, cash and one dividend event
+# Walkthrough: from an observation to a funded allocation
 
-## 1. Separate the research signal from the investable account
+## 1. Interpret the data before calculating a signal
 
-A total-return index gives a consistent way to measure economic past returns. The tradable account, however, owns actual shares, cash and receivables. It cannot reinvest an ex-date entitlement before the payment date. Reusing a total-return series as if it were a cash account would skip this distinction.
+The [CSV](../strategy_lab/data/tsp_nav.csv) contains five actual fund share NAVs. C/S/I are equity exposures, F is a bond fund and G is a special government-securities reserve. A move from 100 to 102 already reflects the fund's income and expenses; it is a 2% fund return, not a 2% price return plus an estimated dividend. Public access to fund facts does not make these restricted retirement units universally investable.
 
-The momentum rule reads observations t-252 through t-21, applies a positivity filter, assigns capped equal target weights, and scales down estimated risk using a trailing covariance. All those inputs are available at the decision close. The trade is scheduled for a later close.
+## 2. Separate valuation, knowledge and execution
 
-## 2. A target is not an executed order
+Take an illustrative month-end observation on a Friday. Momentum and covariance use Friday and earlier values. Monday is a complete intervening supplied session reserved for publication; freeze the targets after it. Request the allocation at 11:00 New York time Tuesday and model posting at Tuesday's closing NAV. Monday or Tuesday prices do not enter Friday's signal. If a holiday removes a supplied valuation session, the model counts supplied sessions rather than pretending every weekday was tradable. The actual [decision CSV](../reports/real/momentum/decisions.csv) records each date and clock.
 
-Frozen decision weights are applied to observed execution NAV/prices, with integer quantities. The engine sells first, subtracts selling fees, and checks cash needed for purchases including buying fees. If cash is insufficient, requested buys are scaled down. Receivables remain in NAV but are not spendable.
+This is a conservative assumed clock, not reconstructed publication evidence. A correction to a past NAV could still contaminate a current-vintage history; sensitivity to extra delay cannot prove that this risk is absent.
 
-The default next-close convention models a target-notional fill. It does not establish that the final closing price was known in advance or that a broker could fill all orders at it. This distinction belongs beside the result, not only in a footnote.
+## 3. Transform a signal into a funded target
 
-## 3. Trace a split and dividend without changing wealth
+For an illustrative four eligible funds, equal risky weights start at 24.75% each. If the trailing estimated volatility exceeds 10%, scale them down, then floor each to a whole percentage and assign the remainder to G. All-negative momentum gives 100% G. The static control always selects all four but shares this risk and rounding procedure. Thus the control asks whether filtering eligibility helps beyond the allocation machinery; it does not promise identical realized risk.
 
-The runnable example creates a deterministic market with zero interest and trading fees. A passive account starts with 100,000 currency units and buys 990 shares at 100, leaving 1,000 in cash. On the event date a 2-for-1 split coincides with a dividend of 1 per post-split share; the raw ex-dividend price is 49.
+## 4. Follow one fee through both transfer legs
 
-| State | Shares | Raw close | Cash | Receivable | NAV |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Before event | 990 | 100 | 1,000 | 0 | 100,000 |
-| Split and ex-date | 1,980 | 49 | 1,000 | 1,980 | 100,000 |
-| Three supplied sessions later | 1,980 | 49 | 2,980 | 0 | 100,000 |
-
-The split changes units. The ex-date price loss is offset by an entitlement. Payment moves value from receivable to cash; it does not create a second dividend profit. The example uses a three-session lag to make the trace compact; the main study uses 20 sessions.
+Run `python examples/explain_nav_transfer.py`. Begin with 1,000 G units at NAV 100 ($100,000). Request 100% C. At an illustrative posting C NAV of 100, with 10 bp hypothetical friction on every gross dollar sold or bought:
 
 ```text
-Before:    990 * 100 + 1,000                  = 100,000
-Ex-date: 1,980 * 49 + 1,000 + 1,980           = 100,000
-Payment: 1,980 * 49 + 2,980                   = 100,000
+Sell G value                                  100,000.000000
+Buy C value = 100,000 × (1−0.001)/(1+0.001)     99,800.199800
+Gross traded value                            199,800.199800
+Fee = gross × 0.001                               199.800200
+After-fee C units                                 998.001998
 ```
 
-Run and inspect the event rows:
+Purchased value plus fee equals the initial value. If C NAV rises to 102, the position is worth $101,796.203796. The observed $1,996.003996 increase is the entire NAV return for the position; a separate dividend credit would double-count it. No external cash funds the fee. The base study uses 3 bp, while this 10 bp example makes both transfer legs easier to see.
 
-```text
-python examples/explain_accounting.py
-```
+## 5. Read a daily bridge and a comparison
 
-## 4. Prove the daily bridge before calculating Sharpe
+In the [ledger](../reports/real/momentum/ledger.csv), `prior_nav + price_income_pnl − fee` equals `nav`. Unit columns reconstruct ending value using the source NAV. The order table shows the frozen target, actual posting NAV, changed units and modeled fee. Realized weights drift between postings.
 
-At each supplied session, the engine accrues prior cash at the previous observed annual cash rate over actual elapsed days. It applies splits to existing shares, marks price P&L, accrues dividends, releases due receivables, and executes eligible orders. It then checks:
+The confirmation comparison is not a high-Sharpe sales pitch. Momentum returned 30.69% versus 33.97% for the shared-risk-budget static control; the paired annualized log-return difference was −0.42 percentage points and both block intervals contain zero. Read the [complete report](../reports/real/REPORT.md) for all periods, all nine cost/delay combinations and annual failures. Chronological historical checks are useful, but they are not unseen future evidence.
 
-```text
-NAV change = stock price P&L + dividend entitlement + cash interest - fees
-```
+## 6. Keep the two educational contracts distinct
 
-The main study records 1,260 rows per strategy and 5,040 strategy-day rows in total. Inspect a row in [the momentum ledger](../reports/demo/momentum/ledger.csv), then locate the corresponding [decision](../reports/demo/momentum/decisions.csv) and [order](../reports/demo/momentum/orders.csv). A curve without that connection would be harder to audit.
-
-## 5. Keep the comparison fair and its interpretation qualified
-
-Momentum and static strategies rebalance on the same decision schedule. Passive SPY/QQQ controls enter once, leaving later paid dividends in cash. All use the same warmup, period and financing conventions. They still have different asset and risk exposures; their ranking is not a controlled estimate of signal skill.
-
-The sensitivity grid fixes 0/3/10 bps costs and one/two-session delays. It reports all six cases. There is no mechanism that promotes the best row into a new strategy after inspecting the grid.
-
-## 6. Know what remains outside the model
-
-Volume is validated but does not establish fill capacity. The supplied common sessions are the calendar. Borrow, shorting, margin, impact and taxes are absent. Target risk caps can drift between decisions. Synthetic performance and previously exposed real history cannot be relabeled as pristine future performance.
-
-These are explicit modeling boundaries. The demonstrated skills are temporal accounting, portfolio construction, controlled experiments and testable research software. See [METHODS](METHODS.md), [the report](../reports/demo/REPORT.md) and [the tests](../tests/test_accounting.py).
+The [legacy split/dividend example](../examples/explain_accounting.py) uses synthetic unadjusted prices, an ex-date receivable and a delayed cash payment. That mechanism is appropriate for its explicit raw-price contract. The real accumulation-NAV study has no separate payment-date ledger. Both teach conservation, but combining them would count income twice.

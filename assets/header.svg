@@ -1,10 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="248" viewBox="0 0 1200 248" role="img" aria-labelledby="title desc">
-<title id="title">Systematic Strategy Lab</title><desc id="desc">Signals become investable only through an explicit account model.. 4 STRATEGY CONTROLS   /   6 STRESS CASES   /   DAILY NAV RECONCILIATION</desc>
-<rect width="1200" height="248" rx="18" fill="#101f32"/>
-<rect x="32" y="31" width="42" height="4" rx="2" fill="#55c6b0"/>
-<text x="89" y="39" fill="#aac3d5" font-family="Arial, Helvetica, sans-serif" font-size="14" letter-spacing="2">QUANTITATIVE FINANCE  /  STUDY 02</text>
-<text x="42" y="104" fill="#f5f8fb" font-family="Arial, Helvetica, sans-serif" font-size="43" font-weight="700">Systematic Strategy Lab</text>
-<text x="44" y="146" fill="#c0d0df" font-family="Arial, Helvetica, sans-serif" font-size="20">Signals become investable only through an explicit account model.</text>
-<line x1="44" y1="176" x2="1156" y2="176" stroke="#31445a"/>
-<text x="44" y="211" fill="#76d5c2" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing=".5">4 STRATEGY CONTROLS   /   6 STRESS CASES   /   DAILY NAV RECONCILIATION</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330" role="img" aria-labelledby="title desc"><title id="title">Systematic Strategy Lab</title><desc id="desc">Real fund data, explicit information clocks and funded allocation. Original navy and paper editorial design; no simulated performance ornament.</desc><rect width="1200" height="330" rx="14" fill="#101928"/><path d="M45 40H1155M45 286H1155" stroke="#5c6d7c"/><text x="50" y="85" font-family="Arial,sans-serif" font-size="20" letter-spacing="3" fill="#7cd4ca">INVESTING / RESEARCH STUDIO</text><text x="47" y="162" font-family="Georgia,serif" font-size="61" fill="#faf5e7">Systematic Strategy Lab</text><text x="50" y="216" font-family="Arial,sans-serif" font-size="28" fill="#dbe2e8">Real NAVs. Explicit clocks. Funded decisions.</text><g fill="none" stroke-width="2"><circle cx="1070" cy="236" r="33" stroke="#36b3a8"/><path d="M1070 213V236L1088 245" stroke="#c7a26c"/></g></svg>

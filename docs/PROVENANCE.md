@@ -1,21 +1,24 @@
-# Provenance and contribution boundaries
+# Sources, contribution and limits
 
-This is a new, independently written portfolio implementation prepared for Mingju Zhang. Development, test design and documentation were AI-assisted. The account owner should review, understand and be able to defend the implementation before presenting it in interviews or using the supplied resume drafts.
+This independent public implementation was written from public financial concepts. Prior academic or professional interests motivated the questions; original coursework, internship workbooks, recruiting tasks, internal APIs and employer data are not copied into this repository. No official trading-competition result is claimed for this study. Development and documentation were AI-assisted.
 
-## Included work
+## Data and permissions
 
-The package source, tests, synthetic generators, reporting workflow and documentation were authored for this portfolio. Public mathematical methods, the public task definition and library interfaces inform the implementation. Original local course submissions, employer projects, recruitment problems, teacher frameworks and collaborators' code were not imported as source or copied into this distribution.
+- [TSP official share-price history](https://www.tsp.gov/share-price-history/): numerical daily G/F/C/S/I fund NAV facts, captured via its public Individual funds / All Time table. The October 2026 capture is truncated at 31 December 2025 before the experiment.
+- [FRTIB data catalog](https://www.frtib.gov/data.json) and [open-data plan](https://www.frtib.gov/pdf/data/Open_Data_Plan_v4.0.pdf): public machine-readable share-price data. Public access flags alone are not treated as copyright licenses.
+- [Data rights](../DATA_RIGHTS.md): public-fact and U.S.-government-work basis, source fingerprints, attribution, exclusions and licensing scope. No third-party benchmark levels, site HTML, government marks or brochures are redistributed.
+- [TSP financial statements, Note 2](https://www.frtib.gov/pdf/reading-room/FinStmts/TSP-FS-Dec2023.pdf): income recognition and embedded expenses. The original numerical series is not relabeled as unadjusted ETF closes.
+- [5 CFR Chapter VI, 2024 edition](https://www.govinfo.gov/content/pkg/CFR-2024-title5-vol3/pdf/CFR-2024-title5-vol3-chapVI.pdf), §§1601.22/1601.32: whole-percent reallocations, ordinary processing cutoff and monthly transfer limits. Rules guide a simplified model, not a complete participant implementation.
+- [I Fund benchmark change announcement](https://www.frtib.gov/pdf/reading-room/PressRel/PR_2023-11-14_I-Fund-Benchmark-Change.pdf): the 2024 mandate transition. The series is the realized changing fund rather than a stationary index history.
 
-References: The published momentum concept, basic accounting identities, and the explicit conventions in METHODS. No vendor history is included.
+The model's 11:00 request, publication allowance, proportional friction, risk thresholds and initial balance are research assumptions. They are not official TSP specifications, observed fills or measured fees. Sources do not validate this strategy's predictive value.
 
-## Not claimed
+## Personal implementation
 
-This repository does not claim ownership of its Python dependencies, the original research methods, a company's research system, a supplied benchmark notebook or a classroom framework. It does not claim production deployment, actual trading, client assets managed, public/private leaderboard performance or an accepted upstream contribution. Existing private research history is distinct from this newly executed demo. Synthetic and simulated outputs are labeled in the report and manifest.
+I designed and implemented the offline snapshot schema, timing contract, capped momentum and shared-risk-budget control, self-financing fee solver, unit/P&L ledger, chronological experiment, paired inference, figures and validation tests. Python, NumPy, pandas, Matplotlib, psutil and pytest provide their respective libraries. Familiar momentum and covariance methods are public building blocks; no claim of a novel signal is made.
 
-## Rights and data
+## Remaining uncertainty
 
-The MIT license applies to newly authored repository code. Dependency rights remain with their owners. Data licenses are separate; obtaining data from a public page does not automatically establish unrestricted redistribution rights. External data, downloaded artifacts, model binaries and user-data runs are kept outside the initial public release. Where a separate rights question remains, the relevant original material stays in the private inventory and is not published here.
+Historical release vintages and exact publication clocks are unavailable. A full-session delay is a conservative assumption, not a complete point-in-time guarantee. There is no independent future trading record. Fund eligibility, taxes, external contributions, unit rounding, administrative errors, exceptional posting delays and exchange capacity are outside scope. G is not an ordinary listed cash substitute. The confirmation momentum advantage is unproven, and unfavorable results are retained.
 
-## Attribution and future changes
-
-If a future change incorporates an upstream snippet, dataset or collaborator's implementation, record the exact source, applicable license/permission, scope and personal contribution before adding it. Maintain the distinction between implementing a public method, extending someone else's framework and originating the method itself.
+The [legacy synthetic report](../reports/demo/REPORT.md) and its split/payment examples remain explicitly synthetic. Their results and ticker labels are not transferred to the real-data study.

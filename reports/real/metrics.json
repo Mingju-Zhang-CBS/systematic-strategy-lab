@@ -1,0 +1,374 @@
+{
+  "data_kind": "public-real",
+  "instrument_kind": "accumulation_fund_nav",
+  "windows": {
+    "full": {
+      "momentum": {
+        "observations": 5368,
+        "total_return": 3.113299245591171,
+        "annualized_return": 0.06864406210493823,
+        "annualized_volatility": 0.09550425065200024,
+        "excess_sharpe": 0.43412699920447184,
+        "max_drawdown": -0.2666909114506928,
+        "annual_gross_turnover": 2.8725593766691544,
+        "total_cost": 4279.282613984864,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.22447726633208154
+      },
+      "risk_matched_static": {
+        "observations": 5368,
+        "total_return": 2.7462924353815827,
+        "annualized_return": 0.0639657538701186,
+        "annualized_volatility": 0.10170192250393585,
+        "excess_sharpe": 0.37052999631002487,
+        "max_drawdown": -0.266690911450693,
+        "annual_gross_turnover": 0.9606210042408085,
+        "total_cost": 1254.0586855627803,
+        "max_abs_bridge_error": 1.7462298274040222e-10,
+        "mean_reserve_weight": 0.18954656892456367
+      },
+      "C_buy_hold": {
+        "observations": 5368,
+        "total_return": 8.291912301406095,
+        "annualized_return": 0.11031845121707429,
+        "annualized_volatility": 0.19043010582134395,
+        "excess_sharpe": 0.49005476186013475,
+        "max_drawdown": -0.5522310756972112,
+        "annual_gross_turnover": 0.09386155837302462,
+        "total_cost": 60.039404446608614,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.00037257824143070045
+      },
+      "G_buy_hold": {
+        "observations": 5368,
+        "total_return": 0.8744210526315839,
+        "annualized_return": 0.02993474619456382,
+        "annualized_volatility": 0.0027234788784495072,
+        "excess_sharpe": null,
+        "max_drawdown": 0.0,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 2.9103830456733704e-11,
+        "mean_reserve_weight": 1.0
+      }
+    },
+    "development": {
+      "momentum": {
+        "observations": 2624,
+        "total_return": 1.3655575105479234,
+        "annualized_return": 0.08620374932185904,
+        "annualized_volatility": 0.08659671647434294,
+        "excess_sharpe": 0.6255587402176686,
+        "max_drawdown": -0.13390014609459633,
+        "annual_gross_turnover": 2.3654222868086827,
+        "total_cost": 1182.5446407223594,
+        "max_abs_bridge_error": 8.731149137020111e-11,
+        "mean_reserve_weight": 0.20031672010281026
+      },
+      "risk_matched_static": {
+        "observations": 2624,
+        "total_return": 1.007292095152518,
+        "annualized_return": 0.0692067362613571,
+        "annualized_volatility": 0.09646519795760768,
+        "excess_sharpe": 0.40758582014476175,
+        "max_drawdown": -0.24349963895060778,
+        "annual_gross_turnover": 0.9310953857525042,
+        "total_cost": 384.21243702784176,
+        "max_abs_bridge_error": 5.820766091346741e-11,
+        "mean_reserve_weight": 0.20767768593753105
+      },
+      "C_buy_hold": {
+        "observations": 2624,
+        "total_return": 1.3049351729741319,
+        "annualized_return": 0.08349897463644029,
+        "annualized_volatility": 0.2012760673435349,
+        "excess_sharpe": 0.33904327493964026,
+        "max_drawdown": -0.5522310756972112,
+        "annual_gross_turnover": 0.19201556606188877,
+        "total_cost": 60.039404446608614,
+        "max_abs_bridge_error": 2.9103830456733704e-11,
+        "mean_reserve_weight": 0.0007621951219512195
+      },
+      "G_buy_hold": {
+        "observations": 2624,
+        "total_return": 0.39870813397129967,
+        "annualized_return": 0.032749832291634196,
+        "annualized_volatility": 0.0036289046016882414,
+        "excess_sharpe": null,
+        "max_drawdown": 0.0,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 2.9103830456733704e-11,
+        "mean_reserve_weight": 1.0
+      }
+    },
+    "validation": {
+      "momentum": {
+        "observations": 1249,
+        "total_return": 0.33050279291951434,
+        "annualized_return": 0.059306410950773714,
+        "annualized_volatility": 0.08094679789020617,
+        "excess_sharpe": 0.4726952497055519,
+        "max_drawdown": -0.14893500376380764,
+        "annual_gross_turnover": 3.934773648909871,
+        "total_cost": 1519.6367951094412,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.1312373855868158
+      },
+      "risk_matched_static": {
+        "observations": 1249,
+        "total_return": 0.39314843390328336,
+        "annualized_return": 0.06918563833914004,
+        "annualized_volatility": 0.08453878771771467,
+        "excess_sharpe": 0.5658748588807411,
+        "max_drawdown": -0.14112778182703567,
+        "annual_gross_turnover": 0.5644887581664153,
+        "total_cost": 187.37255316860694,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.08636883526451518
+      },
+      "C_buy_hold": {
+        "observations": 1249,
+        "total_return": 0.7397139754467958,
+        "annualized_return": 0.11819913079362454,
+        "annualized_volatility": 0.13480910712759336,
+        "excess_sharpe": 0.7283811970476449,
+        "max_drawdown": -0.1937076705558124,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 5.820766091346741e-11,
+        "mean_reserve_weight": 0.0
+      },
+      "G_buy_hold": {
+        "observations": 1249,
+        "total_return": 0.11862621010501417,
+        "annualized_return": 0.022875443219878777,
+        "annualized_volatility": 0.0009293605309442525,
+        "excess_sharpe": null,
+        "max_drawdown": 0.0,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 2.9103830456733704e-11,
+        "mean_reserve_weight": 1.0
+      }
+    },
+    "confirmation": {
+      "momentum": {
+        "observations": 1495,
+        "total_return": 0.3068959269568887,
+        "annualized_return": 0.04614961947392349,
+        "annualized_volatility": 0.11884210302651706,
+        "excess_sharpe": 0.18328640503433902,
+        "max_drawdown": -0.2666909114506927,
+        "annual_gross_turnover": 2.8752497430672954,
+        "total_cost": 1577.1011781530633,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.3447808679082988
+      },
+      "risk_matched_static": {
+        "observations": 1495,
+        "total_return": 0.3396572845786836,
+        "annualized_return": 0.050524771551178294,
+        "annualized_volatility": 0.12185497035642158,
+        "excess_sharpe": 0.2159555621663054,
+        "max_drawdown": -0.2666909114506927,
+        "annual_gross_turnover": 1.3433931769901246,
+        "total_cost": 682.4736953663314,
+        "max_abs_bridge_error": 1.7462298274040222e-10,
+        "mean_reserve_weight": 0.24392311628200453
+      },
+      "C_buy_hold": {
+        "observations": 1495,
+        "total_return": 1.3172267573984122,
+        "annualized_return": 0.15217853413606108,
+        "annualized_volatility": 0.20965339791299295,
+        "excess_sharpe": 0.6357185225105415,
+        "max_drawdown": -0.33826715964653686,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 1.1641532182693481e-10,
+        "mean_reserve_weight": 0.0
+      },
+      "G_buy_hold": {
+        "observations": 1495,
+        "total_return": 0.19799515608180296,
+        "annualized_return": 0.030918972427143476,
+        "annualized_volatility": 0.001609650329642057,
+        "excess_sharpe": null,
+        "max_drawdown": 0.0,
+        "annual_gross_turnover": 0.0,
+        "total_cost": 0.0,
+        "max_abs_bridge_error": 2.9103830456733704e-11,
+        "mean_reserve_weight": 1.0
+      }
+    }
+  },
+  "paired_inference": {
+    "full": {
+      "20": {
+        "paired_observations": 5368,
+        "annualized_log_return_difference": 0.004387408989969461,
+        "ci95_low": -0.010630834316355272,
+        "ci95_high": 0.021585021242356006,
+        "includes_zero": true,
+        "block_sessions": 20,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      },
+      "63": {
+        "paired_observations": 5368,
+        "annualized_log_return_difference": 0.004387408989969461,
+        "ci95_low": -0.010904481256019826,
+        "ci95_high": 0.02316308830964813,
+        "includes_zero": true,
+        "block_sessions": 63,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      }
+    },
+    "development": {
+      "20": {
+        "paired_observations": 2624,
+        "annualized_log_return_difference": 0.015771812846565782,
+        "ci95_low": -0.007876586110297814,
+        "ci95_high": 0.04586051289689598,
+        "includes_zero": true,
+        "block_sessions": 20,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      },
+      "63": {
+        "paired_observations": 2624,
+        "annualized_log_return_difference": 0.015771812846565782,
+        "ci95_low": -0.009854098548098468,
+        "ci95_high": 0.04969231298304805,
+        "includes_zero": true,
+        "block_sessions": 63,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      }
+    },
+    "validation": {
+      "20": {
+        "paired_observations": 1249,
+        "annualized_log_return_difference": -0.009282908371315653,
+        "ci95_low": -0.030981263741205547,
+        "ci95_high": 0.014643803715148349,
+        "includes_zero": true,
+        "block_sessions": 20,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      },
+      "63": {
+        "paired_observations": 1249,
+        "annualized_log_return_difference": -0.009282908371315653,
+        "ci95_low": -0.0262080539178618,
+        "ci95_high": 0.010596044233651784,
+        "includes_zero": true,
+        "block_sessions": 63,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      }
+    },
+    "confirmation": {
+      "20": {
+        "paired_observations": 1495,
+        "annualized_log_return_difference": -0.004173426685925966,
+        "ci95_low": -0.03229594953048369,
+        "ci95_high": 0.02331455237770423,
+        "includes_zero": true,
+        "block_sessions": 20,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      },
+      "63": {
+        "paired_observations": 1495,
+        "annualized_log_return_difference": -0.004173426685925966,
+        "ci95_low": -0.027779679387291235,
+        "ci95_high": 0.01715000932891526,
+        "includes_zero": true,
+        "block_sessions": 63,
+        "replications": 2000,
+        "seed": 20261023,
+        "interpretation": "Descriptive paired historical inference; not a test of prospective alpha."
+      }
+    }
+  },
+  "sensitivity": [
+    {
+      "execution_delay": 2,
+      "cost_bps": 0,
+      "confirmation_momentum_return": 0.31360146729265015,
+      "confirmation_static_return": 0.3428643346305744,
+      "confirmation_paired_annual_log_difference": -0.003713808966268229
+    },
+    {
+      "execution_delay": 2,
+      "cost_bps": 3,
+      "confirmation_momentum_return": 0.3068959269568887,
+      "confirmation_static_return": 0.3396572845786836,
+      "confirmation_paired_annual_log_difference": -0.004173426685925966
+    },
+    {
+      "execution_delay": 2,
+      "cost_bps": 10,
+      "confirmation_momentum_return": 0.2913824015296005,
+      "confirmation_static_return": 0.3322039600747668,
+      "confirmation_paired_annual_log_difference": -0.005245883139250432
+    },
+    {
+      "execution_delay": 3,
+      "cost_bps": 0,
+      "confirmation_momentum_return": 0.2713080021184493,
+      "confirmation_static_return": 0.31895027476841387,
+      "confirmation_paired_annual_log_difference": -0.006201371151577752
+    },
+    {
+      "execution_delay": 3,
+      "cost_bps": 3,
+      "confirmation_momentum_return": 0.2648468521005849,
+      "confirmation_static_return": 0.3158070235278063,
+      "confirmation_paired_annual_log_difference": -0.006658048035120829
+    },
+    {
+      "execution_delay": 3,
+      "cost_bps": 10,
+      "confirmation_momentum_return": 0.24989843409982715,
+      "confirmation_static_return": 0.3085019436888887,
+      "confirmation_paired_annual_log_difference": -0.007723611737782692
+    },
+    {
+      "execution_delay": 5,
+      "cost_bps": 0,
+      "confirmation_momentum_return": 0.29090556680163115,
+      "confirmation_static_return": 0.3352381981318,
+      "confirmation_paired_annual_log_difference": -0.005691616313972858
+    },
+    {
+      "execution_delay": 5,
+      "cost_bps": 3,
+      "confirmation_momentum_return": 0.28432290066681754,
+      "confirmation_static_return": 0.3320757987446765,
+      "confirmation_paired_annual_log_difference": -0.006153658381589371
+    },
+    {
+      "execution_delay": 5,
+      "cost_bps": 10,
+      "confirmation_momentum_return": 0.2690937394325208,
+      "confirmation_static_return": 0.3247259870573713,
+      "confirmation_paired_annual_log_difference": -0.007231739420443964
+    }
+  ],
+  "measurement": {
+    "seconds": 9.078888099989854,
+    "sampled_peak_rss_mb": 116.20703125,
+    "rss_increase_mb": 24.578125
+  }
+}

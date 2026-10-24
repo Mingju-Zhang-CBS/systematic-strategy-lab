@@ -1,0 +1,2 @@
+decision_id,observation_date,max_feature_date,assumed_available_after,request_at,posting_date,delay_sessions,volatility_scale,status,target_G,target_F,target_C,target_S,target_I,momentum_F,momentum_C,momentum_S,momentum_I
+C_buy_hold:2004-07-01,2004-07-01,2004-07-01,2004-07-02T23:59:59-04:00,2004-07-06T11:00:00-04:00,2004-07-06,2,1,scheduled,0,0,1,0,0,,,,

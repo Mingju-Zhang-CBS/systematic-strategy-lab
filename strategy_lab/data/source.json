@@ -1,0 +1,28 @@
+{
+  "data_kind": "public-real",
+  "instrument_kind": "accumulation_fund_nav",
+  "source": "Federal Retirement Thrift Investment Board / Thrift Savings Plan",
+  "source_url": "https://www.tsp.gov/share-price-history/",
+  "retrieved_utc": "2026-10-24T01:22:17.955Z",
+  "capture_method": "Visible Individual funds table, All Time filter; government numerical fund NAV facts only",
+  "raw_capture_sha256": "e43b810bde49b24c4e297fb46c3592d800ddb37575c1332d5fedbfe813b54152",
+  "dataset_sha256": "e3344ae702e632f1e5d4ec3a8640548f56fb01b9c35ad5426a79a1fb7e838df2",
+  "rows": 5639,
+  "funds": [
+    "G",
+    "F",
+    "C",
+    "S",
+    "I"
+  ],
+  "first_date": "2003-06-02",
+  "last_date": "2025-12-31",
+  "rights_basis": "Public numerical facts transcribed from the official open-data service; facts are not copyrightable (17 USC 102(b)); original US government works are excluded from US copyright under 17 USC 105. No third-party index series, prose, logos or site assets are redistributed.",
+  "license_scope": "Public factual-data / US-government-work basis, not a claimed Creative Commons grant from TSP. Code MIT license does not relicense third-party materials. See DATA_RIGHTS.md.",
+  "catalog_url": "https://www.frtib.gov/data.json",
+  "open_data_plan_url": "https://www.frtib.gov/pdf/data/Open_Data_Plan_v4.0.pdf",
+  "copyright_basis_url": "https://www.copyright.gov/title17/92chap1.html",
+  "facts_guidance_url": "https://www.copyright.gov/help/faq/faq-protect.html",
+  "income_and_expenses": "Fund investment income, including dividends and interest, and operating expenses are embedded in the share NAV. No separate dividend or expense debit is added.",
+  "vintage_limitation": "Current published historical values captured in October 2026. Exact historical publication times and past revisions are unavailable; availability lag is a conservative modeled assumption, not evidence of archived point-in-time data."
+}

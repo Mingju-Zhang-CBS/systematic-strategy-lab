@@ -12,5 +12,9 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r requirements.lock.txt
       - run: python -m pip install --no-deps -e .
+      - run: python -m pip check
       - run: python -m pytest
-      - run: python -m strategy_lab --output local-runs/ci
+      - run: python -m strategy_lab --real --output local-runs/ci-real
+      - run: python -m strategy_lab --output local-runs/ci-synthetic
+      - run: python examples/explain_nav_transfer.py
+      - run: python examples/explain_accounting.py

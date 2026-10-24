@@ -1,133 +1,87 @@
-![Systematic Strategy Lab](assets/header.svg)
-
-[![Tests and offline demo](https://github.com/Mingju-Zhang-CBS/systematic-strategy-lab/actions/workflows/checks.yml/badge.svg)](https://github.com/Mingju-Zhang-CBS/systematic-strategy-lab/actions/workflows/checks.yml)
-
-[Research Studio](https://github.com/Mingju-Zhang-CBS) · [Research directory](https://github.com/Mingju-Zhang-CBS/Quant)
+![Systematic Strategy Lab — Investing with an information clock](assets/header.svg)
 
 # Systematic Strategy Lab
 
-**Research question:** How do signal timing, trading costs, cash availability and corporate actions change the economics of a portfolio rule?
+**Real multi-asset fund NAVs · allocation research · funded implementation**
 
-This project implements a small account simulator in which investment decisions, executed trades and reported P&L can be reconciled. It compares a fixed multi-asset momentum rule with static and passive controls, then evaluates six predetermined cost/delay cases.
+Does a momentum filter improve an allocation after publication delays, fees and a fair risk-budget comparison? I study five official TSP fund share-value series covering U.S. large-cap and smaller-company equities, international equities, bonds and a government-securities reserve. The study connects investment judgment to data lineage, temporal validation and daily account economics.
 
-**Python 3.12 · NumPy · pandas · 6 local tests passed · Offline demo · MIT**
+[Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
 
-## Read the result first
+## The result worth reading
 
-The public run uses **1,512 synthetic sessions** and five simulated asset roles named SPY, IEF, GLD, DBC and QQQ. A 252-session warmup leaves **1,260 account rows per strategy**. These labels do not turn the simulation into historical ETF evidence.
+In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.
 
-| Synthetic account | Total return | Excess Sharpe | Maximum drawdown | Trading fees, currency units |
-| --- | ---: | ---: | ---: | ---: |
-| Momentum | 13.65% | 0.049 | -17.61% | 701.92 |
-| Static | 9.35% | -0.065 | -16.94% | 63.17 |
-| Spy | 14.53% | 0.087 | -24.72% | 29.70 |
-| Qqq | 85.03% | 0.601 | -36.95% | 29.70 |
+**The evidence does not establish an incremental momentum advantage.** A useful implementation can expose an economically weak hypothesis. These are modeled allocations on real fund NAVs, not observed fund trades or independently unseen future performance.
 
-**Research interpretation:** momentum earns a small excess Sharpe in this generated market. The QQQ-like passive role earns more with a larger drawdown. Their exposures differ, so the return ranking does not isolate signal skill. The account and cost conventions are the main contribution of this demonstration.
+![Actual fund NAVs, modeled portfolio wealth and drawdown](reports/real/performance.png)
 
-![Synthetic account NAV and drawdown](reports/demo/performance.png)
+## What I built, and what it demonstrates
 
-## What this project demonstrates
+|Capability|Concrete implementation|Why it matters|
+|---|---|---|
+|Investment research|Fixed momentum, a shared-risk-budget static control, C and G buy-and-hold|Compare the signal with both a fair process control and opportunity cost|
+|Financial data judgment|5,639 common NAV dates, source fingerprint, rights record and explicit current-vintage limitation|A downloadable file is not automatically a point-in-time total-return dataset|
+|Portfolio and risk|Long-only whole-percent targets, trailing covariance, risk scaling and a reserve sleeve|Translate a signal into a funded, constrained allocation|
+|Implementation economics|Publication lag, frozen requests, later NAV posting and two-leg friction|Separate what was known from what was later paid|
+|Statistical reasoning|Chronological windows, continuous holdings, yearly diagnostics and paired block intervals|Keep uncertainty, unfavorable periods and model-selection limits visible|
+|Research engineering|Offline packaged snapshot, 23 tests, ledgers, source-bound manifests and CI|Make every displayed result inspectable and reproducible|
 
-| Skill | Concrete evidence |
-| --- | --- |
-| Systematic portfolio research | Explicit momentum lookback, skip, rebalance dates, caps and covariance scaling. |
-| Financial accounting | Separate cash, marked holdings, dividend entitlements and later payments. |
-| Execution modeling | Decision/execution separation, integer trade quantities, sell-first funding and proportional fees. |
-| Risk analysis | Net return, excess Sharpe, initial-capital-aware drawdown and turnover. |
-| Experimental discipline | Four controls and six fixed sensitivity cases; no best-case promotion. |
-| Software correctness | Per-day NAV identities, future-price perturbations, split tests and an inspectable order ledger. |
+My contribution is the independently written data contract, allocation/account engine, test suite, experiment protocol, reporting and interpretation. TSP supplies the public numerical NAV facts; upstream public methods and Python libraries retain attribution. Development and documentation were AI-assisted. No employer code, recruiting task or licensed market-data feed is included.
 
-## The complete research workflow
+## Reproduce the real study
 
-![Systematic strategy workflow](assets/workflow.svg)
+Use **Python 3.12**. Install the tested dependency closure in a fresh environment:
 
-1. **Validate a common market panel.** Every supplied session contains the five expected tickers, raw closes, event fields and a consistent annual cash rate.
-2. **Build economic returns.** Apply split multipliers and dividend entitlements once. A total-return index informs signals; the actual account keeps paid cash and receivables separate.
-3. **Form a decision at a close.** Positive momentum over observations `t-252` through `t-21` determines eligible active assets. Equal target weights are capped at 50% per asset and 99% gross. A trailing 126-observation covariance reduces risk toward a 10% annual target.
-4. **Execute at a later close.** Freeze target weights. Size integer quantities using then-observed NAV/prices, sell before buying, and scale purchases to available cash including fees.
-5. **Maintain the account.** Prior cash earns interest over actual elapsed days. Ex-date dividends become receivables, payable after 20 supplied sessions. Fees apply to buys and sells.
-6. **Reconcile and evaluate.** Bridge every ending NAV to its economic components before calculating performance and predetermined stress cases.
-
-### The accounting invariant
-
-```text
-Ending NAV = Prior NAV + Stock price P&L + Dividend entitlement
-             + Cash interest - Trading fees
-
-Ending NAV = Cash + Dividend receivables + Marked stock holdings
-```
-
-Across **5,040 recorded strategy-day rows**, the largest absolute bridge residual is **2.81e-11 currency units**. The [worked walkthrough](docs/WALKTHROUGH.md) traces an actual synthetic dividend event through this identity.
-
-### Why the controls matter
-
-| Control | Decision policy | Exposure convention |
-| --- | --- | --- |
-| Momentum | Initial eligible close, then month ends | Four active assets, positivity filter and volatility scaling. |
-| Static | Same decision schedule | Equal target weights; no volatility scaling. |
-| SPY / QQQ | Enter once after the initial decision | Hold stock; leave later paid dividends in cash. |
-
-All controls share evaluation dates, financing conventions and costs. Target caps apply at decisions; prices can move realized weights away from those targets afterward.
-
-## Costs and execution delay
-
-![Fixed cost and delay scenarios](reports/demo/cost_delay.png)
-
-The experiment fixes costs at 0, 3 or 10 bps per traded notional and delay at one or two supplied sessions. It reports every combination. The change from 0 to 10 bps and from one to two sessions is an economic sensitivity exercise, not a parameter search for the best historical curve.
-
-## Reproduce the study
-
-```text
+```bash
 python -m venv .venv
-```
-
-Activate the environment with `.venv\Scripts\Activate.ps1` in Windows PowerShell, or `source .venv/bin/activate` on macOS/Linux. Then:
-
-```text
+# Activate .venv using your shell's standard activation command.
 python -m pip install -r requirements.lock.txt
 python -m pip install --no-deps -e .
+python -m pip check
 python -m pytest
-python -m strategy_lab --output local-runs/demo
+python -m strategy_lab --real --output local-runs/real
+python examples/explain_nav_transfer.py
 ```
 
-Use Python 3.12 and a new or empty output directory. After dependencies are installed, the synthetic demonstration needs no network access. The checked-in run is in `reports/demo/`; new runs go to ignored `local-runs/`.
+The research command reads the checked-in snapshot and needs **no network, key, paid service or GPU**. Choose a new empty output folder for each run; existing results are not silently overwritten. The [checked-in report](reports/real/REPORT.md) contains four strategies, three chronological windows plus a full-period summary, 22 yearly slices, both uncertainty intervals and all nine stress scenarios. Configuration, data, code and generated-file fingerprints accompany the output.
 
-### Use your own market panel
+## Read the information clock before the performance curve
+
+![Observation, publication, request and posting](assets/workflow.svg)
+
+The signal uses observations through **t**. A complete intervening NAV session is reserved for publication, targets are frozen after it, and a request is modeled at **11:00 New York time on t+2**, before that day's NAV is known. Posting at the closing NAV is an ordinary-processing assumption. The report also shows three- and five-session delays.
+
+Historical publication timestamps and release vintages are unavailable. This conservative lag cannot eliminate unknown historical revisions. The protocol was recorded before this implementation calculated returns; development (July 2004–2014), validation (2015–2019) and confirmation (2020–2025) remain **historical temporal checks**, not prospective proof. No setting is selected from the confirmation results. Covariance uses only trailing observations and holdings continue across window boundaries.
+
+## Income, costs and funding
+
+TSP share NAVs already incorporate investment income and fund expenses. The real study adds **zero separate dividends**, **zero extra fund-expense debit** and **zero extra cash-interest credit**. G is a specific reserve fund earning its observed NAV return; it is not a universally accessible cash account. Underlying dividend ex/pay dates cannot be recovered from these fund NAVs.
+
+The base stress charges **3 bp per gross dollar bought or sold**, including the reserve leg; it is not an actual TSP commission or measured bid/ask spread. At each transfer:
 
 ```text
-python -m strategy_lab --csv private-data/market.csv --output local-runs/user-study
+after-fee value + modeled fee = pre-transfer value
+fee = friction rate × sum(abs(new dollar holdings − old dollar holdings))
+new units = frozen target percentage × after-fee value / posting NAV
 ```
 
-The CSV fields are `date,ticker,close,dividend,split,volume,cash_rate`. Use raw closes, split ratios as new shares per old share, ex-date dividends per post-split share and annual continuous cash rates in decimals. Mixing adjusted prices with separate event adjustments double-counts corporate actions. See [METHODS](docs/METHODS.md) for the complete contract.
+For example, transferring $100,000 from G to C at 10 bp per leg leaves **$99,800.20** invested and pays **$199.80**. A subsequent 2% accumulation-NAV increase produces **$101,796.20**; adding a separate 2% dividend would double-count income. See the [executable example](examples/explain_nav_transfer.py).
 
-## Engineering map and verification
+![Paired uncertainty, including insignificant results](reports/real/uncertainty.png)
 
-| Implementation | Responsibility |
-| --- | --- |
-| [`core.py`](strategy_lab/core.py) | Schema validation, synthetic market, signals, constrained trading, account ledger and metrics. |
-| [`__main__.py`](strategy_lab/__main__.py) | Four-strategy comparison, sensitivity grid, CSVs, plots and report. |
-| [`test_accounting.py`](tests/test_accounting.py) | Independent cash examples, future-data invariance, delayed dividends, splits and drawdown boundaries. |
+## Scope, source and honest limits
 
-Each strategy outputs `ledger.csv`, `decisions.csv` and `orders.csv`; the study also writes `sensitivity.csv`, metrics and a source-bound manifest. This makes a reported curve traceable to individual account events.
+The snapshot contains independently transcribed **public numerical facts** from the [official TSP service](https://www.tsp.gov/share-price-history/). The [rights record](DATA_RIGHTS.md) documents the factual-data/U.S.-government-work basis, attribution and exclusions; it does not invent a Creative Commons license for TSP or relicense third-party index data. Fund units are available only to eligible plan participants. Whole-percent targets and monthly transfer-count audits approximate core rules; fractional-unit rounding, exceptional processing, taxes, contributions and withdrawals are outside scope. This is not an ETF execution or complete participant-account simulator. The I Fund's benchmark changed during 2024.
 
-## Assumptions and limits
+The [legacy synthetic study](reports/demo/REPORT.md) remains a separately labeled accounting demonstration. Its raw-price engine tests split units, ex-date dividend receivables and delayed payments; its SPY/IEF/GLD/DBC/QQQ labels are simulated roles, not actual ETF histories. Run it with `python -m strategy_lab --output local-runs/synthetic` and `python examples/explain_accounting.py`. Its older static control has a different risk procedure and is not the real study's comparison.
 
-- Synthetic dynamics are not historical ETF returns, an execution record or evidence of alpha.
-- Closing-price target-notional execution is a modeling convention; daily bars do not establish attainable fills or market capacity.
-- Dividend payment lag is assumed, not sourced from historical payment dates. Volume is validated but is not a participation-limit model.
-- The simulator is long-only and forbids overdrafts. It does not model borrow, taxes, impact, margin or client mandates.
-- Supplied sessions define the calendar. Previously inspected real history remains exploratory when used through the adapter.
+## Continue the conversation
 
-## Explore the evidence
+- [Methods and equations](docs/METHODS.md) — signal, units, risk, metrics and inference.
+- [Numerical walkthrough](docs/WALKTHROUGH.md) — a request, funded transfer and NAV bridge.
+- [Validation record](docs/VALIDATION.md) — leakage probes, conservation and installed-package checks.
+- [Sources and contribution](docs/PROVENANCE.md) — data rights, public rules and boundaries.
+- [Interview guide](docs/INTERVIEW.md) · [Resume bullets](docs/RESUME.md).
 
-| Read | Purpose |
-| --- | --- |
-| [Worked walkthrough](docs/WALKTHROUGH.md) | Follow the research logic and a numerical example. |
-| [Methods and input contract](docs/METHODS.md) | Check assumptions, conventions and supported interfaces. |
-| [Executed research report](reports/demo/REPORT.md) | Inspect the recorded results and limitations. |
-| [Interview discussion](docs/INTERVIEW.md) | Practice explaining decisions and failure modes. |
-| [Resume evidence](docs/RESUME.md) | Trace draft claims to measured artifacts. |
-| [Provenance](docs/PROVENANCE.md) | Understand attribution, AI assistance and data rights. |
-
-Development was AI-assisted. The accounting engine and examples were independently written from public financial concepts; restricted coursework, company systems and vendor histories are outside this repository. [MIT license](LICENSE).
+For investing and asset allocation, pair this with [Financial Text Validation](https://github.com/Mingju-Zhang-CBS/financial-text-validation). For markets and product risk, compare its funding logic with [Defined-Outcome Research](https://github.com/Mingju-Zhang-CBS/defined-outcome-research) and [Market Making Lab](https://github.com/Mingju-Zhang-CBS/market-making-lab).

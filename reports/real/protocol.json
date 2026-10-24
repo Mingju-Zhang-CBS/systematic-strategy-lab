@@ -1,0 +1,68 @@
+{
+  "version": "tsp-chronological-v1",
+  "frozen_utc": "2026-10-24T01:22:04Z",
+  "freeze_scope": "Recorded before strategy returns were calculated. Not a prospective registration; historical markets are familiar and source prices may be revised.",
+  "data_start": "2003-06-02",
+  "data_end": "2025-12-31",
+  "evaluation_start": "2004-07-01",
+  "segments": {
+    "development": [
+      "2004-07-01",
+      "2014-12-31"
+    ],
+    "validation": [
+      "2015-01-01",
+      "2019-12-31"
+    ],
+    "confirmation": [
+      "2020-01-01",
+      "2025-12-31"
+    ]
+  },
+  "risky_funds": [
+    "F",
+    "C",
+    "S",
+    "I"
+  ],
+  "reserve_fund": "G",
+  "lookback_sessions": 252,
+  "skip_sessions": 21,
+  "covariance_sessions": 126,
+  "annual_volatility_target": 0.1,
+  "risky_asset_cap": 0.5,
+  "risky_gross_cap": 0.99,
+  "rebalance": "First eligible close then last supplied session of each month; frozen percentages; floor each risky weight to whole percentage and assign remainder to G.",
+  "strategies": [
+    "momentum",
+    "risk_matched_static",
+    "C_buy_hold",
+    "G_buy_hold"
+  ],
+  "momentum_rule": "Select positive total-return momentum from t-252 to t-21; equal allocation across selected risky funds, caps and trailing covariance scale down only. Static selects all four and otherwise uses identical caps and scaling.",
+  "available_after_complete_sessions": 1,
+  "request_clock": "Next supplied session at 11:00 America/New_York after one complete intervening publication session; ordinarily post at that day's closing NAV, modeled, not guaranteed.",
+  "base_execution_delay_from_observation_sessions": 2,
+  "cost_bps": 3,
+  "sensitivity_execution_delays": [
+    2,
+    3,
+    5
+  ],
+  "sensitivity_cost_bps": [
+    0,
+    3,
+    10
+  ],
+  "cost_interpretation": "Hypothetical proportional allocation friction on gross traded notional; not a TSP commission or measured spread. Fund operating expenses and investment income are already in NAV.",
+  "initial_capital": 100000,
+  "inference": "Paired daily log-return difference momentum minus risk-matched static, annualized mean and 95% moving-block bootstrap intervals; block lengths 20 and 63, 2000 replications, seed 20261023. Descriptive inference, no parameter or scenario selection by results.",
+  "yearly_walk_forward": "Continuous holdings and strictly trailing features; fixed rules, per-year metrics, no annual reset or holdout tuning.",
+  "negative_results": "Publish all strategies, predefined windows, all nine cost/delay scenarios, both bootstrap intervals, including negative and insignificant results.",
+  "limitations": [
+    "Current-vintage NAV data, no archived release vintages or exact historical publication timestamps",
+    "Restricted-access retirement funds, not exchange-traded ETFs",
+    "Whole-percent targets and monthly transfer-count audit approximate core plan mechanics; no participant, tax, contribution, withdrawal or exception simulator",
+    "I Fund benchmark changed in 2024; series is the actual changing fund, not a constant global-equity index"
+  ]
+}
