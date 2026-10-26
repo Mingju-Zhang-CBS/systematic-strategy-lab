@@ -82,6 +82,6 @@ The [legacy synthetic study](reports/demo/REPORT.md) remains a separately labele
 - [Numerical walkthrough](docs/WALKTHROUGH.md) — a request, funded transfer and NAV bridge.
 - [Validation record](docs/VALIDATION.md) — leakage probes, conservation and installed-package checks.
 - [Sources and contribution](docs/PROVENANCE.md) — data rights, public rules and boundaries.
-- [Interview guide](docs/INTERVIEW.md) · [Resume bullets](docs/RESUME.md).
+- [Technical discussion](docs/DISCUSSION.md).
 
 For investing and asset allocation, pair this with [Financial Text Validation](https://github.com/Mingju-Zhang-CBS/financial-text-validation). For markets and product risk, compare its funding logic with [Defined-Outcome Research](https://github.com/Mingju-Zhang-CBS/defined-outcome-research) and [Market Making Lab](https://github.com/Mingju-Zhang-CBS/market-making-lab).

@@ -15,7 +15,7 @@ The model's 11:00 request, publication allowance, proportional friction, risk th
 
 ## Personal implementation
 
-I designed and implemented the offline snapshot schema, timing contract, capped momentum and shared-risk-budget control, self-financing fee solver, unit/P&L ledger, chronological experiment, paired inference, figures and validation tests. Python, NumPy, pandas, Matplotlib, psutil and pytest provide their respective libraries. Familiar momentum and covariance methods are public building blocks; no claim of a novel signal is made.
+The implementation covers the offline snapshot schema, timing contract, capped momentum and shared-risk-budget control, self-financing fee solver, unit/P&L ledger, chronological experiment, paired inference, figures and tests. Mingju Zhang selected the research direction; code, experiment design, testing and writing were AI-assisted. Personal source contributions and human review are tracked separately. Python, NumPy, pandas, Matplotlib, psutil and pytest retain their own authorship and licenses. Familiar momentum and covariance methods are public building blocks; no novel signal is claimed.
 
 ## Remaining uncertainty
 
