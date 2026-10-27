@@ -28,11 +28,22 @@ The original TSP/legacy checks above are preserved. The commodity extension adds
 29 synthetic checks covering eight products, paired integer quantities, cash and
 reserve conservation, roll-gap exclusion, delivery boundaries, calendar closures,
 lagged capacity, missing references, negative prices, insolvency, changing units
-and future-information perturbation. The repository suite totals **52**.
+and future-information perturbation. The stage-2 repository suite totaled **52**.
 The independent wheel and offline demo receipt is recorded in the release
 evidence; CI also runs the full commodity fixture command.
 
 Tests certify the declared mechanics on constructed inputs, not historical
 exchange-calendar correctness, actual broker margin or executable fills. The
 [input contract](COMMODITY_INPUTS.md) requires those upstream evidence checks.
+
+### Monthly hypothesis interface
+
+Twelve additional [synthetic checks](../tests/test_commodity_signals.py) cover
+12-month compounding, future observations and later revisions, missing-month
+retention, nonpositive carry inputs, a six-product sorting minimum, separate
+near/far history eligibility, deterministic ties and impossible input clocks.
+The current complete suite passes **64 tests**. The offline
+[curve example](../examples/explain_curve_signals.py) reports directions only.
+These checks do not certify a historical rolling-return ladder or a funded
+carry/trend/basis-momentum result; see the [evidence gate](COMMODITY_SIGNALS.md).
 

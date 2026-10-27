@@ -1,6 +1,9 @@
 # Preserve portable source/output fingerprints for the commodity extension.
 strategy_lab/commodities/*.py text eol=lf
 tests/test_commodities.py text eol=lf
+tests/test_commodity_signals.py text eol=lf
 examples/explain_futures_account.py text eol=lf
+examples/explain_curve_signals.py text eol=lf
+docs/COMMODITY_SIGNALS.md text eol=lf
 reports/commodities/** text eol=lf
 reports/commodities/*.png binary

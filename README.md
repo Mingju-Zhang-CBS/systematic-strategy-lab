@@ -17,6 +17,12 @@ requests, model collateral and deliberately retained failures. Licensed WRDS/LSE
 audit work stays private; historical commodity strategy performance is not claimed.
 [Methods](docs/COMMODITY_ACCOUNTING.md) · [Results and failures](reports/commodities/REPORT.md) · [Input specification](docs/COMMODITY_INPUTS.md) · [Tests](tests/test_commodities.py)
 
+The [monthly curve hypothesis interface](docs/COMMODITY_SIGNALS.md) adds explicit
+carry, trend and basis-momentum directions with availability/version gates,
+complete-month checks and retained ineligible cases. It is tested on invented
+observations; a historical return ladder and funded strategy study remain gated
+by incomplete calendar and contract evidence. Run the [numerical example](examples/explain_curve_signals.py).
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

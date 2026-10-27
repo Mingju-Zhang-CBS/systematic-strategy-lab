@@ -66,6 +66,9 @@ configuration creates another scenario; it does not become a new confirmation
 test without a separately frozen research protocol.
 
 This interface implements fixed pair requests and constraints for stage 2.
-It does not yet implement monthly carry/trend/BM signals, equal-risk allocation,
-paper-exact basis-momentum, a historical margin feed or portfolio hypothesis
-testing. Results must be described at that scope.
+The separate [monthly signal interface](COMMODITY_SIGNALS.md) computes
+carry/trend/BM directions from supplied monthly rolling returns and curve
+snapshots. It does not change this CLI into a historical strategy study.
+The integrated historical adapter, return ladder, equal-risk allocation,
+paper-exact comparison, historical margin feed and portfolio hypothesis testing
+remain incomplete. Results must be described at that scope.
