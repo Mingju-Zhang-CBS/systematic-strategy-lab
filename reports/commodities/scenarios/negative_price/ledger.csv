@@ -1,0 +1,5 @@
+session,opening_equity,variation_margin,costs,equity,gross_proxy,reserve,free_cash,stale_contracts,positions,status
+2024-07-04,1000000.0,0.0,25.0,999975.0,138241.0,13824.1,986150.9,0,2,completed_accounting_diagnostic
+2024-07-05,999975.0,-72282.0,0.0,927693.0,138169.0,13816.900000000001,913876.1,0,2,completed_accounting_diagnostic
+2024-07-08,927693.0,72232.0,0.0,999925.0,138086.0,13808.6,986116.4,0,2,completed_accounting_diagnostic
+2024-07-09,999925.0,-3.9999999999906777,0.0,999921.0,138044.0,13804.400000000001,986116.6,0,2,completed_accounting_diagnostic

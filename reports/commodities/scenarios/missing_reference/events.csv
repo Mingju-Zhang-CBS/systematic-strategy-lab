@@ -1,0 +1,3 @@
+session,product,code,detail
+2024-07-04,WTI,unfilled_basket,missing_execution_reference
+2024-07-08,WTI,no_qualified_pair,No eligible near/far pair; target flat

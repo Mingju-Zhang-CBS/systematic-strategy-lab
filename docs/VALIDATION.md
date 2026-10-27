@@ -22,3 +22,17 @@ There is no random train/test split, full-sample scaler, imputation or model sea
 Python 3.12, the locked dependency closure, tests, both offline studies and both numerical examples are exercised by [GitHub Actions](https://github.com/Mingju-Zhang-CBS/systematic-strategy-lab/actions/workflows/checks.yml). The release also checks an installed wheel outside the source tree so that missing data package files cannot be hidden by an editable checkout. Run manifests bind source hashes, data hashes, protocol, configuration, package versions and generated outputs. Timings and sampled RSS are machine-specific and cover the experiment loop; report plotting and writing are outside that timed section.
 
 See the [real report](../reports/real/REPORT.md), [frozen protocol](../strategy_lab/data/protocol.json), and [tests](../tests/test_real_research.py). Checks establish the modeled accounting and information contract; they cannot recover an unavailable historical revision archive or prove actual execution.
+## Commodity extension — separate acceptance record
+
+The original TSP/legacy checks above are preserved. The commodity extension adds
+29 synthetic checks covering eight products, paired integer quantities, cash and
+reserve conservation, roll-gap exclusion, delivery boundaries, calendar closures,
+lagged capacity, missing references, negative prices, insolvency, changing units
+and future-information perturbation. The repository suite totals **52**.
+The independent wheel and offline demo receipt is recorded in the release
+evidence; CI also runs the full commodity fixture command.
+
+Tests certify the declared mechanics on constructed inputs, not historical
+exchange-calendar correctness, actual broker margin or executable fills. The
+[input contract](COMMODITY_INPUTS.md) requires those upstream evidence checks.
+

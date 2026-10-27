@@ -1,0 +1,7 @@
+session,settlement_at,product,contract,delta,settlement_reference,multiplier,commission,slippage,total_cost,reason
+2024-07-05,2024-07-05T20:00:00+00:00,WTI,SYN_WTI_1,1,67.21000000000001,1000,2.5,10.0,12.5,entry
+2024-07-05,2024-07-05T20:00:00+00:00,WTI,SYN_WTI_2,-1,68.29,1000,2.5,10.0,12.5,entry
+2024-07-08,2024-07-08T20:00:00+00:00,WTI,SYN_WTI_1,-1,67.33,1000,2.5,10.0,12.5,roll_or_risk_rebalance
+2024-07-08,2024-07-08T20:00:00+00:00,WTI,SYN_WTI_2,1,68.388,1000,2.5,10.0,12.5,roll_or_risk_rebalance
+2024-07-09,2024-07-09T20:00:00+00:00,WTI,SYN_WTI_1,1,67.084,1000,2.5,10.0,12.5,entry
+2024-07-09,2024-07-09T20:00:00+00:00,WTI,SYN_WTI_2,-1,68.146,1000,2.5,10.0,12.5,entry

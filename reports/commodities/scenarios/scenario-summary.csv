@@ -1,0 +1,13 @@
+scenario,data_kind,status,products,recorded_days,executed_legs,costs,ending_equity,events
+base,synthetic,completed_accounting_diagnostic,8,85,64,1250.0,998804.5,0
+zero_friction,synthetic,completed_accounting_diagnostic,8,85,64,0.0,1000054.5,0
+zero_ticks,synthetic,completed_accounting_diagnostic,8,85,64,200.0,999854.5,0
+two_ticks,synthetic,completed_accounting_diagnostic,8,85,64,2300.0,997754.5,0
+reserve_20pct,synthetic,completed_accounting_diagnostic,8,85,64,1250.0,998804.5,0
+buffer_10_sessions,synthetic,completed_accounting_diagnostic,8,85,64,1250.0,999016.5,0
+negative_price,synthetic,completed_accounting_diagnostic,1,4,2,25.0,999921.0,0
+capacity_rejection,synthetic,completed_no_qualified_trades,1,4,0,0.0,1000000.0,4
+missing_reference,synthetic,completed_accounting_diagnostic,1,4,6,75.0,999947.0,2
+safe_exit_failure,synthetic,failed_safe_exit,1,4,2,25.0,1000027.0,3
+insolvency,synthetic,failed_nonpositive_equity,1,2,2,25.0,-1067306.9999999998,1
+unverified_calendar,synthetic,completed_no_qualified_trades,1,4,0,0.0,1000000.0,4

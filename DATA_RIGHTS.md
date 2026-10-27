@@ -1,5 +1,23 @@
 # Data rights, attribution and scope
 
+## Commodity module: separate evidence and rights
+
+The [commodity module](docs/COMMODITY_ACCOUNTING.md) publishes original code,
+current public contract-unit facts with exchange citations, and generated
+**synthetic** prices, calendars, contracts, results and figures. Its fixture
+identities and expiry dates are invented. The code license does not license CME
+market data or imply a historical exchange-calendar/specification archive.
+
+WRDS/LSEG Datastream observations, vendor metadata extracts, private audit
+tables and reconstructible real-price figures are **not included**. No grant
+to redistribute licensed records or derived findings is inferred from a WRDS
+subscription, `licflag`, a successful query, or aggregation. The
+[WRDS download policy](https://wrds-www.wharton.upenn.edu/pages/about/data-download-and-analysis-policy/)
+requires respecting the applicable vendor agreement and private storage/retention
+obligations. Real input bundles and their generated outputs must remain private
+until their particular rights are established. The TSP factual-data basis below
+does not apply to those licensed futures records.
+
 ## Published snapshot
 
 `strategy_lab/data/tsp_nav.csv` contains **numerical daily fund share-value facts**, transcribed from the official [Thrift Savings Plan share-price history](https://www.tsp.gov/share-price-history/): Individual funds → All Time → visible data table. Attribution: Federal Retirement Thrift Investment Board / Thrift Savings Plan. Capture date, original table fingerprint, normalized CSV fingerprint and date coverage are recorded in [source.json](strategy_lab/data/source.json). Only dates and G/F/C/S/I numerical values are included; the study ends on 31 December 2025.

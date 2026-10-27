@@ -1,0 +1,4 @@
+session,product,code,detail
+2024-08-19,WTI,stale_mark,SYN_WTI_1
+2024-08-19,WTI,unfilled_basket,missing_execution_reference
+2024-08-19,WTI,failed_safe_exit,SYN_WTI_1: 1 contracts remain held at safe-exit deadline

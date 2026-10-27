@@ -1,0 +1,13 @@
+{
+  "status": "completed_accounting_diagnostic",
+  "data_kind": "synthetic",
+  "sessions": 85,
+  "products": 8,
+  "executed_legs": 64,
+  "event_counts": {},
+  "ending_equity": 998804.5,
+  "total_costs": 1250.0,
+  "maximum_ledger_bridge_error": 1.1641532182693481e-10,
+  "strategy_alpha_evaluated": false,
+  "historical_tradability_certified": false
+}

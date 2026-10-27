@@ -16,5 +16,7 @@ jobs:
       - run: python -m pytest
       - run: python -m strategy_lab --real --output local-runs/ci-real
       - run: python -m strategy_lab --output local-runs/ci-synthetic
+      - run: python -m strategy_lab.commodities --fixture --output local-runs/ci-commodities
       - run: python examples/explain_nav_transfer.py
       - run: python examples/explain_accounting.py
+      - run: python examples/explain_futures_account.py

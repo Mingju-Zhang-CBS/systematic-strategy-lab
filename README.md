@@ -8,6 +8,15 @@ Does a momentum filter improve an allocation after publication delays, fees and 
 
 [Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
 
+### New study / Commodity curves: contracts before signals
+
+An [eight-product futures accounting module](docs/COMMODITY_ACCOUNTING.md) connects
+contract identity and delayed information to safe delivery exits, independent-leg
+costs and a funded daily ledger. Its **public results are synthetic**: fixed near/far
+requests, model collateral and deliberately retained failures. Licensed WRDS/LSEG
+audit work stays private; historical commodity strategy performance is not claimed.
+[Methods](docs/COMMODITY_ACCOUNTING.md) · [Results and failures](reports/commodities/REPORT.md) · [Input specification](docs/COMMODITY_INPUTS.md) · [Tests](tests/test_commodities.py)
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.
@@ -25,9 +34,9 @@ In the **2020–2025 chronological confirmation window**, the fixed momentum all
 |Portfolio and risk|Long-only whole-percent targets, trailing covariance, risk scaling and a reserve sleeve|Translate a signal into a funded, constrained allocation|
 |Implementation economics|Publication lag, frozen requests, later NAV posting and two-leg friction|Separate what was known from what was later paid|
 |Statistical reasoning|Chronological windows, continuous holdings, yearly diagnostics and paired block intervals|Keep uncertainty, unfavorable periods and model-selection limits visible|
-|Research engineering|Offline packaged snapshot, 23 tests, ledgers, source-bound manifests and CI|Make every displayed result inspectable and reproducible|
+|Research engineering|Offline packaged snapshot, accounting tests, ledgers, source-bound manifests and CI|Make every displayed result inspectable and reproducible|
 
-My contribution is the independently written data contract, allocation/account engine, test suite, experiment protocol, reporting and interpretation. TSP supplies the public numerical NAV facts; upstream public methods and Python libraries retain attribution. Development and documentation were AI-assisted. No employer code, recruiting task or licensed market-data feed is included.
+The independently written implementation covers the data contract, allocation/account engine, tests, experiment protocol, reporting and interpretation. Mingju Zhang selected the research direction; implementation, experiments and writing were AI-assisted, with personal review tracked separately. TSP supplies the public numerical NAV facts; upstream methods and Python libraries retain attribution. No employer code, recruiting task or licensed market-data feed is included.
 
 ## Reproduce the real study
 
