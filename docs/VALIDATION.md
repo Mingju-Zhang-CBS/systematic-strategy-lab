@@ -42,8 +42,23 @@ Twelve additional [synthetic checks](../tests/test_commodity_signals.py) cover
 12-month compounding, future observations and later revisions, missing-month
 retention, nonpositive carry inputs, a six-product sorting minimum, separate
 near/far history eligibility, deterministic ties and impossible input clocks.
-The current complete suite passes **64 tests**. The offline
+The stage-3a complete suite passed **64 tests**. The offline
 [curve example](../examples/explain_curve_signals.py) reports directions only.
 These checks do not certify a historical rolling-return ladder or a funded
 carry/trend/basis-momentum result; see the [evidence gate](COMMODITY_SIGNALS.md).
+
+### Exploratory funded runner
+
+Fourteen further [constructed-input checks](../tests/test_commodity_research.py)
+cover scheduled-calendar conventions, blocked front notice/specification
+evidence, same-contract roll returns, cents and negative prices, funded pairing,
+independent terminal cash reconciliation, future-data perturbations, execution
+reference isolation, retained exit/capacity failures, zero-exposure and invalid
+month inference, centered paired comparisons and the t−2 input boundary.
+The complete repository suite passes **78 tests**, including the original 23.
+An independent wheel installation passes the same suite; all 269 generated
+synthetic CSV/gzip artifacts match the source run byte-for-byte in the recorded
+Python/numpy/pandas environment. Rendering dependencies and wall time can vary.
+The [full offline report](../reports/commodity-research-synthetic/REPORT.md) is
+invented data throughout; no licensed market-data result is certified by CI.
 

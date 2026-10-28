@@ -71,10 +71,12 @@ use. The 10% base/20% stress reserve remains a **model collateral proxy**, with
 no spread offsets, rather than observed exchange or broker margin. Collateral
 encumbers cash; variation margin and costs change equity.
 
-A complete funded study still requires the historical adapter, complete return
-ladder, equal-risk integer allocation, fixed execution controls and paired
-inference. Missing/failed paths and nonsignificant comparisons will remain in
-the report. No full-history commodity alpha, prospective out-of-sample success
-or real trading is claimed. Source prices, per-contract outputs and private
-derived results are excluded pending applicable release rights; see
+The [exploratory runner](COMMODITY_RESEARCH.md) now connects the snapshot adapter,
+same-contract reference ladder, equal-risk integer allocation, execution controls
+and paired inference under the explicitly assumed calendar. Complete historical
+PIT certification remains unavailable. Missing/failed paths and nonsignificant
+comparisons remain in the report, and non-evaluability is distinct from a null
+result. No public commodity alpha, prospective out-of-sample success or actual
+trading is claimed. Licensed source prices, per-contract outputs and private
+derived results remain excluded pending applicable release rights; see
 [Data Rights](../DATA_RIGHTS.md).

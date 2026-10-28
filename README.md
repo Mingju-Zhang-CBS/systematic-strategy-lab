@@ -17,11 +17,12 @@ requests, model collateral and deliberately retained failures. Licensed WRDS/LSE
 audit work stays private; historical commodity strategy performance is not claimed.
 [Methods](docs/COMMODITY_ACCOUNTING.md) · [Results and failures](reports/commodities/REPORT.md) · [Input specification](docs/COMMODITY_INPUTS.md) · [Tests](tests/test_commodities.py)
 
-The [monthly curve hypothesis interface](docs/COMMODITY_SIGNALS.md) adds explicit
-carry, trend and basis-momentum directions with availability/version gates,
-complete-month checks and retained ineligible cases. It is tested on invented
-observations; a historical return ladder and funded strategy study remain gated
-by incomplete calendar and contract evidence. Run the [numerical example](examples/explain_curve_signals.py).
+The [exploratory research runner](docs/COMMODITY_RESEARCH.md) connects carry,
+trend and basis-momentum with same-contract return histories, integer risk
+allocation and stopped funding paths. It makes the scheduled-calendar and
+collateral assumptions explicit. The [public demonstration](reports/commodity-research-synthetic/REPORT.md)
+is entirely invented; licensed real-reference findings remain private. Run the
+[signal example](examples/explain_curve_signals.py) or the complete offline study.
 
 ## The result worth reading
 

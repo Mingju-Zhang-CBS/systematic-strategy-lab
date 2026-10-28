@@ -18,6 +18,13 @@ obligations. Real input bundles and their generated outputs must remain private
 until their particular rights are established. The TSP factual-data basis below
 does not apply to those licensed futures records.
 
+The [exploratory runner](docs/COMMODITY_RESEARCH.md) uses an explicitly assumed
+scheduled-settlement calendar and model collateral. Public material in
+`reports/commodity-research-synthetic/` is generated solely by the original
+synthetic fixture; its artifact list identifies the complete reproducible run
+and the compact checked-in subset. These figures, contracts and cash paths are
+not WRDS observations, exchange margin history or actual trading records.
+
 ## Published snapshot
 
 `strategy_lab/data/tsp_nav.csv` contains **numerical daily fund share-value facts**, transcribed from the official [Thrift Savings Plan share-price history](https://www.tsp.gov/share-price-history/): Individual funds → All Time → visible data table. Attribution: Federal Retirement Thrift Investment Board / Thrift Savings Plan. Capture date, original table fingerprint, normalized CSV fingerprint and date coverage are recorded in [source.json](strategy_lab/data/source.json). Only dates and G/F/C/S/I numerical values are included; the study ends on 31 December 2025.

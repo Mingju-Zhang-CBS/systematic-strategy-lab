@@ -61,6 +61,11 @@ def monthly_candidates(returns, curves, month, as_of):
     c = c[(c.available_at <= cutoff) & (c["month"] == target_month)]
     r = r.sort_values("available_at").drop_duplicates(["product", "month"], keep="last")
     c = c.sort_values("available_at").drop_duplicates("product", keep="last").set_index("product")
+    return _monthly_directions(r, c, target_month, cutoff)
+
+
+def _monthly_directions(r, c, target_month, cutoff):
+    """Shared calculation for inputs already normalized at their public boundary."""
     window = pd.period_range(target_month-11, target_month, freq="M")
     rows = []
     for product in PRODUCTS:

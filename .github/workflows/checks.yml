@@ -21,3 +21,4 @@ jobs:
       - run: python examples/explain_accounting.py
       - run: python examples/explain_futures_account.py
       - run: python examples/explain_curve_signals.py
+      - run: python -m strategy_lab.commodities.research_report --fixture --output local-runs/ci-curve-research

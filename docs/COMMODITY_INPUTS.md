@@ -69,6 +69,9 @@ This interface implements fixed pair requests and constraints for stage 2.
 The separate [monthly signal interface](COMMODITY_SIGNALS.md) computes
 carry/trend/BM directions from supplied monthly rolling returns and curve
 snapshots. It does not change this CLI into a historical strategy study.
-The integrated historical adapter, return ladder, equal-risk allocation,
-paper-exact comparison, historical margin feed and portfolio hypothesis testing
-remain incomplete. Results must be described at that scope.
+The [separate exploratory runner](COMMODITY_RESEARCH.md) now provides a
+current-vintage snapshot adapter, same-contract reference ladder, integer risk
+allocation and paired inference under a declared scheduled-calendar assumption.
+This does not certify complete PIT history, first-position boundaries, actual
+margin feeds or executable fills. The original stage-2 CLI retains its fixed
+accounting-diagnostic scope.

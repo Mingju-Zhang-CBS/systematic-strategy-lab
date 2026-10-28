@@ -1,0 +1,29 @@
+{
+  "strategy": "long_only",
+  "status": "completed_exploratory_path",
+  "protocol": {
+    "start": "2021-01-01",
+    "end": "2022-12-31",
+    "capital": 1000000,
+    "commission": 2.5,
+    "slippage_ticks": 1,
+    "participation": 0.01,
+    "reserve_rate": 0.1,
+    "reserve_limit": 0.5,
+    "gross_limit": 3,
+    "annual_risk_cap": 0.1,
+    "unit_window": 60,
+    "unit_minimum": 40,
+    "covariance_window": 252,
+    "covariance_minimum": 126,
+    "extra_delay": 0,
+    "exclude_sector": ""
+  },
+  "reconciliation": {
+    "independent_terminal_equity": 956469.752857922,
+    "ledger_terminal_equity": 956469.7528579225,
+    "terminal_error": -4.656612873077393e-10,
+    "maximum_daily_error": 5.7980287238024175e-11,
+    "positions_at_end": 0
+  }
+}

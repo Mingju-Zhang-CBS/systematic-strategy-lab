@@ -1,0 +1,57 @@
+case,strategy,code,detail,count
+base,bm_outright,unfilled_basket,post_mark_funding_limit,7
+base,carry,constraint_breach,Reduction requested at next feasible decision,5
+base,carry,unfilled_basket,post_mark_funding_limit,9
+base,carry_half,unfilled_basket,post_mark_funding_limit,8
+delay_plus_1,bm_outright,unfilled_basket,post_mark_funding_limit,6
+delay_plus_1,carry,constraint_breach,Reduction requested at next feasible decision,7
+delay_plus_1,carry,unfilled_basket,post_mark_funding_limit,9
+delay_plus_1,carry_half,unfilled_basket,post_mark_funding_limit,9
+delay_plus_3,bm_outright,unfilled_basket,post_mark_funding_limit,8
+delay_plus_3,carry,constraint_breach,Reduction requested at next feasible decision,7
+delay_plus_3,carry,unfilled_basket,post_mark_funding_limit,8
+delay_plus_3,carry_half,unfilled_basket,post_mark_funding_limit,8
+exclude_agriculture,bm_outright,constraint_breach,Reduction requested at next feasible decision,2
+exclude_agriculture,bm_outright,unfilled_basket,post_mark_funding_limit,6
+exclude_agriculture,carry,constraint_breach,Reduction requested at next feasible decision,4
+exclude_agriculture,carry,unfilled_basket,post_mark_funding_limit,8
+exclude_agriculture,carry_half,constraint_breach,Reduction requested at next feasible decision,4
+exclude_agriculture,carry_half,unfilled_basket,post_mark_funding_limit,7
+exclude_energy,bm_outright,constraint_breach,Reduction requested at next feasible decision,4
+exclude_energy,bm_outright,unfilled_basket,post_mark_funding_limit,6
+exclude_energy,carry,constraint_breach,Reduction requested at next feasible decision,12
+exclude_energy,carry,unfilled_basket,post_mark_funding_limit,9
+exclude_energy,carry_half,constraint_breach,Reduction requested at next feasible decision,6
+exclude_energy,carry_half,unfilled_basket,post_mark_funding_limit,8
+exclude_metals,bm_outright,constraint_breach,Reduction requested at next feasible decision,10
+exclude_metals,bm_outright,unfilled_basket,post_mark_funding_limit,7
+exclude_metals,carry,constraint_breach,Reduction requested at next feasible decision,9
+exclude_metals,carry,unfilled_basket,post_mark_funding_limit,10
+exclude_metals,carry_half,constraint_breach,Reduction requested at next feasible decision,5
+exclude_metals,carry_half,unfilled_basket,post_mark_funding_limit,9
+exclude_metals,long_only,unfilled_basket,post_mark_funding_limit,1
+exclude_metals,trend,constraint_breach,Reduction requested at next feasible decision,2
+exclude_metals,trend,unfilled_basket,post_mark_funding_limit,2
+exit_buffer_10,bm_outright,constraint_breach,Reduction requested at next feasible decision,3
+exit_buffer_10,bm_outright,unfilled_basket,post_mark_funding_limit,6
+exit_buffer_10,carry,constraint_breach,Reduction requested at next feasible decision,5
+exit_buffer_10,carry,unfilled_basket,post_mark_funding_limit,9
+exit_buffer_10,carry_half,unfilled_basket,post_mark_funding_limit,8
+reserve_20pct,bm_outright,unfilled_basket,post_mark_funding_limit,6
+reserve_20pct,carry,unfilled_basket,post_mark_funding_limit,9
+reserve_20pct,carry_half,unfilled_basket,post_mark_funding_limit,7
+two_ticks,bm_outright,constraint_breach,Reduction requested at next feasible decision,1
+two_ticks,bm_outright,unfilled_basket,post_mark_funding_limit,7
+two_ticks,carry,constraint_breach,Reduction requested at next feasible decision,5
+two_ticks,carry,unfilled_basket,post_mark_funding_limit,10
+two_ticks,carry_half,unfilled_basket,post_mark_funding_limit,7
+zero_friction,bm_outright,constraint_breach,Reduction requested at next feasible decision,5
+zero_friction,bm_outright,unfilled_basket,post_mark_funding_limit,10
+zero_friction,carry,constraint_breach,Reduction requested at next feasible decision,6
+zero_friction,carry,unfilled_basket,post_mark_funding_limit,10
+zero_friction,carry_half,unfilled_basket,post_mark_funding_limit,8
+zero_ticks,bm_outright,constraint_breach,Reduction requested at next feasible decision,2
+zero_ticks,bm_outright,unfilled_basket,post_mark_funding_limit,10
+zero_ticks,carry,constraint_breach,Reduction requested at next feasible decision,7
+zero_ticks,carry,unfilled_basket,post_mark_funding_limit,10
+zero_ticks,carry_half,unfilled_basket,post_mark_funding_limit,9

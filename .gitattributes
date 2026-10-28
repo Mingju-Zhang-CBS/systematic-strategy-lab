@@ -2,6 +2,12 @@
 strategy_lab/commodities/*.py text eol=lf
 tests/test_commodities.py text eol=lf
 tests/test_commodity_signals.py text eol=lf
+tests/test_commodity_research.py text eol=lf
+docs/COMMODITY_RESEARCH.md text eol=lf
+# Keep generated report bytes identical to their recorded artifact hashes.
+reports/commodity-research-synthetic/** -text
+reports/commodity-research-synthetic/*.png binary
+reports/commodity-research-synthetic/**/*.gz binary
 examples/explain_futures_account.py text eol=lf
 examples/explain_curve_signals.py text eol=lf
 docs/COMMODITY_SIGNALS.md text eol=lf
