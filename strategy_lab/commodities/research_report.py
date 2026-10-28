@@ -107,7 +107,7 @@ def paired_inference(months, phases=None):
 
 def write_result(result, output, detail):
     output.mkdir(parents=True, exist_ok=False)
-    for name in ("ledger", "trades", "events")+(("decisions", "holdings", "pnl") if detail else ()):
+    for name in ("ledger", "trades", "events")+(("decisions", "holdings", "pnl") if detail else ())+(("exit_plans",) if "exit_plans" in result else ()):
         frame = result[name]
         if len(frame.columns):
             frame.to_csv(output/(name+".csv.gz"), index=False, compression={"method":"gzip", "mtime":0})
@@ -207,7 +207,7 @@ def main():
     mode.add_argument("--input", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--base-only", action="store_true", help="Smoke run only; not the full predeclared stress study")
-    parser.add_argument("--policy", choices=["legacy", "split_only", "persistent"], default="legacy",
+    parser.add_argument("--policy", choices=["legacy", "split_only", "persistent", "partial_only", "capacity_exit"], default="legacy",
                         help="Frozen protocol comparison; default preserves the original coupled baseline")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
@@ -225,7 +225,9 @@ def main():
             if hashlib.sha256((args.input/name).read_bytes()).hexdigest() != expected:
                 raise ValueError("private input fingerprint mismatch: "+name)
     protocol = replace(protocol, execution_policy="coupled" if args.policy == "legacy" else "exit_first")
-    selection_policy = dict(liquidity_window=5, monotone_roll=True) if args.policy == "persistent" else dict(liquidity_window=1, monotone_roll=False)
+    if args.policy in {"partial_only", "capacity_exit"}:
+        protocol = replace(protocol, execution_policy="staged", exit_lead=10 if args.policy == "capacity_exit" else 0)
+    selection_policy = dict(liquidity_window=5, monotone_roll=True) if args.policy in {"persistent", "partial_only", "capacity_exit"} else dict(liquidity_window=1, monotone_roll=False)
     cases = [("base", protocol, 5), ("zero_ticks", replace(protocol, slippage_ticks=0), 5),
              ("two_ticks", replace(protocol, slippage_ticks=2), 5),
              ("zero_friction", replace(protocol, commission=0, slippage_ticks=0), 5),

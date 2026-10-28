@@ -1,0 +1,23 @@
+{
+  "data_kind": "synthetic",
+  "package_version": "0.5.0",
+  "initial_units": 2,
+  "near_capacity": 3,
+  "far_capacity": 1,
+  "provenance": "Original invented fixture; controlled exogenous requests and quantity-relative activity, not strategy calibration",
+  "example_sha256": "99e72a2601dec9955eeacb0db31d501d085240aa876231724066e2160c041a3a",
+  "reconciliation": {
+    "independent_terminal_equity": 999146.2605069228,
+    "ledger_terminal_equity": 999146.2605069228,
+    "terminal_error": 0.0,
+    "maximum_daily_error": 5.312017492542509e-11,
+    "positions_at_end": 12
+  },
+  "files": {
+    "EXIT_PLANS.csv": "bb74d116cd211dbb859c90064697eb57faf6f33d08114fae4b1d11ea27548c7c",
+    "paired_slices.png": "c837bf5ed87267b7d9c04a337c852aa01778ef25f8a3b9f7f0469a7622e646bd",
+    "REPORT.md": "db4f579dbfc8d37381d41d862ad76722367d90d80de12460c372b624ff184dd6",
+    "TRACE.csv": "7d5cac5a56af60da3e6b8056c05763d2be7405c8e7a08c234b438d5f852f1c77",
+    "TRADES.csv": "0ccc544ed2a5baceda283bd3324cc147fdaed65182f48337ef25f393bded5ade"
+  }
+}

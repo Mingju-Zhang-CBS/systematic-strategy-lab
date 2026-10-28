@@ -1,5 +1,9 @@
 # Commodity curves: test the trading path before the premium
 
+**Capacity revision:** [Paired staged exits](COMMODITY_STAGED_EXITS.md) reduces
+old inventory in lagged-capacity slices and starts a predeclared retirement
+schedule. All prior versions and failed outcomes remain separately inspectable.
+
 **Execution revision:** [Exit-first protocol comparison](COMMODITY_EXECUTION.md)
 separates mandatory reductions from replacement entries, adds a frozen
 five-observation liquidity gate and monotone maturity selection. Run it with

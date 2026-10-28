@@ -23,3 +23,5 @@ jobs:
       - run: python examples/explain_curve_signals.py
       - run: python -m strategy_lab.commodities.research_report --fixture --output local-runs/ci-curve-research
       - run: python -m strategy_lab.commodities.research_report --fixture --policy persistent --output local-runs/ci-exit-priority
+      - run: python -m strategy_lab.commodities.research_report --fixture --policy capacity_exit --output local-runs/ci-staged-retirement
+      - run: python examples/explain_staged_exit.py --output local-runs/ci-paired-trace

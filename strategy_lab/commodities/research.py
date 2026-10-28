@@ -40,6 +40,9 @@ class ResearchProtocol:
     extra_delay: int = 0
     exclude_sector: str = ""
     execution_policy: str = "coupled"
+    exit_lead: int = 0
+    capacity_window: int = 5
+    drain_buffer: int = 2
 
 
 def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
@@ -59,7 +62,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             or not 2 <= p.covariance_minimum <= p.covariance_window
             or any(v != int(v) for v in (p.unit_window, p.unit_minimum, p.covariance_window, p.covariance_minimum, p.extra_delay))
             or p.exclude_sector not in {"", "energy", "metals", "agriculture"}
-            or p.execution_policy not in {"coupled", "exit_first"} or strategy not in STRATEGIES):
+            or p.execution_policy not in {"coupled", "exit_first", "staged"}
+            or any(not np.isfinite(v) or v != int(v) or v < 0 for v in (p.exit_lead, p.capacity_window, p.drain_buffer))
+            or p.capacity_window < 1 or (p.exit_lead > 0 and p.execution_policy != "staged") or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
     dates, c, prices = tape.dates, tape.contracts, tape.prices
     keys = c.contract.to_numpy()
@@ -80,6 +85,10 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
     last_requested = np.zeros(len(PRODUCTS))
     directions = np.zeros(len(PRODUCTS))
     score = None
+    pending = np.zeros(len(PRODUCTS), dtype=bool)
+    exit_goals = np.zeros(len(c), dtype=np.int64)
+    retired_front = np.full(len(PRODUCTS), -1, dtype=np.int64)
+    exit_plans = []
     updates = {i+p.extra_delay:s for i, s in tape.updates.items()}
     earlier = [i for i in updates if i < active_days[0]]
     if earlier:
@@ -98,6 +107,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
         wanted = directions*allowed
         pair = tape.pairs[day]
         eligible = (wanted != 0) & (pair[:, 0] >= 0)
+        if p.execution_policy == "staged":
+            eligible &= pair[:, 0] > retired_front
         signature = tuple((int(pair[j, 0]), int(pair[j, 1]) if is_spread else -1, int(wanted[j]))
                           if eligible[j] else (-1, -1, 0) for j in range(len(PRODUCTS)))
         rebalance = new_month or signature != old_signature
@@ -171,6 +182,52 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             target[pair[j, 0]] += integer_qty[j]
             if is_spread:
                 target[pair[j, 1]] -= integer_qty[j]
+        slice_target = positions.copy()
+        if p.execution_policy == "staged":
+            # Freeze paired slices BEFORE today's reference or activity is seen.
+            for j, product in enumerate(PRODUCTS):
+                group = product_indices[j]
+                held = group[positions[group] != 0]
+                if not len(held):
+                    pending[j] = False
+                    continue
+                remaining = int(np.min(tape.deadlines[held])-day+1)
+                history = tape.volume[max(0, obs-p.capacity_window+1):obs+1, held]
+                conservative = int(np.floor(p.participation*history).min()) if len(history) == p.capacity_window and np.isfinite(history).all() else 0
+                units = int(np.abs(positions[held]).max())
+                drain_days = int(np.ceil(units/conservative)) if conservative > 0 else np.inf
+                early = p.exit_lead > 0 and (remaining <= p.exit_lead or remaining <= drain_days+p.drain_buffer or conservative == 0)
+                if early:
+                    if retired_front[j] < held.min():
+                        events.append(dict(session=dates[day].date().isoformat(), product=product, code="early_retirement_started", detail=f"remaining={remaining}; conservative_capacity={conservative}; units={units}"))
+                    retired_front[j] = max(retired_front[j], int(held.min()))
+                    pending[j] = True
+                    exit_goals[group] = 0
+                    target[group] = 0
+                    continuous_qty[j], integer_qty[j], last_requested[j] = 0., 0, 0
+                old, new = positions[group], target[group]
+                old_keys, new_keys = np.flatnonzero(old), np.flatnonzero(new)
+                replacing = (not np.array_equal(old_keys, new_keys)
+                             or (np.sign(old[old_keys]) != np.sign(new[old_keys])).any())
+                goal = np.zeros(len(group), dtype=np.int64) if replacing else np.sign(old)*np.minimum(np.abs(old), np.abs(new))
+                if pending[j]:
+                    exit_goals[group] = np.sign(old)*np.minimum(np.abs(exit_goals[group]), np.abs(goal))
+                elif (goal != old).any():
+                    pending[j] = True
+                    exit_goals[group] = goal
+                if pending[j]:
+                    reductions = np.abs(old-exit_goals[group])
+                    changed = group[reductions > 0]
+                    required = int(reductions.max())
+                    activity = tape.volume[obs, changed]
+                    capacity = int(np.floor(p.participation*activity).min()) if len(changed) and np.isfinite(activity).all() else 0
+                    planned = min(required, capacity)
+                    slice_target[group] = old-np.sign(old)*np.minimum(reductions, planned)
+                    exit_plans.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
+                                           product=product, contracts=";".join(keys[held]), held_units=units,
+                                           required_units=required, planned_units=planned, current_capacity=capacity,
+                                           conservative_capacity=conservative, remaining_sessions=remaining, early_retirement=early,
+                                           goal_units=int(np.abs(exit_goals[group]).max()), retired_near="" if retired_front[j] < 0 else keys[retired_front[j]]))
         old_signature = signature
         decision_at = (dates[day]+pd.Timedelta(hours=7)).tz_localize("America/Chicago").tz_convert("UTC").isoformat()
         for j, product in enumerate(PRODUCTS) if detail else []:
@@ -209,6 +266,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                     replacing = (not np.array_equal(old_keys, new_keys)
                                  or (np.sign(old[old_keys]) != np.sign(new[old_keys])).any())
                     reduction[group] = 0 if replacing else np.sign(old)*np.minimum(np.abs(old), np.abs(new))
+            elif p.execution_policy == "staged":
+                reduction = slice_target
             # All exits precede ALL additions, avoiding product-order funding
             # dependence. Closing an old spread remains a single atomic basket.
             stages = [("coupled", target)] if p.execution_policy == "coupled" else [("reduce", reduction), ("open", target)]
@@ -216,10 +275,15 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             blocked = set()
             for stage, stage_target in stages:
                 for j, product in enumerate(PRODUCTS):
+                    group = product_indices[j]
+                    if stage == "open" and p.execution_policy == "staged" and pending[j]:
+                        if (positions[group] != exit_goals[group]).any():
+                            events.append(dict(session=dates[day].date().isoformat(), product=product, code="entry_blocked_by_pending_reduction", detail="Latched paired exit goal not reached"))
+                            continue
+                        pending[j] = False
                     if stage == "open" and j in blocked:
                         events.append(dict(session=dates[day].date().isoformat(), product=product, code="entry_blocked_by_unfilled_exit", detail="Old risk retained; replacement not attempted"))
                         continue
-                    group = product_indices[j]
                     changes = stage_target[group]-positions[group]
                     changed = group[changes != 0]
                     if not len(changed):
@@ -290,7 +354,10 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
         raise AssertionError("independent futures cash reconciliation failed")
     if not len(trades) and not status.startswith("failed"):
         status = "completed_no_qualified_trades"
-    return dict(strategy=strategy, status=status, protocol=asdict(p), ledger=ledger, trades=trades,
+    result = dict(strategy=strategy, status=status, protocol=asdict(p), ledger=ledger, trades=trades,
                 decisions=pd.DataFrame(decisions), holdings=pd.DataFrame(holdings),
                 pnl=pd.DataFrame(pnl, columns=["session", "product", "contract", "quantity", "previous_mark", "mark", "variation_margin"]),
                 events=pd.DataFrame(events, columns=["session", "product", "code", "detail"]), reconciliation=reconciliation)
+    if p.execution_policy == "staged":
+        result["exit_plans"] = pd.DataFrame(exit_plans, columns=["session", "observation", "product", "contracts", "held_units", "required_units", "planned_units", "current_capacity", "conservative_capacity", "remaining_sessions", "early_retirement", "goal_units", "retired_near"])
+    return result

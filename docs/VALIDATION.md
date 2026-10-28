@@ -69,7 +69,7 @@ rejected replacement with a feasible old close, a genuinely unfillable old
 exit, atomic old-spread closure, paid overlap round trips, cumulative side
 capacity, portfolio-wide reduction priority, five consecutive observations,
 monotone maturity floors, future-activity perturbation and policy validation.
-The current complete suite passes **84 tests**, both from source and from a
+The stage-4 complete suite passed **84 tests**, both from source and from a
 separately installed Python 3.12 wheel. All **269** generated persistent-policy
 synthetic CSV/gzip files match those two installations byte for byte. Locked
 Matplotlib dependencies emit 14 upstream deprecation warnings; tests pass.
@@ -82,4 +82,23 @@ columns are distinguished from changed calculations. The
 remain separate, with their own source/configuration/output fingerprints.
 CI runs both full offline policies. Passing accounting tests does not certify
 real execution capacity, historical margin or an incremental strategy premium.
+
+### Capacity-sized paired retirement
+
+Ten further [constructed-market tests](../tests/test_commodity_staged_exit.py)
+check cross-day goal persistence, weaker-leg paired slices, rejection when one
+leg lacks a reference, retained zero-capacity boundary failure, early-lead and
+drain-budget triggers, maturity lockout, execution-reference isolation, future
+perturbation and shared capacity after the last old slice. The complete suite
+passes **94 tests** from source and from a separately installed Python 3.12
+wheel. All **346** synthetic CSV/gzip artifacts match byte for byte, including
+77 account-level exit-plan files. The locked plotting stack retains 14 upstream
+deprecation warnings; tests pass.
+
+The complete previous persistent-policy experiment is retained separately;
+its 77 summary rows and 269 CSV/gzip artifacts are checked for exact reproduction.
+New [invented results](../reports/commodity-staged-exit-synthetic/REPORT.md)
+record planned versus executed paired reductions. CI runs the original coupled,
+persistent and capacity-retirement offline studies. None of these checks
+certifies a quote-level fill, a historical SPAN series or a profitable premium.
 

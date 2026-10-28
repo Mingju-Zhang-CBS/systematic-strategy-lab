@@ -1,5 +1,9 @@
 # Exit first: an execution protocol comparison
 
+This page retains the exit-first baseline. The newer
+[capacity-sized paired retirement study](COMMODITY_STAGED_EXITS.md) adds latched
+multi-day reductions and a frozen early-exit trigger, without replacing it.
+
 An outgoing contract should not remain open merely because its replacement
 cannot be opened. This extension tests that engineering claim without relaxing
 the outgoing contract's own execution checks or optimizing historical returns.
