@@ -8,6 +8,7 @@ docs/COMMODITY_RESEARCH.md text eol=lf
 reports/commodity-research-synthetic/** -text
 reports/commodity-exit-priority-synthetic/** -text
 reports/commodity-staged-exit-synthetic/** -text
+reports/commodity-entry-budget-synthetic/** -text
 reports/commodity-research-synthetic/*.png binary
 reports/commodity-research-synthetic/**/*.gz binary
 examples/explain_futures_account.py text eol=lf

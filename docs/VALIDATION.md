@@ -102,3 +102,24 @@ record planned versus executed paired reductions. CI runs the original coupled,
 persistent and capacity-retirement offline studies. None of these checks
 certifies a quote-level fill, a historical SPAN series or a profitable premium.
 
+### Entry admission tied to retirement capacity
+
+Eleven additional [invariant tests](../tests/test_commodity_entry_budget.py)
+check strict lead/drain boundaries, no entry-day exit credit, zero capacity,
+whole-request refusal, weaker-leg capacity, earliest spread deadline, total
+post-increase units, preserved old reductions, paired partial exits, equal-size
+sign reversals, reference isolation, future-data perturbation and protocol
+validation. Source and a fresh Python 3.12 wheel each pass **105 tests**.
+All **423** generated synthetic CSV/gzip artifacts match byte for byte,
+including 77 admission tables and the retained exit-plan tables. The locked
+plotting stack emits the same 14 upstream deprecation warnings; tests pass.
+
+The previous `capacity_exit` experiment remains reproducible separately. Its
+77 summary rows and 346 CSV/gzip artifacts are checked against the retained
+baseline; admission changes neither that policy nor its historical failures.
+CI additionally runs the complete `entry_budget` offline experiment and seven
+[invented admission cases](../reports/commodity-entry-budget-synthetic/controlled-admission/REPORT.md).
+The [new synthetic study](../reports/commodity-entry-budget-synthetic/REPORT.md)
+distinguishes proposed admissions, modeled fills and account outcomes. Passing
+this budget does not reserve future volume or establish actual execution.
+

@@ -1,0 +1,34 @@
+{
+  "strategy": "carry",
+  "status": "completed_exploratory_path",
+  "protocol": {
+    "start": "2021-01-01",
+    "end": "2022-12-31",
+    "capital": 500000.0,
+    "commission": 2.5,
+    "slippage_ticks": 1,
+    "participation": 0.01,
+    "reserve_rate": 0.1,
+    "reserve_limit": 0.5,
+    "gross_limit": 3,
+    "annual_risk_cap": 0.1,
+    "unit_window": 60,
+    "unit_minimum": 40,
+    "covariance_window": 252,
+    "covariance_minimum": 126,
+    "extra_delay": 0,
+    "exclude_sector": "",
+    "execution_policy": "staged",
+    "exit_lead": 10,
+    "capacity_window": 5,
+    "drain_buffer": 2,
+    "entry_budget": true
+  },
+  "reconciliation": {
+    "independent_terminal_equity": 431142.4188445671,
+    "ledger_terminal_equity": 431142.41884456726,
+    "terminal_error": -1.7462298274040222e-10,
+    "maximum_daily_error": 2.9103830456733704e-11,
+    "positions_at_end": 0
+  }
+}

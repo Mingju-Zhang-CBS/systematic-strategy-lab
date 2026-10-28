@@ -25,3 +25,5 @@ jobs:
       - run: python -m strategy_lab.commodities.research_report --fixture --policy persistent --output local-runs/ci-exit-priority
       - run: python -m strategy_lab.commodities.research_report --fixture --policy capacity_exit --output local-runs/ci-staged-retirement
       - run: python examples/explain_staged_exit.py --output local-runs/ci-paired-trace
+      - run: python -m strategy_lab.commodities.research_report --fixture --policy entry_budget --output local-runs/ci-entry-budget
+      - run: python examples/explain_entry_budget.py --output local-runs/ci-entry-cases

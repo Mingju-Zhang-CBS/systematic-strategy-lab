@@ -1,0 +1,8 @@
+case,paired,current_units,leg_capacities,target_units,conservative_capacity,remaining_exit_sessions,required_drain_sessions,lead_ok,drain_ok,admitted,reason
+Room for exit,False,0,2,4,2,30,2.0,True,True,True,admitted
+Near the boundary,False,0,2,4,2,5,2.0,False,True,False,inside_retirement_lead
+Weak spread leg,True,0,8;1,20,1,15,20.0,True,False,False,insufficient_drain_budget
+Increase 10 to 14,False,10,1,14,1,13,14.0,True,False,False,insufficient_drain_budget
+Exact drain boundary,True,0,2;5,22,2,13,11.0,True,False,False,insufficient_drain_budget
+Paired budget passes,True,0,2;4,6,2,30,3.0,True,True,True,admitted
+Zero weaker-leg capacity,True,0,10;0,2,0,30,,True,False,False,no_exit_capacity;insufficient_drain_budget

@@ -21,6 +21,27 @@ SECTORS = {"WTI":"energy", "NATURAL_GAS":"energy", "GOLD":"metals", "SILVER":"me
            "COPPER":"metals", "CORN":"agriculture", "WHEAT_SRW":"agriculture", "SOYBEANS":"agriculture"}
 
 
+def _entry_budget(units, capacity, remaining, lead, spare):
+    """Shared normalized-unit rule for engine, tests and fixed-state replay.
+
+    Snapshot/protocol validation belongs to the account boundary. Entry books at
+    EOD, so remaining excludes entry day and includes the old hard deadline.
+    """
+    drain = (units+capacity-1)//capacity if capacity > 0 else None
+    lead_ok = remaining > lead
+    drain_ok = drain is not None and remaining > drain+spare
+    reasons = []
+    if capacity == 0:
+        reasons.append("no_exit_capacity")
+    if not lead_ok:
+        reasons.append("inside_retirement_lead")
+    if not drain_ok:
+        reasons.append("insufficient_drain_budget")
+    return dict(target_units=units, conservative_capacity=capacity, remaining_exit_sessions=remaining,
+                required_drain_sessions=drain, lead_ok=lead_ok, drain_ok=drain_ok,
+                admitted=not reasons, reason="admitted" if not reasons else ";".join(reasons))
+
+
 @dataclass(frozen=True)
 class ResearchProtocol:
     start: str = "2005-01-01"
@@ -43,6 +64,7 @@ class ResearchProtocol:
     exit_lead: int = 0
     capacity_window: int = 5
     drain_buffer: int = 2
+    entry_budget: bool = False
 
 
 def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
@@ -64,7 +86,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             or p.exclude_sector not in {"", "energy", "metals", "agriculture"}
             or p.execution_policy not in {"coupled", "exit_first", "staged"}
             or any(not np.isfinite(v) or v != int(v) or v < 0 for v in (p.exit_lead, p.capacity_window, p.drain_buffer))
-            or p.capacity_window < 1 or (p.exit_lead > 0 and p.execution_policy != "staged") or strategy not in STRATEGIES):
+            or p.capacity_window < 1 or (p.exit_lead > 0 and p.execution_policy != "staged")
+            or not isinstance(p.entry_budget, bool)
+            or (p.entry_budget and (p.execution_policy != "staged" or p.exit_lead <= 0)) or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
     dates, c, prices = tape.dates, tape.contracts, tape.prices
     keys = c.contract.to_numpy()
@@ -89,6 +113,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
     exit_goals = np.zeros(len(c), dtype=np.int64)
     retired_front = np.full(len(PRODUCTS), -1, dtype=np.int64)
     exit_plans = []
+    admissions = []
     updates = {i+p.extra_delay:s for i, s in tape.updates.items()}
     earlier = [i for i in updates if i < active_days[0]]
     if earlier:
@@ -228,6 +253,28 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                                            required_units=required, planned_units=planned, current_capacity=capacity,
                                            conservative_capacity=conservative, remaining_sessions=remaining, early_retirement=early,
                                            goal_units=int(np.abs(exit_goals[group]).max()), retired_near="" if retired_front[j] < 0 else keys[retired_front[j]]))
+        open_target = target.copy()
+        if p.entry_budget:
+            for j, product in enumerate(PRODUCTS):
+                group = product_indices[j]
+                old, new = positions[group], target[group]
+                adding = (np.abs(new) > np.abs(old)).any() or ((old*new) < 0).any()
+                if not adding:
+                    continue
+                candidate = group[new != 0]
+                history = tape.volume[max(0, obs-p.capacity_window+1):obs+1, candidate]
+                capacity = int(np.floor(p.participation*history).min()) if len(history) == p.capacity_window and np.isfinite(history).all() else 0
+                remaining = int(np.min(tape.deadlines[candidate])-day)
+                assessment = _entry_budget(int(np.abs(new).max()), capacity, remaining, p.exit_lead, p.drain_buffer)
+                admissions.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
+                                       product=product, contracts=";".join(keys[candidate]),
+                                       current_units=int(np.abs(old).max()), deadline=dates[int(np.min(tape.deadlines[candidate]))].date().isoformat(),
+                                       paired=is_spread, **assessment))
+                if not assessment["admitted"]:
+                    # Preserve the frozen reduction result; do not restore old
+                    # exposure after its close or interfere with pending exits.
+                    open_target[group] = slice_target[group]
+                    events.append(dict(session=dates[day].date().isoformat(), product=product, code="entry_refused_exit_budget", detail=assessment["reason"]))
         old_signature = signature
         decision_at = (dates[day]+pd.Timedelta(hours=7)).tz_localize("America/Chicago").tz_convert("UTC").isoformat()
         for j, product in enumerate(PRODUCTS) if detail else []:
@@ -270,7 +317,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                 reduction = slice_target
             # All exits precede ALL additions, avoiding product-order funding
             # dependence. Closing an old spread remains a single atomic basket.
-            stages = [("coupled", target)] if p.execution_policy == "coupled" else [("reduce", reduction), ("open", target)]
+            stages = [("coupled", target)] if p.execution_policy == "coupled" else [("reduce", reduction), ("open", open_target)]
             used_capacity = np.zeros(len(c), dtype=np.int64)
             blocked = set()
             for stage, stage_target in stages:
@@ -360,4 +407,6 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                 events=pd.DataFrame(events, columns=["session", "product", "code", "detail"]), reconciliation=reconciliation)
     if p.execution_policy == "staged":
         result["exit_plans"] = pd.DataFrame(exit_plans, columns=["session", "observation", "product", "contracts", "held_units", "required_units", "planned_units", "current_capacity", "conservative_capacity", "remaining_sessions", "early_retirement", "goal_units", "retired_near"])
+    if p.entry_budget:
+        result["entry_admissions"] = pd.DataFrame(admissions, columns=["session", "observation", "product", "contracts", "current_units", "deadline", "paired", "target_units", "conservative_capacity", "remaining_exit_sessions", "required_drain_sessions", "lead_ok", "drain_ok", "admitted", "reason"])
     return result

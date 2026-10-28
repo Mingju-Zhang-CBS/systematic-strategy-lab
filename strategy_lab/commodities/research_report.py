@@ -107,7 +107,7 @@ def paired_inference(months, phases=None):
 
 def write_result(result, output, detail):
     output.mkdir(parents=True, exist_ok=False)
-    for name in ("ledger", "trades", "events")+(("decisions", "holdings", "pnl") if detail else ())+(("exit_plans",) if "exit_plans" in result else ()):
+    for name in ("ledger", "trades", "events")+(("decisions", "holdings", "pnl") if detail else ())+tuple(name for name in ("exit_plans", "entry_admissions") if name in result):
         frame = result[name]
         if len(frame.columns):
             frame.to_csv(output/(name+".csv.gz"), index=False, compression={"method":"gzip", "mtime":0})
@@ -198,6 +198,22 @@ def figures(tape, base, summary, inference, output):
     fig.suptitle(nature+" · four predeclared curve dates · absent dates not backfilled", y=1.02)
     fig.savefig(output/"curve_snapshots.png", dpi=160, bbox_inches="tight")
     plt.close(fig)
+    if "entry_admissions" in next(iter(base.values())):
+        proposals = pd.concat([r["entry_admissions"] for r in base.values()], ignore_index=True)
+        fig, ax = plt.subplots(figsize=(9, 6), constrained_layout=True)
+        for admitted, color, label in [(True, "#36B3A8", "Budget passes"), (False, "#B05754", "Addition refused")]:
+            h = proposals[proposals.admitted.eq(admitted) & proposals.required_drain_sessions.notna()]
+            ax.scatter(h.remaining_exit_sessions, h.required_drain_sessions+2, s=9, alpha=.35, color=color, label=label)
+        extent = max(11, float(proposals.remaining_exit_sessions.max()), float(proposals.required_drain_sessions.max()+2)) if len(proposals) else 11
+        ax.plot([0, extent], [0, extent], color="#101928", linestyle="--", label="Drain budget boundary (equality refused)")
+        ax.axvline(10, color="#B97B45", linestyle=":", label="Fixed lead boundary (equality refused)")
+        ax.set(xlabel="Exit sessions after entry (entry day excluded)", ylabel="Projected drain sessions + two spare sessions",
+               title=nature+" · frozen proposals, not confirmed fills")
+        ax.legend(fontsize=8)
+        ax.text(.02, .95, f"Zero-capacity proposals retained in tables: {int(proposals.conservative_capacity.eq(0).sum())}\nFull target size and weaker spread leg govern admission.",
+                transform=ax.transAxes, va="top", fontsize=8)
+        fig.savefig(output/"entry_exit_budgets.png", dpi=160, bbox_inches="tight")
+        plt.close(fig)
 
 
 def main():
@@ -207,7 +223,7 @@ def main():
     mode.add_argument("--input", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--base-only", action="store_true", help="Smoke run only; not the full predeclared stress study")
-    parser.add_argument("--policy", choices=["legacy", "split_only", "persistent", "partial_only", "capacity_exit"], default="legacy",
+    parser.add_argument("--policy", choices=["legacy", "split_only", "persistent", "partial_only", "capacity_exit", "entry_budget"], default="legacy",
                         help="Frozen protocol comparison; default preserves the original coupled baseline")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
@@ -225,9 +241,10 @@ def main():
             if hashlib.sha256((args.input/name).read_bytes()).hexdigest() != expected:
                 raise ValueError("private input fingerprint mismatch: "+name)
     protocol = replace(protocol, execution_policy="coupled" if args.policy == "legacy" else "exit_first")
-    if args.policy in {"partial_only", "capacity_exit"}:
-        protocol = replace(protocol, execution_policy="staged", exit_lead=10 if args.policy == "capacity_exit" else 0)
-    selection_policy = dict(liquidity_window=5, monotone_roll=True) if args.policy in {"persistent", "partial_only", "capacity_exit"} else dict(liquidity_window=1, monotone_roll=False)
+    if args.policy in {"partial_only", "capacity_exit", "entry_budget"}:
+        protocol = replace(protocol, execution_policy="staged", exit_lead=0 if args.policy == "partial_only" else 10,
+                           entry_budget=args.policy == "entry_budget")
+    selection_policy = dict(liquidity_window=5, monotone_roll=True) if args.policy in {"persistent", "partial_only", "capacity_exit", "entry_budget"} else dict(liquidity_window=1, monotone_roll=False)
     cases = [("base", protocol, 5), ("zero_ticks", replace(protocol, slippage_ticks=0), 5),
              ("two_ticks", replace(protocol, slippage_ticks=2), 5),
              ("zero_friction", replace(protocol, commission=0, slippage_ticks=0), 5),
@@ -313,6 +330,11 @@ def main():
                "The rules calendar excludes declared holiday patterns, including Juneteenth from 2022. It does not reconstruct unexpected closures or original notices. Daily references may combine different source times; synchronous EOD booking is not an intraday funding simulation. The 10%/20% reserves are assumptions, without spread credits or broker add-ons. Fixed $2.50/side and outright ticks are modeled friction. No spot premium or convenience yield is independently identified.", "",
                "Later-decision scenarios postpone signal updates; they are not latency replays of an unchanged submitted order. Sector removals suppress those requests without reranking. All wealth paths retain continuous capital across periods. Integer rounding and rejected baskets can materially change results.", "",
                "## Reproduction and provenance", "", "See FROZEN_RUN.json, RUN_MANIFEST.json, summary.csv, paired_inference.csv, failure_counts.csv and each account's ledger/trades/RECEIPT.json. Base accounts also retain decisions, holdings and per-contract variation margin. Source rights remain those of the input manifest; restricted results are private."]
+    if protocol.entry_budget:
+        report += ["", "## Entry and retirement share one budget", "",
+                   "Every proposed addition is tested using total post-trade units, the weaker spread leg and lagged five-observation capacity. Entry-day exit capacity is not credited. The fixed ten-session lead and two spare sessions remain unchanged. Refused additions do not block planned reductions or trigger favorable reranking.", "",
+                   "![Frozen entry and exit budgets](entry_exit_budgets.png)", "",
+                   "Inspect each account's entry_admissions.csv.gz alongside exit_plans.csv.gz, trades and events. Budget admission is not a fill: pending old exits, current references/activity, shared side capacity and funding still govern execution. The projection does not reserve future liquidity or certify real fills."]
     (args.output/"REPORT.md").write_text("\n".join(report)+"\n", encoding="utf-8")
     receipt = dict(created_utc=datetime.now(timezone.utc).isoformat(), data_kind=manifest["data_kind"], elapsed_seconds=time.perf_counter()-started,
                    cases=len(cases), funded_paths=len(summary), completed_paths=int((~summary.status.str.startswith("failed")).sum()),

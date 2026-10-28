@@ -1,0 +1,289 @@
+{
+  "data_kind": "synthetic",
+  "rights": "original generated fixture; no WRDS/LSEG records or derived findings",
+  "scope": "Compact checked-in subset: base ledgers, one complete BM spread trace, all-case summaries, inference and figures. The offline command regenerates every non-base account detail.",
+  "full_run_manifest_sha256": "056b3f49faa641455fbcc16941a769c022385c9891ec128095ae016ccce1e4e2",
+  "reproduction": "python -m strategy_lab.commodities.research_report --fixture --policy entry_budget --output NEW_DIRECTORY",
+  "files": [
+    {
+      "path": "REPORT.md",
+      "sha256": "aa188d5faee4e328154fe29596fc7eb849d7666660786bf05fab96a04d41ddb7"
+    },
+    {
+      "path": "RUN_MANIFEST.json",
+      "sha256": "056b3f49faa641455fbcc16941a769c022385c9891ec128095ae016ccce1e4e2"
+    },
+    {
+      "path": "FROZEN_RUN.json",
+      "sha256": "f9cb8780d944c2479ca0ff34982d73116a180d1c1b86ea7d9f7b68c7c0d13adc"
+    },
+    {
+      "path": "summary.csv",
+      "sha256": "d725cfaf2184a5f8bfc7f27c8b18e18ff1e49bcacbc32f5c1236e189e5d6c747"
+    },
+    {
+      "path": "paired_inference.csv",
+      "sha256": "ed2780f1fe9af9fb5dcc39b17fd3510dd831f92f275797e617d95ac0e4664fa9"
+    },
+    {
+      "path": "failure_counts.csv",
+      "sha256": "6f2e9105ef7be95e217790aae7b11a4ed60513efbd4450e328f4c3e2182c3881"
+    },
+    {
+      "path": "accounts_and_drawdowns.png",
+      "sha256": "99ed820644fd1be568501a8e94c8d44aafa8f0a324c944fa6344b404196619f6"
+    },
+    {
+      "path": "funding_constraints.png",
+      "sha256": "b937762570d8c8d61f7614b40a7874ba7e922e376f65536f11383134aabb5854"
+    },
+    {
+      "path": "pair_coverage.png",
+      "sha256": "53d0a5b3a0291bf5841a20ae95555658347a72e213490a8d222954c2dba25f03"
+    },
+    {
+      "path": "paired_uncertainty.png",
+      "sha256": "c66fd78d3eaf02d94a99b8f555ddcdac2a7ee7a0825b6f3843e75bc96f275484"
+    },
+    {
+      "path": "predeclared_sensitivities.png",
+      "sha256": "e7e698f3e0d8c6f26fc563977b6777a5b1635b56025d6ca211a075a20e0cebb0"
+    },
+    {
+      "path": "curve_snapshots.png",
+      "sha256": "f49aa19dbe5c72428114d4dbfa2474b839429683b61f53d01e8aae703fa40567"
+    },
+    {
+      "path": "entry_exit_budgets.png",
+      "sha256": "c4be83247a3962962fb2c0eac736a54c61485bc35197c2816b66c432cea01c5d"
+    },
+    {
+      "path": "base/long_only/ledger.csv.gz",
+      "sha256": "cf495341fc430331e7ea70d7ba8f4021a2806aae1df65bdbb089f184caa83a03"
+    },
+    {
+      "path": "base/long_only/trades.csv.gz",
+      "sha256": "de3984c7cd5361bb031da79e37e8d593600d65368fd828b36f8b3a4cf7480855"
+    },
+    {
+      "path": "base/long_only/events.csv.gz",
+      "sha256": "172a8df4328db1a5275bf99de452c5bb2c350cc1848e44ba2112c50c327030ca"
+    },
+    {
+      "path": "base/long_only/exit_plans.csv.gz",
+      "sha256": "1fce25ac388f78ba2621996e73358fa07163b736802f34cd055f6a35bec47290"
+    },
+    {
+      "path": "base/long_only/entry_admissions.csv.gz",
+      "sha256": "15ea903702d3875f9810b66d758aef3dc636f7c68721458a5447a01395bb13fa"
+    },
+    {
+      "path": "base/long_only/RECEIPT.json",
+      "sha256": "20d3e0874e497d3a080b087b545f66f5f5fae248c7785cab68eb74aae4625f01"
+    },
+    {
+      "path": "long_only_monthly.csv",
+      "sha256": "f1ce2d680d0b0c9bfa6f7020c9bd40cf918fdaffc0fe78cde9aacd6aae1cc938"
+    },
+    {
+      "path": "base/trend/ledger.csv.gz",
+      "sha256": "244f11ff6f28ccbecb3f5afda05167997aa231eb593105ae7881fb1ebdbbe889"
+    },
+    {
+      "path": "base/trend/trades.csv.gz",
+      "sha256": "c0551b393cceb46ada5a63b17d9d6231dba385cebc51ef53b729b0c3d56eb03a"
+    },
+    {
+      "path": "base/trend/events.csv.gz",
+      "sha256": "b2964597095688ebe95f756f16f14d71b7c9261d7383d3a4af00f4b44179205a"
+    },
+    {
+      "path": "base/trend/exit_plans.csv.gz",
+      "sha256": "67298544e6c8096f4a85a35798d81a7bbc07f4ae74628e88078434c42c1b9fa4"
+    },
+    {
+      "path": "base/trend/entry_admissions.csv.gz",
+      "sha256": "c00509c261109a8c52d2ae7a8368b0f85914c97249132aab79b3ef22f330e56c"
+    },
+    {
+      "path": "base/trend/RECEIPT.json",
+      "sha256": "7e98f8647504d7c078ede8a16efe12c25155a3a213ac230b34ee6cd2a7f4c1c7"
+    },
+    {
+      "path": "trend_monthly.csv",
+      "sha256": "cf7dcdad4710412dffe7f53825b5ef042ada4872512ca7ba40d814a75d05d40a"
+    },
+    {
+      "path": "base/carry/ledger.csv.gz",
+      "sha256": "a9fd30f71eac08caab276edf335d25bc22f0a0260306ff6916001c40a740eaab"
+    },
+    {
+      "path": "base/carry/trades.csv.gz",
+      "sha256": "503fc440531ff875d0f01f9df17e34a278303c930913a8f271b88f7e3f331d5d"
+    },
+    {
+      "path": "base/carry/events.csv.gz",
+      "sha256": "e546326964c9726de5424fcd276475394ad5e6f8be03870c5dd10d31bc1d4ebe"
+    },
+    {
+      "path": "base/carry/exit_plans.csv.gz",
+      "sha256": "e9830bbb4d521fa4affabd565ef0d6f6c9d1fdb7ae82609564ba8386073fab75"
+    },
+    {
+      "path": "base/carry/entry_admissions.csv.gz",
+      "sha256": "2ffd5ec7905832db8c4c407d5ef6d78b181e8640e511ea3ad5911fd91142f85d"
+    },
+    {
+      "path": "base/carry/RECEIPT.json",
+      "sha256": "534aba44ed490236e3fed5b4e1bca96c0e0addc24c67dcd279a84f129cef041c"
+    },
+    {
+      "path": "carry_monthly.csv",
+      "sha256": "93cb09c092a08aab3b936bbc3c7b4a47fa67778f9a9e399d80f6c7892fca0bd1"
+    },
+    {
+      "path": "base/bm_outright/ledger.csv.gz",
+      "sha256": "5f1a55edc5cd3fa90f98d32c4ddfae823a2604749415cb922466106e0d6d67c7"
+    },
+    {
+      "path": "base/bm_outright/trades.csv.gz",
+      "sha256": "954d60bb500dd740b3f6797a9ce82861906ede701f3589fd35484b57345ff2da"
+    },
+    {
+      "path": "base/bm_outright/events.csv.gz",
+      "sha256": "76b56236a6ab12b4c8a7d3057af5e2c70fef2d2dce4bfa806308937a50d2d562"
+    },
+    {
+      "path": "base/bm_outright/exit_plans.csv.gz",
+      "sha256": "a0088fe0c817785bad0c8c5992b3f3e1b6b1c1efd95d8e47f4b7210a3061f4cb"
+    },
+    {
+      "path": "base/bm_outright/entry_admissions.csv.gz",
+      "sha256": "7067da6c4e261d56bc0d1654786b629bf9130b747835dc69e9dd2bcacac337f9"
+    },
+    {
+      "path": "base/bm_outright/RECEIPT.json",
+      "sha256": "2015e0c10035be5ee82849451df66337b712cfeb287ebbbdcd8d349e46c26524"
+    },
+    {
+      "path": "bm_outright_monthly.csv",
+      "sha256": "b357897eb3af8cb25846ae224c99c1c26b507e8d70ae9fbfe76d8e7db62144fd"
+    },
+    {
+      "path": "base/bm_spread/ledger.csv.gz",
+      "sha256": "aaccc9e77a1fab6509936926b111b133424a51f7fb5c95d3b47fd769d43729cb"
+    },
+    {
+      "path": "base/bm_spread/trades.csv.gz",
+      "sha256": "189f49b9e4156f9ba50513b995821f35d2c0f95b4b9e2691ac2d7fb0ba0356bb"
+    },
+    {
+      "path": "base/bm_spread/events.csv.gz",
+      "sha256": "4783b113685a9532b25566dd41682ef62235007ace8c86d63feb7d0ef4fb72d0"
+    },
+    {
+      "path": "base/bm_spread/exit_plans.csv.gz",
+      "sha256": "0f128b8adf4a02de626811cdf6ede3a652acefc6fdc4dd1867344ca1710480eb"
+    },
+    {
+      "path": "base/bm_spread/entry_admissions.csv.gz",
+      "sha256": "78d347b4735c7d27261e5e2d7d1d9c04b4650dfb7262f4167da43406d38d74ac"
+    },
+    {
+      "path": "base/bm_spread/RECEIPT.json",
+      "sha256": "0e419548444ccb7bf2ed23bca1b8390d4e5af433ecd92ce2f363cf2a3e4094d2"
+    },
+    {
+      "path": "bm_spread_monthly.csv",
+      "sha256": "8444f98fc556cc3ce1b2142bb6005ffe1b6dcc51a7c8ca9da51062b183ca9cda"
+    },
+    {
+      "path": "base/trend_half/ledger.csv.gz",
+      "sha256": "0f3d39f6f9748f1964ab650d826696a4e73ed245a8507a6be3f5a1817788e1af"
+    },
+    {
+      "path": "base/trend_half/trades.csv.gz",
+      "sha256": "40fb0fe46ed65c5042889ac2cb403040bfe18dd34b04679a8d93d4eb6a3a98b9"
+    },
+    {
+      "path": "base/trend_half/events.csv.gz",
+      "sha256": "6ad9c7ee111a8d062979042e7eea3ee4a7a8f150b24b7d6f5f4100cf3782b943"
+    },
+    {
+      "path": "base/trend_half/exit_plans.csv.gz",
+      "sha256": "993fb70cd2253cc585849bc5e3cfbf6a616923e7ddcbb2cb084f0c7e8f337b3b"
+    },
+    {
+      "path": "base/trend_half/entry_admissions.csv.gz",
+      "sha256": "fce972315e7d95323f770fd64eada57ba5cd03d766469d9d4e7f5fea5301ab3e"
+    },
+    {
+      "path": "base/trend_half/RECEIPT.json",
+      "sha256": "a15b07b417d4c557d61cb5fe83548dc1ec0c4b5ebd09183c2e6d96a79317e1c4"
+    },
+    {
+      "path": "trend_half_monthly.csv",
+      "sha256": "edb74a46c7ddb6c84193195442a7044b9285cc0f1562745c75c679310b0b283a"
+    },
+    {
+      "path": "base/carry_half/ledger.csv.gz",
+      "sha256": "7449111a4e86410c61b2553971ce1482b57bb9e7b0f2afbae5dcc5aca37edf1d"
+    },
+    {
+      "path": "base/carry_half/trades.csv.gz",
+      "sha256": "6d2992e32e9afb176900e9cf343e563501056c64bb0a229de092c5b0ecdb7d5e"
+    },
+    {
+      "path": "base/carry_half/events.csv.gz",
+      "sha256": "7a11a07269bd5039f5d215f202c542861351f59d9c995bec03d4397fbcdd9657"
+    },
+    {
+      "path": "base/carry_half/exit_plans.csv.gz",
+      "sha256": "545a8b52cdf0307f48b043f5982c3dc1dde5a3a3d7a86b30ad3372bc968a5c9f"
+    },
+    {
+      "path": "base/carry_half/entry_admissions.csv.gz",
+      "sha256": "ac439e59398fedbcad5bfc6e913c96f7c766cb42abaae57c8717661755674ae3"
+    },
+    {
+      "path": "base/carry_half/RECEIPT.json",
+      "sha256": "36f2ab221f47f7ca529195b8d95f0e9c5ef0aca96f564809258f1b65c914cbe2"
+    },
+    {
+      "path": "carry_half_monthly.csv",
+      "sha256": "cfce4210ab3ec29ad198458490827367a778d6854cfa45893ab718456ff20dbc"
+    },
+    {
+      "path": "half_mix_monthly.csv",
+      "sha256": "e13d4b2bf2a68bf22b901fe4f45125c305a538a95d3bd3a01aa4355bec6cbef6"
+    },
+    {
+      "path": "base/bm_spread/decisions.csv.gz",
+      "sha256": "e79cf8aea06543cb3d6983c9b7c35cbfb5002e8d2e36acb6118040bbb989c074"
+    },
+    {
+      "path": "base/bm_spread/holdings.csv.gz",
+      "sha256": "72ae48c83733548347ea20d5d1510edd335209ab98ae893b6e6b9cd8c51e8936"
+    },
+    {
+      "path": "base/bm_spread/pnl.csv.gz",
+      "sha256": "a87f9dde28cd07f774bfa07a4046e07d4cf210432e26df54e6985619bafbe2a5"
+    },
+    {
+      "path": "controlled-admission/admission_cases.png",
+      "sha256": "a4f42a5c294672c5a12eee17f66fec262cecf622a72d26a2b9b75005db983d91"
+    },
+    {
+      "path": "controlled-admission/CASES.csv",
+      "sha256": "9591ab60547c0cef04697d0dee58af6b18fdd55a9dde30693dbf7a486ac00be8"
+    },
+    {
+      "path": "controlled-admission/RECEIPT.json",
+      "sha256": "0ae3eccd46fee4304ef11e7b67556d7160c7751ea46c6d36b708262918940a18"
+    },
+    {
+      "path": "controlled-admission/REPORT.md",
+      "sha256": "b8b498d6dbe0b393a1cc38ccd13c7b540df67e7d0dce01bf47e7e60c4577ff82"
+    }
+  ]
+}

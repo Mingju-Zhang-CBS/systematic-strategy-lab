@@ -1,5 +1,9 @@
 # Retiring a futures position without inventing liquidity
 
+This page retains the held-inventory retirement baseline. The newer
+[entry/exit budget study](COMMODITY_ADMISSION.md) applies the same constraints
+before adding risk, including paired replacements and full post-increase size.
+
 Capacity-limited retirement is a different question from a profitable signal.
 This revision first diagnoses the old basket, then freezes a paired reduction
 schedule and an earlier retirement trigger. It retains all previous protocols,

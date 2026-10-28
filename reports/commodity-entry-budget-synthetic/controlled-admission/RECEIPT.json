@@ -1,0 +1,14 @@
+{
+  "data_kind": "synthetic",
+  "package_version": "0.6.0",
+  "cases": 7,
+  "admitted": 2,
+  "refused": 5,
+  "provenance": "Original invented unit/time/capacity cases; no market records or real derived findings",
+  "example_sha256": "a1affef856d18258519b506acaec66965d89a0c2a70ccab1c42aff23d7a6e88a",
+  "files": {
+    "admission_cases.png": "a4f42a5c294672c5a12eee17f66fec262cecf622a72d26a2b9b75005db983d91",
+    "CASES.csv": "9591ab60547c0cef04697d0dee58af6b18fdd55a9dde30693dbf7a486ac00be8",
+    "REPORT.md": "b8b498d6dbe0b393a1cc38ccd13c7b540df67e7d0dce01bf47e7e60c4577ff82"
+  }
+}

@@ -1,5 +1,9 @@
 # Commodity curves: test the trading path before the premium
 
+**Admission revision:** [Budget the exit before opening](COMMODITY_ADMISSION.md)
+links additions to the existing retirement clock and capacity, while keeping
+all earlier protocols and failed experiments separately reproducible.
+
 **Capacity revision:** [Paired staged exits](COMMODITY_STAGED_EXITS.md) reduces
 old inventory in lagged-capacity slices and starts a predeclared retirement
 schedule. All prior versions and failed outcomes remain separately inspectable.
