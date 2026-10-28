@@ -207,6 +207,8 @@ def main():
     mode.add_argument("--input", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--base-only", action="store_true", help="Smoke run only; not the full predeclared stress study")
+    parser.add_argument("--policy", choices=["legacy", "split_only", "persistent"], default="legacy",
+                        help="Frozen protocol comparison; default preserves the original coupled baseline")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -222,6 +224,8 @@ def main():
         for name, expected in manifest.get("files", {}).items():
             if hashlib.sha256((args.input/name).read_bytes()).hexdigest() != expected:
                 raise ValueError("private input fingerprint mismatch: "+name)
+    protocol = replace(protocol, execution_policy="coupled" if args.policy == "legacy" else "exit_first")
+    selection_policy = dict(liquidity_window=5, monotone_roll=True) if args.policy == "persistent" else dict(liquidity_window=1, monotone_roll=False)
     cases = [("base", protocol, 5), ("zero_ticks", replace(protocol, slippage_ticks=0), 5),
              ("two_ticks", replace(protocol, slippage_ticks=2), 5),
              ("zero_friction", replace(protocol, commission=0, slippage_ticks=0), 5),
@@ -237,13 +241,14 @@ def main():
                   execution_code=execution_code, package_version=__version__, python=sys.version,
                   numpy=np.__version__, pandas=pd.__version__,
                   cases=[dict(name=name, protocol=asdict(p), exit_buffer=buffer) for name, p, buffer in cases],
+                  policy=args.policy, selection_policy=selection_policy,
                   methods="same-contract reference histories; daily known-boundary roll/risk control; monthly direction updates",
                   delay="postpone signal decision update; selection and risk use the later permitted observation, not a frozen-order latency replay",
                   sectors="remove sector requests without outcome-driven reranking",
                   data_kind=manifest["data_kind"])
     (args.output/"FROZEN_RUN.json").write_text(json.dumps(frozen, indent=2), encoding="utf-8")
     print("Preparing once-validated snapshot", len(q), len(c), flush=True)
-    tape = prepare(q, c, manifest)
+    tape = prepare(q, c, manifest, **selection_policy)
     print("Prepared", len(tape.dates), "scheduled sessions; executing fixed experiments", flush=True)
     tape.selection.to_csv(args.output/"pair_selection.csv.gz", index=False, compression={"method":"gzip", "mtime":0})
     tape.off_calendar.to_csv(args.output/"off_calendar_records.csv.gz", index=False, compression={"method":"gzip", "mtime":0})
@@ -252,7 +257,7 @@ def main():
     tape.signals.to_csv(args.output/"signal_candidates.csv", index=False)
     summary, base, monthly, yearly, all_events = [], {}, {}, [], []
     for case, p, buffer in cases:
-        current = prepare(q, c, manifest, exit_buffer=10) if buffer == 10 else tape
+        current = prepare(q, c, manifest, exit_buffer=10, **selection_policy) if buffer == 10 else tape
         for name in list(STRATEGIES)+["trend_half", "carry_half"]:
             strategy = name.removesuffix("_half")
             config = replace(p, capital=p.capital/2) if name.endswith("_half") else p
@@ -293,6 +298,7 @@ def main():
     nature = "PRIVATE LICENSED REAL REFERENCES" if manifest["data_kind"] == "restricted" else "SYNTHETIC DEMONSTRATION"
     table = summary[(summary["case"] == "base") & ~summary.strategy.str.endswith("_half")]
     report = ["# Commodity curves — "+nature, "", "Exploratory scheduled-calendar study; current-vintage inputs, proxy collateral and modeled fills. Not complete PIT or actual trading.", "",
+              "Protocol: `"+args.policy+"`. Selection: `"+json.dumps(selection_policy)+"`. New protocols are engineering reruns of previously inspected history, not independent unseen confirmation. The legacy baseline remains separately reproducible.", "",
               "## Fixed hypotheses and evidence", "", "Five rules, all predeclared costs/delays/sectors and both failed and completed paths are retained. The known FND/LTD boundary is not complete first-position history. Source rows outside the rule calendar remain in a separate exclusion artifact.", "",
               "## Base accounts", "", "|Strategy|Status|Last date|Observed ending USD|Costs USD|", "|---|---|---|---:|---:|"]
     for r in table.itertuples(index=False):

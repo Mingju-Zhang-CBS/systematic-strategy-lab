@@ -55,10 +55,31 @@ evidence, same-contract roll returns, cents and negative prices, funded pairing,
 independent terminal cash reconciliation, future-data perturbations, execution
 reference isolation, retained exit/capacity failures, zero-exposure and invalid
 month inference, centered paired comparisons and the t−2 input boundary.
-The complete repository suite passes **78 tests**, including the original 23.
-An independent wheel installation passes the same suite; all 269 generated
+The stage-3b repository suite passed **78 tests**, including the original 23.
+An independent wheel installation passed the same suite; all 269 generated
 synthetic CSV/gzip artifacts match the source run byte-for-byte in the recorded
 Python/numpy/pandas environment. Rendering dependencies and wall time can vary.
 The [full offline report](../reports/commodity-research-synthetic/REPORT.md) is
 invented data throughout; no licensed market-data result is certified by CI.
+
+### Exit-priority and persistent-liquidity revision
+
+Six further [invariant tests](../tests/test_commodity_exit_priority.py) cover a
+rejected replacement with a feasible old close, a genuinely unfillable old
+exit, atomic old-spread closure, paid overlap round trips, cumulative side
+capacity, portfolio-wide reduction priority, five consecutive observations,
+monotone maturity floors, future-activity perturbation and policy validation.
+The current complete suite passes **84 tests**, both from source and from a
+separately installed Python 3.12 wheel. All **269** generated persistent-policy
+synthetic CSV/gzip files match those two installations byte for byte. Locked
+Matplotlib dependencies emit 14 upstream deprecation warnings; tests pass.
+
+The previous 77-path baseline is retained and its numerical outputs are checked
+privately against the revised default legacy engine; added selection-policy
+columns are distinguished from changed calculations. The
+[new invented report](../reports/commodity-exit-priority-synthetic/REPORT.md) and
+[original invented report](../reports/commodity-research-synthetic/REPORT.md)
+remain separate, with their own source/configuration/output fingerprints.
+CI runs both full offline policies. Passing accounting tests does not certify
+real execution capacity, historical margin or an incremental strategy premium.
 

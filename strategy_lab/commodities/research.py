@@ -39,6 +39,7 @@ class ResearchProtocol:
     covariance_minimum: int = 126
     extra_delay: int = 0
     exclude_sector: str = ""
+    execution_policy: str = "coupled"
 
 
 def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
@@ -46,7 +47,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
 
     Equal standalone unit-risk budgets are set at month changes or pair changes;
     intermediate requests may only reduce size. Every request is frozen before
-    the execution reference. Orders are independent-leg, all-or-none per product.
+    the execution reference. The legacy coupled basket remains the default;
+    exit_first separates all portfolio reductions from optional replacement risk.
     """
     p = protocol
     numbers = (p.capital, p.commission, p.slippage_ticks, p.participation, p.reserve_rate, p.reserve_limit,
@@ -56,7 +58,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             or p.gross_limit <= 0 or not 2 <= p.unit_minimum <= p.unit_window
             or not 2 <= p.covariance_minimum <= p.covariance_window
             or any(v != int(v) for v in (p.unit_window, p.unit_minimum, p.covariance_window, p.covariance_minimum, p.extra_delay))
-            or p.exclude_sector not in {"", "energy", "metals", "agriculture"} or strategy not in STRATEGIES):
+            or p.exclude_sector not in {"", "energy", "metals", "agriculture"}
+            or p.execution_policy not in {"coupled", "exit_first"} or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
     dates, c, prices = tape.dates, tape.contracts, tape.prices
     keys = c.contract.to_numpy()
@@ -197,42 +200,66 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             status = "failed_nonpositive_equity"
             events.append(dict(session=dates[day].date().isoformat(), product="PORTFOLIO", code=status, detail="No replenishment or percentage-return continuation"))
         else:
-            for j, product in enumerate(PRODUCTS):
-                group = product_indices[j]
-                changes = target[group]-positions[group]
-                changed = group[changes != 0]
-                if not len(changed):
-                    continue
-                delta = target[changed]-positions[changed]
-                failure = ""
-                if not np.isfinite(tape.volume[obs, changed]).all() or (np.abs(delta) > np.floor(p.participation*tape.volume[obs, changed])).any():
-                    failure = "lagged_participation_limit"
-                elif not np.isfinite(prices[day, changed]).all():
-                    failure = "missing_execution_reference"
-                elif not np.isfinite(tape.volume[day, changed]).all() or (tape.volume[day, changed] <= 0).any():
-                    failure = "zero_or_missing_execution_activity"
-                candidate = positions.copy()
-                candidate[group] = target[group]
-                cost = float(np.sum(np.abs(delta)*cost_per_unit[changed]))
-                candidate_marks = marks.copy()
-                candidate_marks[changed] = prices[day, changed]
-                gross = float(np.nansum(np.abs(candidate)*multipliers*np.maximum(np.abs(candidate_marks), price_basis)))
-                increasing = (np.abs(target[group]) > np.abs(positions[group])).any()
-                if cash-cost <= 0 or (increasing and gross > min(p.gross_limit, p.reserve_limit/p.reserve_rate)*(cash-cost)):
-                    failure = "post_mark_funding_limit"
-                if stale and increasing:
-                    failure = "increasing_risk_with_stale_marks"
-                if failure:
-                    events.append(dict(session=dates[day].date().isoformat(), product=product, code="unfilled_basket", detail=failure))
-                else:
-                    for key, change in zip(changed, delta):
-                        trades.append(dict(session=dates[day].date().isoformat(), product=product, contract=keys[key],
-                                           delta=int(change), reference=prices[day, key], multiplier=multipliers[key],
-                                           commission=abs(change)*p.commission, slippage=abs(change)*p.slippage_ticks*ticks[key]*multipliers[key],
-                                           cost=abs(change)*cost_per_unit[key]))
-                    cash -= cost
-                    fees += cost
-                    positions, marks = candidate, candidate_marks
+            reduction = positions.copy()
+            if p.execution_policy == "exit_first":
+                for group in product_indices:
+                    old, new = positions[group], target[group]
+                    old_keys = np.flatnonzero(old)
+                    new_keys = np.flatnonzero(new)
+                    replacing = (not np.array_equal(old_keys, new_keys)
+                                 or (np.sign(old[old_keys]) != np.sign(new[old_keys])).any())
+                    reduction[group] = 0 if replacing else np.sign(old)*np.minimum(np.abs(old), np.abs(new))
+            # All exits precede ALL additions, avoiding product-order funding
+            # dependence. Closing an old spread remains a single atomic basket.
+            stages = [("coupled", target)] if p.execution_policy == "coupled" else [("reduce", reduction), ("open", target)]
+            used_capacity = np.zeros(len(c), dtype=np.int64)
+            blocked = set()
+            for stage, stage_target in stages:
+                for j, product in enumerate(PRODUCTS):
+                    if stage == "open" and j in blocked:
+                        events.append(dict(session=dates[day].date().isoformat(), product=product, code="entry_blocked_by_unfilled_exit", detail="Old risk retained; replacement not attempted"))
+                        continue
+                    group = product_indices[j]
+                    changes = stage_target[group]-positions[group]
+                    changed = group[changes != 0]
+                    if not len(changed):
+                        continue
+                    delta = stage_target[changed]-positions[changed]
+                    failure = ""
+                    if not np.isfinite(tape.volume[obs, changed]).all() or (np.abs(delta)+used_capacity[changed] > np.floor(p.participation*tape.volume[obs, changed])).any():
+                        failure = "lagged_participation_limit"
+                    elif not np.isfinite(prices[day, changed]).all():
+                        failure = "missing_execution_reference"
+                    elif not np.isfinite(tape.volume[day, changed]).all() or (tape.volume[day, changed] <= 0).any():
+                        failure = "zero_or_missing_execution_activity"
+                    candidate = positions.copy()
+                    candidate[group] = stage_target[group]
+                    cost = float(np.sum(np.abs(delta)*cost_per_unit[changed]))
+                    candidate_marks = marks.copy()
+                    candidate_marks[changed] = prices[day, changed]
+                    gross = float(np.nansum(np.abs(candidate)*multipliers*np.maximum(np.abs(candidate_marks), price_basis)))
+                    increasing = (np.abs(stage_target[group]) > np.abs(positions[group])).any()
+                    if cash-cost <= 0 or (increasing and gross > min(p.gross_limit, p.reserve_limit/p.reserve_rate)*(cash-cost)):
+                        failure = "post_mark_funding_limit"
+                    if stale and increasing:
+                        failure = "increasing_risk_with_stale_marks"
+                    if failure:
+                        code = "unfilled_basket" if stage == "coupled" else "unfilled_"+stage+"_basket"
+                        events.append(dict(session=dates[day].date().isoformat(), product=product, code=code, detail=failure))
+                        if stage == "reduce":
+                            blocked.add(j)
+                    else:
+                        for key, change in zip(changed, delta):
+                            trades.append(dict(session=dates[day].date().isoformat(), product=product, contract=keys[key],
+                                               delta=int(change), reference=prices[day, key], multiplier=multipliers[key],
+                                               commission=abs(change)*p.commission, slippage=abs(change)*p.slippage_ticks*ticks[key]*multipliers[key],
+                                               cost=abs(change)*cost_per_unit[key]))
+                        if stage != "coupled":
+                            events.append(dict(session=dates[day].date().isoformat(), product=product, code="filled_"+stage+"_basket", detail=";".join(keys[changed])))
+                        used_capacity[changed] += np.abs(delta)
+                        cash -= cost
+                        fees += cost
+                        positions, marks = candidate, candidate_marks
         held = np.flatnonzero(positions)
         if (day >= tape.deadlines[held]).any():
             status = "failed_known_boundary_exit"

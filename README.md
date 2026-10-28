@@ -24,6 +24,12 @@ collateral assumptions explicit. The [public demonstration](reports/commodity-re
 is entirely invented; licensed real-reference findings remain private. Run the
 [signal example](examples/explain_curve_signals.py) or the complete offline study.
 
+**Execution matters:** the [exit-first comparison](docs/COMMODITY_EXECUTION.md)
+processes old-risk reductions before optional replacements, checks sustained
+lagged liquidity and prevents backward maturity rolls. The original coupled
+baseline is retained. [Run and inspect the invented example](reports/commodity-exit-priority-synthetic/REPORT.md);
+neither a correct ledger nor a longer surviving path establishes tradable alpha.
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

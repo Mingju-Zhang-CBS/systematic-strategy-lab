@@ -1,5 +1,11 @@
 # Commodity curves: test the trading path before the premium
 
+**Execution revision:** [Exit-first protocol comparison](COMMODITY_EXECUTION.md)
+separates mandatory reductions from replacement entries, adds a frozen
+five-observation liquidity gate and monotone maturity selection. Run it with
+`--policy persistent`; the default `legacy` and its original report remain
+available. These are historical engineering comparisons, not fresh unseen OOS.
+
 The exploratory runner connects contract evidence, monthly hypotheses and a
 funded daily account. Public examples use **invented data**. A separately held
 WRDS/LSEG snapshot workflow uses licensed real references; its data, per-contract
@@ -92,12 +98,14 @@ products and deterministic ties. Paired legs round together toward zero.
   erase the gross budget: use the larger absolute mark and historical median.
 - Positions do not pay notional principal. Variation margin and fees change
   equity; the reserve encumbers cash without a second expense. Cash yield is zero.
-- Product baskets are all-or-none independent-leg assumptions. Frozen requests
+- In the original `legacy` protocol, product baskets are all-or-none independent-leg assumptions. Frozen requests
   can fail lagged capacity, missing references, actual-day activity or funding.
   They are not resized using execution-day prices.
   The declared product basket couples closes and replacement entries; a failed
   new entry can therefore block an otherwise feasible old close. This is a model
   limitation to diagnose, not proof that the outgoing market lacked liquidity.
+  The separately versioned `split_only` and `persistent` policies close old
+  product baskets before attempting replacement risk, without waiving exit checks.
 - Missing held marks remain flagged and use the last verified mark until a new
   reference exists. Unfilled known-boundary exits or nonpositive equity stop the
   funded path. No replenishment, free liquidation or post-failure continuation.

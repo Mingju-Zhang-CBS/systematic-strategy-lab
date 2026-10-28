@@ -6,6 +6,7 @@ tests/test_commodity_research.py text eol=lf
 docs/COMMODITY_RESEARCH.md text eol=lf
 # Keep generated report bytes identical to their recorded artifact hashes.
 reports/commodity-research-synthetic/** -text
+reports/commodity-exit-priority-synthetic/** -text
 reports/commodity-research-synthetic/*.png binary
 reports/commodity-research-synthetic/**/*.gz binary
 examples/explain_futures_account.py text eol=lf

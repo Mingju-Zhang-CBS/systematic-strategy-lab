@@ -31,7 +31,7 @@ class Panel:
     risk_cache: dict
 
 
-def prepare(quotes, contracts, manifest, exit_buffer=5):
+def prepare(quotes, contracts, manifest, exit_buffer=5, liquidity_window=1, monotone_roll=False):
     """Validate once, then compile calendar, lagged pairs and monthly histories.
 
     Quote fields: contract/session/settlement/volume/open_interest.
@@ -48,8 +48,9 @@ def prepare(quotes, contracts, manifest, exit_buffer=5):
             or manifest.get("data_kind") not in {"synthetic", "restricted", "public"}
             or not {"rights", "vintage", "source"} <= set(manifest)):
         raise ValueError("explicit calendar assumption, source, vintage and rights required")
-    if exit_buffer < 1 or exit_buffer != int(exit_buffer):
-        raise ValueError("positive integer exit buffer required")
+    if (exit_buffer < 1 or exit_buffer != int(exit_buffer) or liquidity_window < 1
+            or liquidity_window != int(liquidity_window) or not isinstance(monotone_roll, bool)):
+        raise ValueError("positive integer exit/liquidity windows and Boolean roll policy required")
     q, c = quotes.copy(), contracts.copy()
     q["session"] = pd.to_datetime(q.session, errors="raise").dt.normalize()
     for name in ("delivery", "first_notice", "last_trade", "valid_from", "valid_to", "listed_from"):
@@ -99,6 +100,12 @@ def prepare(quotes, contracts, manifest, exit_buffer=5):
     listed, last_trade = c.listed_from.to_numpy(), c.last_trade.to_numpy()
     unit_evidence = c.unit_evidence.to_numpy()
     ids = c.contract.to_numpy()
+    # Every observation in the trailing scheduled window must qualify. Missing
+    # activity breaks the window; neither future nor current fill activity enters.
+    liquid = ((volume >= 100) & (oi >= 100)).astype(np.int8)
+    liquid = pd.DataFrame(liquid).rolling(liquidity_window, min_periods=liquidity_window).sum().to_numpy() == liquidity_window
+    floors = np.full((len(PRODUCTS), 2), np.datetime64("1900-01-01"), dtype="datetime64[ns]")
+    deliveries = c.delivery.to_numpy()
     for day in range(2, len(dates)):
         obs = day-2
         day_date, obs_date = dates[day].to_datetime64(), dates[obs].to_datetime64()
@@ -107,10 +114,16 @@ def prepare(quotes, contracts, manifest, exit_buffer=5):
             interval = ((valid_from[g] <= obs_date) & (valid_to[g] >= day_date)) | ~unit_evidence[g]
             visible = ((listed[g] <= obs_date) & interval
                        & (pd.isna(last_trade[g]) | (last_trade[g] >= day_date))
-                       & np.isfinite(prices[obs, g]) & (volume[obs, g] >= 100) & (oi[obs, g] >= 100))
+                       & np.isfinite(prices[obs, g]) & liquid[obs, g])
             candidates = g[visible]
             # Unknown notice dates BLOCK the front; do not promote distant dates.
             candidates = candidates[(~complete_boundary[candidates]) | (deadlines[candidates] > day)]
+            if monotone_roll:
+                candidates = candidates[deliveries[candidates] >= floors[j, 0]]
+                if len(candidates):
+                    near = candidates[0]
+                    far = candidates[(candidates > near) & (deliveries[candidates] >= floors[j, 1])]
+                    candidates = np.r_[near, far]
             reason = "eligible"
             if len(candidates) < 2:
                 reason = "fewer_than_two_lagged_liquid_contracts"
@@ -120,10 +133,13 @@ def prepare(quotes, contracts, manifest, exit_buffer=5):
                 reason = "front_notice_evidence_missing"
             else:
                 pairs[day, j] = candidates[:2]
+                if monotone_roll:
+                    floors[j] = deliveries[candidates[:2]]
             selected = pairs[day, j]
             rows.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
                              product=product, near="" if selected[0] < 0 else ids[selected[0]],
                              far="" if selected[1] < 0 else ids[selected[1]], reason=reason,
+                             liquidity_window=liquidity_window, monotone_roll=monotone_roll,
                              first_position_history="not reconstructed"))
     # Unfunded unit reference histories: same held contract at both endpoints.
     # They define the signal, not executable filled strategy returns.
