@@ -1,0 +1,27 @@
+{
+  "generated_utc": "2026-10-30T20:35:41.669415+00:00",
+  "data_kind": "synthetic",
+  "machine": "Windows-11-10.0.26200-SP0",
+  "config": {
+    "lookback": 14,
+    "initial_cash": 100000.0,
+    "delay_seconds": 1,
+    "wait_seconds": 5,
+    "fee_per_share": 0.0035,
+    "slippage_per_share": 0.001,
+    "financing_rate": 0.06,
+    "borrow_rate": 0.03,
+    "initial_margin_fraction": 0.5,
+    "target_daily_vol": 0.02,
+    "leverage_cap": 4.0,
+    "participation": 0.01
+  },
+  "protocol_sha256": "d63fb25899aac0bbbb9853ed1bcb53344a2cb11ac12a8a86be9511109d4576a0",
+  "source_sha256": {
+    "engine.py": "6ca9abbada8a32aa9b369ae6d99e96f0ab40ea55e4a3bbacb7f8ccde949536ca",
+    "demo.py": "a5a4da21532ed69582052fae7b74c3e5f174dddc41a524c5b7ee3a0baf0d2e9e",
+    "__main__.py": "5a6cb526f6154be399ceb3d19a4296744fe7bf24765d540a81689eab18fe469d"
+  },
+  "bars_sha256": "70e625cba42db7e3759a9f74ef7f2d61c6e98ed965ca051b1f0940c8e2f50cbd",
+  "quotes_sha256": "702482f8a89e657c1b9033aee5dca849ab8d8e45349fc1c2f1da490c43571d71"
+}

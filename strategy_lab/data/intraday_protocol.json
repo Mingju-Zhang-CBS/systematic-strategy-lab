@@ -1,0 +1,111 @@
+{
+  "version": "1.0.0",
+  "frozen_utc": "2026-10-30T19:35:19.230996+00:00",
+  "decision": "User accepted rates + intraday; new macro-rates-research repository",
+  "curve": {
+    "source": "GSW current historical vintage",
+    "dates": [
+      "2010-01-01",
+      "2025-12-31"
+    ],
+    "warmup_start": "2008-01-01",
+    "tenors_years": [
+      2,
+      5,
+      10,
+      20,
+      30
+    ],
+    "pca_window": 252,
+    "pca_center": "training-only yield changes in bp",
+    "portfolios": [
+      "2s10s DV01 neutral",
+      "2s5s10s level/slope neutral using prior PCA"
+    ],
+    "gross_market_value_usd": 1000000,
+    "risk_only": true,
+    "hold_days": "calendar elapsed/365.25",
+    "trade_claim": false
+  },
+  "policy": {
+    "target_dates": [
+      "2010-01-01",
+      "2025-12-31"
+    ],
+    "contract": "CME ZQ monthly average EFFR",
+    "scenarios_bp": [
+      0,
+      25,
+      50,
+      -25
+    ],
+    "pairs": 6,
+    "initial_cash": 100000,
+    "margin_per_contract_proxy": 2000,
+    "fee_per_contract_side_proxy": 4,
+    "spread_per_leg_points_proxy": 0.005,
+    "historical_selection": "On first common observation of each calendar month choose delivery months +2 and +5; hold to last common observation of the same observation month; report both directions, no reinvestment across trades",
+    "publication": "real licensed records and derived results private until rights clear; public synthetic fixture and methods"
+  },
+  "intraday": {
+    "target_dates": [
+      "2016-01-01",
+      "2025-12-31"
+    ],
+    "assets": [
+      "SPY",
+      "QQQ"
+    ],
+    "development": [
+      "2016",
+      "2019"
+    ],
+    "validation": [
+      "2020",
+      "2022"
+    ],
+    "historical_confirmation": [
+      "2023",
+      "2025"
+    ],
+    "prior_seen": "2025 course sample; all retrospective",
+    "lookback": 14,
+    "noise_multiplier": 1.0,
+    "variants": [
+      "base",
+      "vwap",
+      "vol_scaled"
+    ],
+    "target_daily_vol": 0.02,
+    "leverage_cap": 4,
+    "starting_cash": 100000,
+    "quote_latency_seconds": [
+      1,
+      60
+    ],
+    "quote_wait_seconds": 5,
+    "flatten_seconds_before_close": 60,
+    "fees_per_share_side_proxy": 0.0035,
+    "slippage_per_share_side_proxy": 0.001,
+    "long_initial_margin_proxy": 0.5,
+    "short_initial_margin_proxy": 0.5,
+    "financing_annual_proxy": 0.06,
+    "borrow_annual_proxy": 0.03,
+    "raw_volume_participation_proxy": 0.01,
+    "data_gate": "Without trade/NBBO entitlement no quote-backed main study; no silent sample shortening",
+    "publication": "licensed raw/derived private, independently generated fixtures public"
+  },
+  "inference": {
+    "block_days": 20,
+    "bootstrap_draws": 1000,
+    "seed": 20261030
+  },
+  "constraints": [
+    "no return-driven retuning",
+    "no live orders",
+    "no paid access",
+    "private class sources unchanged",
+    "no claim of future unseen data",
+    "no actual historical margin/borrow availability claim"
+  ]
+}
