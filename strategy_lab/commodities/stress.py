@@ -22,6 +22,8 @@ class StressSchedule:
     margin_factor: np.ndarray
     windows: pd.DataFrame
     case: dict
+    price_reference: np.ndarray | None = None
+    price_events: pd.DataFrame | None = None
 
 
 def compile_stress(tape, cohorts, case):

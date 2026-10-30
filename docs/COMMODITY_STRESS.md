@@ -171,3 +171,7 @@ calendars, current-vintage contract evidence and missing first-position archives
 retain their earlier limitations. Research direction was selected by Mingju
 Zhang; engineering and experiments were AI-assisted. Unaided personal review is
 tracked separately from automated execution.
+
+## Follow-up: longer outages and adverse price steps
+
+The [joint-stress extension](COMMODITY_JOINT_STRESS.md) preserves this five-session baseline and adds fixed 10/20-session outages, permanent adverse price offsets and 40% proxy reserves. It focuses on exit failures and cash sufficiency, without re-tuning the earlier strategy.

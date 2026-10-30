@@ -143,3 +143,15 @@ diagnostics. CI runs the new full offline study in addition to retained examples
 Neither a passing fixture nor a stopped stress path establishes real fill
 probabilities, exchange margin history or a profitable premium.
 
+
+### Extended outage, price and collateral conjunction
+
+Ten [joint-stress tests](../tests/test_commodity_joint_stress.py) check frozen
+signed USD anchors, persistent price offsets, additive overlaps, missing/negative
+references, current/future shock isolation, paired boundary failure, simultaneous
+failure flags, no-exposure VM and shocked terminal cash reconciliation. The full
+source suite and a fresh independent Python 3.12 wheel each pass **128 tests**.
+All **923** generated joint-study CSV/gzip artifacts match byte for byte.
+The preceding 56-path stress experiment and its 661 numerical artifacts remain
+unchanged. CI also runs the entire new offline study. These checks establish the
+declared mechanics, not market-calibrated shock probabilities or real liquidity.

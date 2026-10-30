@@ -28,3 +28,4 @@ jobs:
       - run: python -m strategy_lab.commodities.research_report --fixture --policy entry_budget --output local-runs/ci-entry-budget
       - run: python examples/explain_entry_budget.py --output local-runs/ci-entry-cases
       - run: python -m strategy_lab.commodities.stress_report --fixture --output local-runs/ci-post-admission-stress
+      - run: python -m strategy_lab.commodities.joint_report --fixture --output local-runs/ci-joint-stress

@@ -49,6 +49,18 @@ an old exit. A risk-buffer breach is distinct from cash collateral shortfall.
 [Invented results](reports/commodity-stress-synthetic/REPORT.md) preserve all
 fixed scenarios, while the previous admission baseline remains reproducible.
 
+### Longer outages, adverse prices and cash sufficiency
+
+The [joint-stress study](docs/COMMODITY_JOINT_STRESS.md) extends zero offered
+supply to 10/20 scheduled sessions and combines it with fixed adverse leg-price
+steps and a 40% proxy reserve. It preserves paired reductions, unchanged delivery
+boundaries, residual positions and simultaneous failure causes. Price offsets
+persist after liquidity returns. The [72-path invented demonstration](reports/commodity-joint-stress-synthetic/REPORT.md)
+retains 29 failures and distinguishes cash shortfalls from exit failures; these
+are synthetic outcomes. No cross-strategy performance inference is made from
+account-specific adverse worlds. Earlier baselines remain unchanged.
+
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

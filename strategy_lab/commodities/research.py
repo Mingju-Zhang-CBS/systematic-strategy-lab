@@ -91,7 +91,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
             or (p.entry_budget and (p.execution_policy != "staged" or p.exit_lead <= 0))
             or (stress is not None and (p.execution_policy != "staged" or not p.entry_budget)) or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
-    dates, c, prices = tape.dates, tape.contracts, tape.prices
+    dates, c = tape.dates, tape.contracts
+    prices = tape.prices if stress is None or stress.price_reference is None else stress.price_reference
     keys = c.contract.to_numpy()
     contract_products = c["product"].to_numpy()
     multipliers, ticks = c.multiplier.to_numpy(), c.outright_tick.to_numpy()

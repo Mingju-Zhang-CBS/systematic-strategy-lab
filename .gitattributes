@@ -18,3 +18,5 @@ reports/commodities/** text eol=lf
 reports/commodities/*.png binary
 
 reports/commodity-stress-synthetic/** -text
+
+reports/commodity-joint-stress-synthetic/** -text
