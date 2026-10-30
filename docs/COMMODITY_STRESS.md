@@ -79,6 +79,24 @@ whole-request all-or-none. Rejecting an addition never undoes an outgoing close.
 The same hard deadline still stops unretired inventory; there is no hidden
 liquidation, grace-period extension or capital reset to rescue a path.
 
+### Audit correction in v0.7.1
+
+A latched reduction goal can be lower than today's requested position. For
+an invented example, inventory starts at twelve, a retained goal reduces it to
+five, and today's request is eight. Returning to eight is an addition after that
+reduction, even though eight is below the day-start twelve. In stress accounts the single
+admission decision compares the request with **both day-start inventory and the
+frozen post-reduction inventory**. It tests all eight target units and cannot
+restore the higher holding after refusal. A regression test covers this case.
+Earlier v0.7.0 artifacts remain in history; they are superseded for this check.
+
+The neutral control's capacity/funding diagnostic counts are reconstructed on
+the same pre-fill clock as stress accounts. In v0.7.0 those uncollected fields
+were displayed as zeros. Do not treat the old zeros as measured absence of
+capacity shortages. Natural source-volume deterioration can occur without an
+injected shock; compare measured controls before attributing a shortage to the
+stress. This correction changes neither frozen magnitudes nor the event dates.
+
 ## A risk buffer is different from a cash shortfall
 
 The original reserve is 10% of the gross marked proxy, with no spread offsets.

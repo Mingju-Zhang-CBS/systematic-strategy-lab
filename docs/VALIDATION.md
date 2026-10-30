@@ -125,13 +125,13 @@ this budget does not reserve future volume or establish actual execution.
 
 ### Post-admission capacity and collateral stress
 
-Eleven [new invariant tests](../tests/test_commodity_stress.py) cover next-session
+Thirteen [new invariant tests](../tests/test_commodity_stress.py) cover next-session
 event starts, overlap min/max, one-leg capacity and paired partial reductions,
 zero-supply nonfills, current/future capacity isolation, current-day reserve
 announcements, risk-buffer breaches versus cash shortfalls, no reserve double
-debit, fixed first-addition cohorts, shared offered limits and invalid schedules.
+debit, fixed first-addition cohorts, shared offered limits, invalid schedules, measured neutral-control diagnostics and admission after a stricter latched reduction.
 The complete source suite and separately installed Python 3.12 wheel each pass
-**116 tests**. All **645** synthetic CSV/gzip results match byte for byte across
+**118 tests**. All **661** synthetic CSV/gzip results match byte for byte across
 those installations. The locked plotting stack emits 14 upstream deprecation
 warnings; tests pass.
 

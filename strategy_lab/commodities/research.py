@@ -290,6 +290,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
                 group = product_indices[j]
                 old, new = positions[group], target[group]
                 adding = (np.abs(new) > np.abs(old)).any() or ((old*new) < 0).any()
+                if stress is not None:
+                    after_reduction = slice_target[group]
+                    adding |= (np.abs(new)>np.abs(after_reduction)).any() or ((after_reduction*new)<0).any()
                 if not adding:
                     continue
                 candidate = group[new != 0]

@@ -10,6 +10,7 @@ from strategy_lab.commodities.panel import prepare
 from strategy_lab.commodities.research import ResearchProtocol,run_research
 from strategy_lab.commodities.research_fixture import research_frames
 from strategy_lab.commodities.stress import CASES,compile_stress,entry_cohorts
+from strategy_lab.commodities.stress_report import control_diagnostics
 
 
 @pytest.fixture(scope="module")
@@ -156,3 +157,39 @@ def test_invalid_raw_schedule_fails_at_compiler_boundary(setup):
         compile_stress(tape,c,{**CASES[1],'capacity_fraction':-1})
     with pytest.raises(ValueError,match='identity mismatch'):
         compile_stress(tape,c.assign(contracts='UNKNOWN'),CASES[1])
+
+
+def test_control_diagnostics_are_measured_on_the_same_prefill_clock(setup):
+    tape,p,c,day=setup
+    baseline=run_research(tape,'long_only',p)
+    budgets,sessions=control_diagnostics(tape,baseline,p)
+    neutral=compile_stress(tape,c,{**CASES[1],'capacity_fraction':1})
+    explicit=run_research(tape,'long_only',p,stress=neutral)
+    pd.testing.assert_frame_equal(baseline['ledger'],explicit['ledger'])
+    pd.testing.assert_frame_equal(budgets.sort_values(['session','product']).reset_index(drop=True),explicit['stress_budgets'].sort_values(['session','product']).reset_index(drop=True))
+    pd.testing.assert_frame_equal(sessions,explicit['stress_sessions'])
+
+
+def test_readding_after_a_stricter_latched_reduction_requires_admission(setup):
+    tape,p,c,day=setup
+    p=replace(p,capital=10_000_000,end='2021-01-06')
+    first=run_research(tape,'long_only',replace(p,end='2021-01-04'))
+    gross=first['ledger'].gross_proxy.iloc[0]
+    high=2*p.reserve_limit*p.capital/(p.reserve_rate*gross)
+    low=1.1*p.reserve_limit*p.capital/(p.reserve_rate*gross)
+    s=compile_stress(tape,c,CASES[1])
+    s.margin_factor[day+1]=high
+    s.margin_factor[day+2]=low
+    s.capacity_factor[day+1]=.002  # first reduction cannot finish
+    s.capacity_factor[day+2]=1
+    r=run_research(tape,'long_only',p,stress=s)
+    known={(a.session,a.product):a for a in r['entry_admissions'].itertuples(index=False)}
+    inventory={}
+    readds=0
+    for t in r['trades'].itertuples(index=False):
+        old=inventory.get(t.contract,0);new=old+t.delta
+        if abs(new)>abs(old) or old*new<0:
+            assert known[(t.session,t.product)].admitted
+            readds+=t.session=='2021-01-06'
+        inventory[t.contract]=new
+    assert readds>0

@@ -22,6 +22,38 @@ from .stress import CASES,compile_stress,entry_cohorts
 ACCOUNTS=[('base',x) for x in ['long_only','trend','carry','bm_outright','bm_spread','trend_half','carry_half']]+[('delay_plus_3','carry')]
 
 
+def control_diagnostics(tape,result,protocol):
+    """Reconstruct the same pre-fill inventory clock without changing a control.
+
+    Yesterday's closing holdings are today's pre-fill inventory. Neutral-capacity
+    diagnostics must be measured rather than represented by uncollected zeros.
+    """
+    indices={k:i for i,k in enumerate(tape.contracts.contract)}
+    rows=[]
+    for (session,product),g in result['holdings'].groupby(['session','product'],sort=False):
+        day=tape.dates.get_loc(session)+1
+        if day>=len(tape.dates) or tape.dates[day]>pd.Timestamp(protocol.end):
+            continue
+        ix=[indices[k] for k in g.contract]
+        history=np.floor(protocol.participation*tape.volume[day-6:day-1,ix])
+        cap=int(history.min()) if len(history)==5 and np.isfinite(history).all() else 0
+        actual=np.floor(protocol.participation*tape.volume[day-2,ix])
+        offered=int(actual.min()) if np.isfinite(actual).all() else 0
+        units=int(g.quantity.abs().max())
+        remaining=int(tape.deadlines[ix].min()-day+1)
+        drain=(units+cap-1)//cap if cap else np.nan
+        rows.append(dict(session=str(tape.dates[day].date()),observation=str(tape.dates[day-2].date()),
+            product=product,contracts=';'.join(g.contract),held_units=units,conservative_capacity=cap,
+            offered_capacity=offered,remaining_sessions=remaining,required_drain_sessions=drain,
+            budget_slack=remaining-drain-protocol.drain_buffer,no_projected_capacity=cap==0,
+            current_shock=False,margin_factor=1.))
+    ledger=result['ledger']
+    sessions=pd.DataFrame(dict(session=ledger.session,reserve_rate=protocol.reserve_rate,
+        margin_factor=1.,margin_target_scale=1.,risk_buffer_breach=ledger.reserve>protocol.reserve_limit*ledger.equity,
+        collateral_shortfall=np.maximum(ledger.reserve-ledger.equity,0),shocked_held_contracts=0,all_shocked_contracts=0))
+    return pd.DataFrame(rows),sessions
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     mode=parser.add_mutually_exclusive_group(required=True)
@@ -72,23 +104,25 @@ def main():
         for case in CASES:
             stress=None if case['name']=='control' else compile_stress(tape,cohorts,case)
             result=baseline if stress is None else run_research(tape,strategy,config,stress=stress)
+            if stress is None:
+                result['stress_budgets'],result['stress_sessions']=control_diagnostics(tape,result,config)
             path=args.output/case['name']/account_case/name
             write_result(result,path,detail=True)
+            for table in ('stress_budgets','stress_sessions'):
+                result[table].to_csv(path/(table+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
             if stress is not None:
-                for table in ('stress_budgets','stress_sessions'):
-                    result[table].to_csv(path/(table+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
                 stress.windows.to_csv(path/'stress_windows.csv',index=False)
                 windows.append(stress.windows.assign(stress_case=case['name'],account_case=account_case,account=name))
             l=result['ledger']
             r=summarize(result,account_case)
             r.update(stress_case=case['name'],account_case=account_case,strategy=name,frozen_cohorts=len(cohorts),
                      proxy_margin_failure=result['events'].code.eq('failed_proxy_collateral_shortfall').any(),
-                     risk_buffer_breach_days=0 if stress is None else int(result['stress_sessions'].risk_buffer_breach.sum()),
-                     no_projected_capacity_checks=0 if stress is None else int(result['stress_budgets'].no_projected_capacity.sum()),
-                     insufficient_drain_checks=0 if stress is None else int(result['stress_budgets'].budget_slack.le(0).sum()),
-                     offered_zero_checks=0 if stress is None else int(result['stress_budgets'].offered_capacity.eq(0).sum()),
-                     shocked_exposure_days=0 if stress is None else int(result['stress_sessions'].shocked_held_contracts.gt(0).sum()),
-                     maximum_collateral_shortfall=0 if stress is None else float(result['stress_sessions'].collateral_shortfall.max()))
+                     risk_buffer_breach_days=int(result['stress_sessions'].risk_buffer_breach.sum()),
+                     no_projected_capacity_checks=int(result['stress_budgets'].no_projected_capacity.sum()),
+                     insufficient_drain_checks=int(result['stress_budgets'].budget_slack.le(0).sum()),
+                     offered_zero_checks=int(result['stress_budgets'].offered_capacity.eq(0).sum()),
+                     shocked_exposure_days=int(result['stress_sessions'].shocked_held_contracts.gt(0).sum()),
+                     maximum_collateral_shortfall=float(result['stress_sessions'].collateral_shortfall.max()))
             summaries.append(r)
             if account_case=='base':
                 months[case['name']][name]=monthly_account(l,config,tape.dates)

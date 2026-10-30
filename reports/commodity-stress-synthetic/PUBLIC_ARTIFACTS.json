@@ -10,11 +10,11 @@
     },
     {
       "path": "RUN_MANIFEST.json",
-      "sha256": "c0ffa8f137005f23330011326e7a78cdb9372d324d52e5a81f895a6d11a07215"
+      "sha256": "276fcce0c235d4de7e3f9889eff22e7e6b31907bccc152035f0ad45b86e37107"
     },
     {
       "path": "FROZEN_RUN.json",
-      "sha256": "fabd09cf91145c784ac2ca25ef524b572b43831941cd38c57c7aeb4e0cce9262"
+      "sha256": "0a0f0f9ef8fa42456f4d5f714bd56b965d3a6d3a04b288ecf9fe441fda114b95"
     },
     {
       "path": "FROZEN_COHORTS.csv",
@@ -81,6 +81,14 @@
       "sha256": "0e419548444ccb7bf2ed23bca1b8390d4e5af433ecd92ce2f363cf2a3e4094d2"
     },
     {
+      "path": "control/base/bm_spread/stress_budgets.csv.gz",
+      "sha256": "fb5a7856cbbb3f28a704ef01695cc366525dcf60bf56864ba512d7f937b9d990"
+    },
+    {
+      "path": "control/base/bm_spread/stress_sessions.csv.gz",
+      "sha256": "33c73956d52432373c37d06fc67ff0824195985a86ea9ba64b45d588b00cc204"
+    },
+    {
       "path": "control/delay_plus_3/carry/ledger.csv.gz",
       "sha256": "c9297c5c43eaf8d3c9c247ab53c956758b53a4d059e61591eba978768706786d"
     },
@@ -115,6 +123,14 @@
     {
       "path": "control/delay_plus_3/carry/RECEIPT.json",
       "sha256": "1ef2ea4625cdf3ce1297450e99a1111707dfd9cb048c87c70ed9c43bafceb0da"
+    },
+    {
+      "path": "control/delay_plus_3/carry/stress_budgets.csv.gz",
+      "sha256": "9721c8849ac1cc9202373befe2c5fa1b08b85fba2c866eeeab911d4ccd105e60"
+    },
+    {
+      "path": "control/delay_plus_3/carry/stress_sessions.csv.gz",
+      "sha256": "33c73956d52432373c37d06fc67ff0824195985a86ea9ba64b45d588b00cc204"
     },
     {
       "path": "capacity_zero_5/base/bm_spread/ledger.csv.gz",
