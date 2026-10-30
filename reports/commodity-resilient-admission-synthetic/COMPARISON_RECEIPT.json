@@ -1,0 +1,12 @@
+{
+  "data_kind": "synthetic",
+  "rows": 72,
+  "scope": "All fixed scenarios; means use complete controls only; no return comparison",
+  "baseline_manifest_sha256": "9c7fdc99b489da4ce1acb705f9403c875645494837b44e55a0ae46515a1abe17",
+  "protected_manifest_sha256": "7f9a9b3975705642e8c53dc1b98277eb6bdb5e776c2ab71b0871608476958a76",
+  "code_sha256": "22b502768b70c238009760a7885df9432c5d9f6269643497be956525ee74c85e",
+  "outputs": {
+    "policy_comparison.csv": "25b3706e63def1c30ed163d717283b8e9d412be2596a5c1a5b9d96cb36c31b18",
+    "policy_comparison.png": "9726c65c344484f85a8fdcdb52d9ec49d94947bce4310d574d65e290f3b069b3"
+  }
+}

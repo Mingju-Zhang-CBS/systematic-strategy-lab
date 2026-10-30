@@ -29,3 +29,5 @@ jobs:
       - run: python examples/explain_entry_budget.py --output local-runs/ci-entry-cases
       - run: python -m strategy_lab.commodities.stress_report --fixture --output local-runs/ci-post-admission-stress
       - run: python -m strategy_lab.commodities.joint_report --fixture --output local-runs/ci-joint-stress
+      - run: python -m strategy_lab.commodities.joint_report --fixture --joint-buffer --output local-runs/ci-admission-buffer
+      - run: python examples/compare_admission_buffers.py --baseline local-runs/ci-joint-stress --protected local-runs/ci-admission-buffer --output local-runs/ci-buffer-comparison

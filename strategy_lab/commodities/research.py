@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from .engine import PRODUCTS
+from .admission_resilience import OUTAGE_SESSIONS,cash_envelope,transition_surcharge
 
 
 STRATEGIES = {
@@ -65,6 +66,7 @@ class ResearchProtocol:
     capacity_window: int = 5
     drain_buffer: int = 2
     entry_budget: bool = False
+    joint_buffer: bool = False
 
 
 def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stress=None):
@@ -88,6 +90,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
             or any(not np.isfinite(v) or v != int(v) or v < 0 for v in (p.exit_lead, p.capacity_window, p.drain_buffer))
             or p.capacity_window < 1 or (p.exit_lead > 0 and p.execution_policy != "staged")
             or not isinstance(p.entry_budget, bool)
+            or not isinstance(p.joint_buffer, bool)
+            or (p.joint_buffer and not p.entry_budget)
             or (p.entry_budget and (p.execution_policy != "staged" or p.exit_lead <= 0))
             or (stress is not None and (p.execution_policy != "staged" or not p.entry_budget)) or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
@@ -118,6 +122,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
     admissions = []
     stress_budgets = []
     stress_sessions = []
+    resilience_entries = []
+    resilience_budgets = []
     observed_capacity = None if stress is None else np.floor(np.floor(p.participation*tape.volume)*stress.capacity_factor)
     updates = {i+p.extra_delay:s for i, s in tape.updates.items()}
     earlier = [i for i in updates if i < active_days[0]]
@@ -205,6 +211,12 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
         fee_budget = float(np.sum(np.abs(frozen_target-positions)*cost_per_unit))
         budget = max(0, known_equity-fee_budget)
         funding_scale = min(1., p.gross_limit*budget/gross_before, p.reserve_limit*budget/(reserve_rate*gross_before)) if gross_before > 0 else 1.
+        if p.joint_buffer:
+            admission_cash=min(known_equity,cash)
+            proposed=cash_envelope(frozen_target,price_basis,multipliers,cost_per_unit,admission_cash,reserve_rate)
+            need=proposed['required_cash']-proposed['cash_buffer']
+            if need>0:
+                funding_scale=min(funding_scale,max(0.,admission_cash-proposed['cash_buffer'])/need)
         continuous_qty = qty*funding_scale
         integer_qty = np.trunc(continuous_qty).astype(np.int64)
         last_requested = integer_qty.copy()
@@ -241,6 +253,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
                 units = int(np.abs(positions[held]).max())
                 drain_days = int(np.ceil(units/conservative)) if conservative > 0 else np.inf
                 early = p.exit_lead > 0 and (remaining <= p.exit_lead or remaining <= drain_days+p.drain_buffer or conservative == 0)
+                if p.joint_buffer:
+                    early |= remaining <= OUTAGE_SESSIONS+drain_days+p.drain_buffer
                 if early:
                     if retired_front[j] < held.min():
                         events.append(dict(session=dates[day].date().isoformat(), product=product, code="early_retirement_started", detail=f"remaining={remaining}; conservative_capacity={conservative}; units={units}"))
@@ -291,7 +305,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
                 group = product_indices[j]
                 old, new = positions[group], target[group]
                 adding = (np.abs(new) > np.abs(old)).any() or ((old*new) < 0).any()
-                if stress is not None:
+                if stress is not None or p.joint_buffer:
                     after_reduction = slice_target[group]
                     adding |= (np.abs(new)>np.abs(after_reduction)).any() or ((after_reduction*new)<0).any()
                 if not adding:
@@ -304,6 +318,16 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
                     capacity = int(history.min()) if len(history)==p.capacity_window and np.isfinite(history).all() else 0
                 remaining = int(np.min(tape.deadlines[candidate])-day)
                 assessment = _entry_budget(int(np.abs(new).max()), capacity, remaining, p.exit_lead, p.drain_buffer)
+                if p.joint_buffer:
+                    drain=assessment['required_drain_sessions']
+                    slack=remaining-OUTAGE_SESSIONS-drain-p.drain_buffer if drain is not None else np.nan
+                    if not np.isfinite(slack) or slack<=0:
+                        assessment['drain_ok']=False
+                        assessment['admitted']=False
+                        assessment['reason']='insufficient_outage_drain_budget'
+                    resilience_entries.append(dict(session=dates[day].date().isoformat(),product=product,
+                        contracts=';'.join(keys[candidate]),outage_sessions=OUTAGE_SESSIONS,
+                        exit_budget_slack=slack,**assessment))
                 admissions.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
                                        product=product, contracts=";".join(keys[candidate]),
                                        current_units=int(np.abs(old).max()), deadline=dates[int(np.min(tape.deadlines[candidate]))].date().isoformat(),
@@ -313,6 +337,29 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
                     # exposure after its close or interfere with pending exits.
                     open_target[group] = slice_target[group]
                     events.append(dict(session=dates[day].date().isoformat(), product=product, code="entry_refused_exit_budget", detail=assessment["reason"]))
+        if p.joint_buffer:
+            optional=[]
+            for j,group in enumerate(product_indices):
+                new=open_target[group]
+                if ((np.abs(new)>np.abs(positions[group])).any() or (positions[group]*new<0).any()
+                        or (np.abs(new)>np.abs(slice_target[group])).any() or (slice_target[group]*new<0).any()):
+                    optional.append(j)
+            # Keep old risk in the envelope even when its exit is requested.
+            envelope=np.maximum(np.abs(positions),np.abs(open_target))
+            extra_fee=transition_surcharge(positions,slice_target,open_target,cost_per_unit)
+            assessment=cash_envelope(envelope,price_basis,multipliers,cost_per_unit,admission_cash,reserve_rate,extra_fee)
+            existing=cash_envelope(positions,price_basis,multipliers,cost_per_unit,admission_cash,reserve_rate)
+            resilience_budgets.append(dict(session=dates[day].date().isoformat(),observation=dates[obs].date().isoformat(),
+                optional_products=';'.join(PRODUCTS[j] for j in optional),
+                existing_only_required=existing['required_cash'],existing_only_deficit=max(0.,-existing['cash_slack']),
+                envelope_contracts=';'.join(keys[envelope>0]),envelope_units=';'.join(str(v) for v in envelope[envelope>0]),
+                known_equity=known_equity,prior_cash=cash,announced_rate=reserve_rate,**assessment))
+            if not assessment['cash_admitted']:
+                for j in optional:
+                    group=product_indices[j]
+                    open_target[group]=slice_target[group]
+                    events.append(dict(session=dates[day].date().isoformat(),product=PRODUCTS[j],
+                        code='entry_refused_joint_cash_buffer',detail='Portfolio loss, collateral, fees and cash buffer exceed known cash; reductions retained'))
         old_signature = signature
         decision_at = (dates[day]+pd.Timedelta(hours=7)).tz_localize("America/Chicago").tz_convert("UTC").isoformat()
         for j, product in enumerate(PRODUCTS) if detail else []:
@@ -472,4 +519,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stres
     if stress is not None:
         result["stress_budgets"] = pd.DataFrame(stress_budgets)
         result["stress_sessions"] = pd.DataFrame(stress_sessions)
+    if p.joint_buffer:
+        result['resilience_entries']=pd.DataFrame(resilience_entries,columns=['session','product','contracts','outage_sessions','exit_budget_slack',
+            'target_units','conservative_capacity','remaining_exit_sessions','required_drain_sessions','lead_ok','drain_ok','admitted','reason'])
+        result['resilience_budgets']=pd.DataFrame(resilience_budgets)
     return result

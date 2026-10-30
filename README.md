@@ -61,6 +61,17 @@ are synthetic outcomes. No cross-strategy performance inference is made from
 account-specific adverse worlds. Earlier baselines remain unchanged.
 
 
+
+### Connect new risk to exit time and cash
+
+The [joint admission buffer](docs/COMMODITY_RESILIENT_ADMISSION.md) adds a fixed
+20-session outage allowance and a single portfolio cash envelope for adverse VM,
+proxy collateral, funded transition/exit fees and retained cash. Expected old-position exits
+release no budget; refusals preserve paired reductions. The [invented comparison](reports/commodity-resilient-admission-synthetic/policy_comparison.png)
+shows completion together with control exposure, rather than ranking stopped
+paths by returns. The [complete invented experiment](reports/commodity-resilient-admission-synthetic/REPORT.md)
+and original joint-shock failures remain separate and reproducible.
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

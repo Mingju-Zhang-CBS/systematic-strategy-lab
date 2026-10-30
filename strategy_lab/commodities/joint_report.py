@@ -27,6 +27,7 @@ def main():
     mode.add_argument('--fixture',action='store_true');mode.add_argument('--input',type=Path)
     parser.add_argument('--cohorts',type=Path);parser.add_argument('--legs',type=Path)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--joint-buffer',action='store_true',help='Enable the fixed portfolio admission and 20-session exit buffer')
     args=parser.parse_args()
     if not args.fixture and (args.cohorts is None or args.legs is None):
         parser.error('private experiments require frozen --cohorts and --legs')
@@ -41,7 +42,7 @@ def main():
             if hashlib.sha256((args.input/name).read_bytes()).hexdigest()!=digest:
                 raise ValueError('private input fingerprint mismatch: '+name)
         supplied=pd.read_csv(args.cohorts);supplied_legs=pd.read_csv(args.legs);p=ResearchProtocol()
-    p=replace(p,execution_policy='staged',exit_lead=10,entry_budget=True)
+    p=replace(p,execution_policy='staged',exit_lead=10,entry_budget=True,joint_buffer=args.joint_buffer)
     code={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in Path(__file__).parent.glob('*.py')}
     freeze=dict(created_utc=datetime.now(timezone.utc).isoformat(),data_kind=manifest['data_kind'],source=manifest,
         code=code,cases=CASES,accounts=ACCOUNTS,protocol=p.__dict__,package_version=__version__,
@@ -56,8 +57,9 @@ def main():
     for account_case,name in ACCOUNTS:
         config=replace(p,extra_delay=3 if account_case=='delay_plus_3' else 0,capital=500_000 if name.endswith('_half') else 1_000_000)
         strategy=name.removesuffix('_half');base=run_research(tape,strategy,config)
-        cohorts=entry_cohorts(base['trades'],strategy=='bm_spread') if supplied is None else supplied[(supplied.account_case==account_case)&(supplied.account==name)].copy()
-        legs=anchor_legs(tape,cohorts,base['trades'],strategy=='bm_spread') if supplied_legs is None else supplied_legs[(supplied_legs.account_case==account_case)&(supplied_legs.account==name)].copy()
+        reference=run_research(tape,strategy,replace(config,joint_buffer=False)) if args.joint_buffer and supplied is None else base
+        cohorts=entry_cohorts(reference['trades'],strategy=='bm_spread') if supplied is None else supplied[(supplied.account_case==account_case)&(supplied.account==name)].copy()
+        legs=anchor_legs(tape,cohorts,reference['trades'],strategy=='bm_spread') if supplied_legs is None else supplied_legs[(supplied_legs.account_case==account_case)&(supplied_legs.account==name)].copy()
         cohort_records.append(cohorts.assign(account_case=account_case,account=name));leg_records.append(legs.assign(account_case=account_case,account=name))
         for case in CASES:
             stress=None if case['name']=='control' else compile_joint_stress(tape,cohorts,legs,case)
@@ -68,6 +70,9 @@ def main():
             write_result(result,folder,detail=True)
             for table in ['stress_budgets','stress_sessions']:
                 result[table].to_csv(folder/(table+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
+            if args.joint_buffer:
+                for table in ['resilience_entries','resilience_budgets']:
+                    result[table].to_csv(folder/(table+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
             if stress is not None:
                 stress.windows.to_csv(folder/'stress_windows.csv',index=False)
                 stress.price_events.to_csv(folder/'price_events.csv',index=False)
@@ -82,6 +87,12 @@ def main():
                 risk_buffer_breach_days=int(sessions.risk_buffer_breach.sum()),zero_capacity_checks=int(budgets.no_projected_capacity.sum()),
                 nonpositive_finite_slack_checks=int(budgets.budget_slack.le(0).sum()))
             summary.append(row)
+            if args.joint_buffer:
+                budgets_cash=result['resilience_budgets'];entries=result['resilience_entries']
+                row.update(buffer_liquidity_refusals=int((~entries.admitted).sum()),
+                    buffer_cash_refusal_days=int((~budgets_cash.cash_admitted & budgets_cash.optional_products.ne('')).sum()),
+                    existing_only_deficit_days=int(budgets_cash.existing_only_deficit.gt(0).sum()),
+                    maximum_existing_deficit=float(budgets_cash.existing_only_deficit.max()))
             stop=ledger.session.iloc[-1];day=tape.dates.get_loc(stop)
             held=result['holdings'][result['holdings'].session.eq(stop)]
             snapshots=[]
@@ -103,6 +114,7 @@ def main():
     summary=pd.DataFrame(summary);summary.to_csv(args.output/'summary.csv',index=False)
     plt.rcParams.update({'figure.facecolor':'#faf8f3','axes.facecolor':'#faf8f3','font.size':9})
     nature='INVENTED INPUTS' if args.fixture else 'PRIVATE references + hypothetical joint shocks'
+    if args.joint_buffer:nature+=' · joint admission buffer'
     grid=summary.assign(account=summary.account_case+'/'+summary.strategy).pivot(index='stress_case',columns='account',values='status').reindex([x['name'] for x in CASES])
     complete=~grid.apply(lambda s:s.str.startswith('failed'))
     fig,ax=plt.subplots(figsize=(14,7),constrained_layout=True)
@@ -148,6 +160,11 @@ def main():
       'Inspect FROZEN_RUN.json, FROZEN_COHORTS.csv, FROZEN_LEGS.csv, summary.csv and RUN_MANIFEST.json. Account price_events.csv records signed USD steps; its hypothetical full-baseline-leg impulse is not the account’s realized P&L. Compare actual pnl/holdings/trades, admissions, exit plans and stress budgets/sessions. terminal_inventory.csv preserves remaining legs, mark offsets, deadline, offered/used/remaining capacity, cash and every failure flag.','',
       'Reproduce: python -m strategy_lab.commodities.joint_report --fixture --output NEW_DIRECTORY. Licensed work uses --input PRIVATE_INPUT --cohorts FROZEN_PRIVATE_CSV --legs FROZEN_PRIVATE_LEGS; keep outputs private.','',
       'Scheduled calendars, current-vintage metadata and missing first-position archives remain limitations. Reserve is a proxy without historical SPAN/spread credits or broker add-ons. EOD paired references are not intraday queues, real close-out or proven tradability. This deterministic conditional stress has no occurrence-probability, worst-possible-shock or unseen-OOS claim. Only original code/methods/tests and invented inputs are public; licensed sources, anchors, event dates and all real derived findings stay private. Research direction was selected by Mingju Zhang; implementation/experiments were AI-assisted and unaided review remains separately tracked.']
+    if args.joint_buffer:
+        report[2:2]=['## Fixed admission extension','',
+            'This run enables a predeclared joint buffer. Require R >20+ceil(full target/weaker lagged capacity)+2; start paired retirement earlier using the same outage allowance. Before rounding, one closed-form sizing cap reserves a 10% adverse gross-price loss, 40% gross collateral after a 10% absolute-price increase, two-sided fees and 10% of known cash.','',
+            'Known admission cash is min(d−2 recorded equity, own prior-EOD cash). A single portfolio envelope uses max(abs(day-start holdings), abs(proposed target)) for each leg, keeping old contracts during replacements; expected exits release no budget. Admit optional additions together only if loss + stressed reserve + round-trip fees + cash buffer <= known cash. Reductions remain available on refusal. Inspect resilience_entries and resilience_budgets for every daily inequality and existing-only deficit.','',
+            'The old fixed cohorts, sides and anchors remain identical even when this gate prevents exposure; do not move shocks to chase new entries. Count no-trade/unexposed outcomes. This one-shock envelope is not a bound on unmodeled gaps, cumulative shocks, future natural price changes or post-admission liquidity. No profit optimization or guaranteed survival claim.','']
     (args.output/'REPORT.md').write_text('\n'.join(report)+'\n',encoding='utf-8')
     receipt=dict(created_utc=datetime.now(timezone.utc).isoformat(),data_kind=manifest['data_kind'],package_version=__version__,
       paths=len(summary),completed=int((~summary.status.str.startswith('failed')).sum()),failed=int(summary.status.str.startswith('failed').sum()),

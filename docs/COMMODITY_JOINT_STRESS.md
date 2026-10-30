@@ -152,3 +152,7 @@ public. Licensed source data and real derived results are excluded. Mingju Zhang
 selected the research direction; implementation, experiments and documentation
 were AI-assisted. Unaided human review is tracked separately; automation is not
 evidence of independently mastered implementation.
+
+## Follow-up: fund the proposed position before admission
+
+The [joint admission-buffer study](COMMODITY_RESILIENT_ADMISSION.md) links long-outage exit time and a portfolio-wide adverse-loss/collateral/fee/cash envelope. This original joint-shock baseline and every stopped path remain unchanged.

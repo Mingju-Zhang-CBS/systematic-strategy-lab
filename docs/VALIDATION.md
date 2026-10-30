@@ -155,3 +155,27 @@ All **923** generated joint-study CSV/gzip artifacts match byte for byte.
 The preceding 56-path stress experiment and its 661 numerical artifacts remain
 unchanged. CI also runs the entire new offline study. These checks establish the
 declared mechanics, not market-calibrated shock probabilities or real liquidity.
+
+### Joint admission, outage time and portfolio cash envelope
+
+Eighteen [new checks](../tests/test_commodity_resilience.py) examine gross spread
+loss/collateral arithmetic, cash shared across products, the weaker leg and full
+integer target, no expected-exit credit, preserved reductions after refusal,
+own prior cash versus lagged equity, causal current/future inputs and earlier
+paired retirement. Source and a fresh Python 3.12 wheel each pass **146 tests**;
+**1,067** protected-fixture CSV/gzip files match byte for byte. Both installations
+also reproduce the original synthetic cohort/anchor tables exactly. The prior
+72-path joint-shock numerical baseline remains independently reproducible.
+The initial synthetic runner mistakenly derived events from protected trades;
+it was corrected to use the ungated reference before publication. Initial local
+outputs were preserved and the experiments restarted without parameter changes.
+CI runs both complete policies and their identical-world comparison. These are
+accounting and information-contract checks, not a calibrated guarantee of exit
+liquidity or collateral sufficiency.
+
+Fee-side checks include same-contract reversals and same-direction staged
+reentries: the funded allowance covers the complete planned reduction, addition
+and eventual target exit. This corrected admission accounting before final
+publication; actual executed fee rates and the fixed shock magnitudes stayed
+unchanged. The independently reconstructed invented cash audit covers all
+36,216 portfolio-days, including refusals and existing-only buffer deficits.
