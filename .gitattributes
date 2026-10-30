@@ -16,3 +16,5 @@ examples/explain_curve_signals.py text eol=lf
 docs/COMMODITY_SIGNALS.md text eol=lf
 reports/commodities/** text eol=lf
 reports/commodities/*.png binary
+
+reports/commodity-stress-synthetic/** -text

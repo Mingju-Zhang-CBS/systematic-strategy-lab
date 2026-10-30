@@ -123,3 +123,23 @@ The [new synthetic study](../reports/commodity-entry-budget-synthetic/REPORT.md)
 distinguishes proposed admissions, modeled fills and account outcomes. Passing
 this budget does not reserve future volume or establish actual execution.
 
+### Post-admission capacity and collateral stress
+
+Eleven [new invariant tests](../tests/test_commodity_stress.py) cover next-session
+event starts, overlap min/max, one-leg capacity and paired partial reductions,
+zero-supply nonfills, current/future capacity isolation, current-day reserve
+announcements, risk-buffer breaches versus cash shortfalls, no reserve double
+debit, fixed first-addition cohorts, shared offered limits and invalid schedules.
+The complete source suite and separately installed Python 3.12 wheel each pass
+**116 tests**. All **645** synthetic CSV/gzip results match byte for byte across
+those installations. The locked plotting stack emits 14 upstream deprecation
+warnings; tests pass.
+
+The prior 77-path admission experiment remains independently reproducible;
+its 77 rows and 423 CSV/gzip artifacts are checked for exact numerical retention.
+The new [invented stress packet](../reports/commodity-stress-synthetic/REPORT.md)
+contains all 56 summary paths, predeclared events and explicit budget/funding
+diagnostics. CI runs the new full offline study in addition to retained examples.
+Neither a passing fixture nor a stopped stress path establishes real fill
+probabilities, exchange margin history or a profitable premium.
+

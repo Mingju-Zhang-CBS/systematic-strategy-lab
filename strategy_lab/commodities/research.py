@@ -67,7 +67,7 @@ class ResearchProtocol:
     entry_budget: bool = False
 
 
-def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
+def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True, stress=None):
     """Consume the once-validated panel and a predeclared protocol.
 
     Equal standalone unit-risk budgets are set at month changes or pair changes;
@@ -88,7 +88,8 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             or any(not np.isfinite(v) or v != int(v) or v < 0 for v in (p.exit_lead, p.capacity_window, p.drain_buffer))
             or p.capacity_window < 1 or (p.exit_lead > 0 and p.execution_policy != "staged")
             or not isinstance(p.entry_budget, bool)
-            or (p.entry_budget and (p.execution_policy != "staged" or p.exit_lead <= 0)) or strategy not in STRATEGIES):
+            or (p.entry_budget and (p.execution_policy != "staged" or p.exit_lead <= 0))
+            or (stress is not None and (p.execution_policy != "staged" or not p.entry_budget)) or strategy not in STRATEGIES):
         raise ValueError("invalid research protocol or strategy")
     dates, c, prices = tape.dates, tape.contracts, tape.prices
     keys = c.contract.to_numpy()
@@ -114,6 +115,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
     retired_front = np.full(len(PRODUCTS), -1, dtype=np.int64)
     exit_plans = []
     admissions = []
+    stress_budgets = []
+    stress_sessions = []
+    observed_capacity = None if stress is None else np.floor(np.floor(p.participation*tape.volume)*stress.capacity_factor)
     updates = {i+p.extra_delay:s for i, s in tape.updates.items()}
     earlier = [i for i in updates if i < active_days[0]]
     if earlier:
@@ -123,6 +127,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
     status = "completed_exploratory_path"
     for day in active_days:
         obs = day-2
+        reserve_rate = p.reserve_rate if stress is None else p.reserve_rate*stress.margin_factor[day]
         new_month = day in updates
         if new_month:
             score = updates[day].set_index("product").reindex(PRODUCTS)
@@ -198,7 +203,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
         cost_per_unit = p.commission+p.slippage_ticks*ticks*multipliers
         fee_budget = float(np.sum(np.abs(frozen_target-positions)*cost_per_unit))
         budget = max(0, known_equity-fee_budget)
-        funding_scale = min(1., p.gross_limit*budget/gross_before, p.reserve_limit*budget/(p.reserve_rate*gross_before)) if gross_before > 0 else 1.
+        funding_scale = min(1., p.gross_limit*budget/gross_before, p.reserve_limit*budget/(reserve_rate*gross_before)) if gross_before > 0 else 1.
         continuous_qty = qty*funding_scale
         integer_qty = np.trunc(continuous_qty).astype(np.int64)
         last_requested = integer_qty.copy()
@@ -207,6 +212,16 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             target[pair[j, 0]] += integer_qty[j]
             if is_spread:
                 target[pair[j, 1]] -= integer_qty[j]
+        margin_scale = 1.
+        if stress is not None:
+            known_gross = float(np.sum(np.abs(positions)*multipliers*price_basis))
+            if known_gross > 0:
+                margin_scale = min(1., p.reserve_limit*max(0,known_equity)/(reserve_rate*known_gross))
+            if margin_scale < 1:
+                # Announced current reserve rate + lagged value, before today's
+                # price or offered capacity. No new risk until buffer restored.
+                target = np.sign(positions)*np.trunc(np.abs(positions)*margin_scale).astype(np.int64)
+                events.append(dict(session=dates[day].date().isoformat(),product="PORTFOLIO",code="proxy_margin_reduction_requested",detail=f"rate={reserve_rate}; scale={margin_scale}"))
         slice_target = positions.copy()
         if p.execution_policy == "staged":
             # Freeze paired slices BEFORE today's reference or activity is seen.
@@ -219,6 +234,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                 remaining = int(np.min(tape.deadlines[held])-day+1)
                 history = tape.volume[max(0, obs-p.capacity_window+1):obs+1, held]
                 conservative = int(np.floor(p.participation*history).min()) if len(history) == p.capacity_window and np.isfinite(history).all() else 0
+                if stress is not None:
+                    history = observed_capacity[max(0,obs-p.capacity_window+1):obs+1,held]
+                    conservative = int(history.min()) if len(history)==p.capacity_window and np.isfinite(history).all() else 0
                 units = int(np.abs(positions[held]).max())
                 drain_days = int(np.ceil(units/conservative)) if conservative > 0 else np.inf
                 early = p.exit_lead > 0 and (remaining <= p.exit_lead or remaining <= drain_days+p.drain_buffer or conservative == 0)
@@ -246,6 +264,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                     required = int(reductions.max())
                     activity = tape.volume[obs, changed]
                     capacity = int(np.floor(p.participation*activity).min()) if len(changed) and np.isfinite(activity).all() else 0
+                    if stress is not None:
+                        activity = observed_capacity[obs,changed]
+                        capacity = int(activity.min()) if len(changed) and np.isfinite(activity).all() else 0
                     planned = min(required, capacity)
                     slice_target[group] = old-np.sign(old)*np.minimum(reductions, planned)
                     exit_plans.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
@@ -253,6 +274,16 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                                            required_units=required, planned_units=planned, current_capacity=capacity,
                                            conservative_capacity=conservative, remaining_sessions=remaining, early_retirement=early,
                                            goal_units=int(np.abs(exit_goals[group]).max()), retired_near="" if retired_front[j] < 0 else keys[retired_front[j]]))
+                if stress is not None:
+                    actual_limit = np.minimum(observed_capacity[obs,held],np.floor(np.floor(p.participation*tape.volume[obs,held])*stress.capacity_factor[day,held]))
+                    offered = int(actual_limit.min()) if np.isfinite(actual_limit).all() else 0
+                    stress_budgets.append(dict(session=dates[day].date().isoformat(),observation=dates[obs].date().isoformat(),
+                        product=product,contracts=";".join(keys[held]),held_units=units,conservative_capacity=conservative,
+                        offered_capacity=offered,remaining_sessions=remaining,
+                        required_drain_sessions=drain_days if np.isfinite(drain_days) else np.nan,
+                        budget_slack=remaining-drain_days-p.drain_buffer if np.isfinite(drain_days) else np.nan,
+                        no_projected_capacity=conservative==0,current_shock=bool((stress.capacity_factor[day,held]<1).any()),
+                        margin_factor=stress.margin_factor[day]))
         open_target = target.copy()
         if p.entry_budget:
             for j, product in enumerate(PRODUCTS):
@@ -264,6 +295,9 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                 candidate = group[new != 0]
                 history = tape.volume[max(0, obs-p.capacity_window+1):obs+1, candidate]
                 capacity = int(np.floor(p.participation*history).min()) if len(history) == p.capacity_window and np.isfinite(history).all() else 0
+                if stress is not None:
+                    history = observed_capacity[max(0,obs-p.capacity_window+1):obs+1,candidate]
+                    capacity = int(history.min()) if len(history)==p.capacity_window and np.isfinite(history).all() else 0
                 remaining = int(np.min(tape.deadlines[candidate])-day)
                 assessment = _entry_budget(int(np.abs(new).max()), capacity, remaining, p.exit_lead, p.drain_buffer)
                 admissions.append(dict(session=dates[day].date().isoformat(), observation=dates[obs].date().isoformat(),
@@ -336,21 +370,32 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
                     if not len(changed):
                         continue
                     delta = stage_target[changed]-positions[changed]
+                    effective_target = stage_target[group]
+                    available = np.floor(p.participation*tape.volume[obs,changed])
+                    if stress is not None:
+                        available = np.minimum(observed_capacity[obs,changed],np.floor(available*stress.capacity_factor[day,changed]))
+                        if stage == "reduce" and np.isfinite(available).all():
+                            feasible = max(0,int((available-used_capacity[changed]).min()))
+                            actual_units = min(int(np.abs(delta).min()),feasible)
+                            if actual_units > 0:
+                                delta = np.sign(delta)*actual_units
+                                effective_target = positions[group].copy()
+                                effective_target[np.flatnonzero(changes)] += delta
                     failure = ""
-                    if not np.isfinite(tape.volume[obs, changed]).all() or (np.abs(delta)+used_capacity[changed] > np.floor(p.participation*tape.volume[obs, changed])).any():
-                        failure = "lagged_participation_limit"
+                    if not np.isfinite(available).all() or (np.abs(delta)+used_capacity[changed] > available).any():
+                        failure = "lagged_participation_limit" if stress is None else "stressed_shared_capacity_limit"
                     elif not np.isfinite(prices[day, changed]).all():
                         failure = "missing_execution_reference"
                     elif not np.isfinite(tape.volume[day, changed]).all() or (tape.volume[day, changed] <= 0).any():
                         failure = "zero_or_missing_execution_activity"
                     candidate = positions.copy()
-                    candidate[group] = stage_target[group]
+                    candidate[group] = effective_target
                     cost = float(np.sum(np.abs(delta)*cost_per_unit[changed]))
                     candidate_marks = marks.copy()
                     candidate_marks[changed] = prices[day, changed]
                     gross = float(np.nansum(np.abs(candidate)*multipliers*np.maximum(np.abs(candidate_marks), price_basis)))
-                    increasing = (np.abs(stage_target[group]) > np.abs(positions[group])).any()
-                    if cash-cost <= 0 or (increasing and gross > min(p.gross_limit, p.reserve_limit/p.reserve_rate)*(cash-cost)):
+                    increasing = (np.abs(effective_target) > np.abs(positions[group])).any()
+                    if cash-cost <= 0 or (increasing and gross > min(p.gross_limit, p.reserve_limit/reserve_rate)*(cash-cost)):
                         failure = "post_mark_funding_limit"
                     if stale and increasing:
                         failure = "increasing_risk_with_stale_marks"
@@ -377,9 +422,20 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
             for key in held[day >= tape.deadlines[held]]:
                 events.append(dict(session=dates[day].date().isoformat(), product=contract_products[key], code=status, detail=keys[key]))
         gross = float(np.nansum(np.abs(positions)*multipliers*np.maximum(np.abs(marks), price_basis)))
-        reserve = p.reserve_rate*gross
+        reserve = reserve_rate*gross
         if gross > p.gross_limit*cash or reserve > p.reserve_limit*cash:
             events.append(dict(session=dates[day].date().isoformat(), product="PORTFOLIO", code="constraint_breach", detail="Reduction requested at next feasible decision"))
+        if stress is not None:
+            shortfall = max(0.,reserve-cash)
+            stress_sessions.append(dict(session=dates[day].date().isoformat(),reserve_rate=reserve_rate,
+                margin_factor=stress.margin_factor[day],margin_target_scale=margin_scale,
+                risk_buffer_breach=reserve>p.reserve_limit*cash,collateral_shortfall=shortfall,
+                shocked_held_contracts=int((stress.capacity_factor[day,held]<1).sum()),
+                all_shocked_contracts=int((stress.capacity_factor[day]<1).sum())))
+            if shortfall > 0:
+                events.append(dict(session=dates[day].date().isoformat(),product="PORTFOLIO",code="failed_proxy_collateral_shortfall",detail=f"reserve={reserve}; cash={cash}; no external top-up"))
+                if not status.startswith("failed"):
+                    status = "failed_proxy_collateral_shortfall"
         for key in held if detail else []:
             holdings.append(dict(session=dates[day].date().isoformat(), product=contract_products[key], contract=keys[key], quantity=int(positions[key]), mark=marks[key], multiplier=multipliers[key], stale=key in stale))
         ledger.append(dict(session=dates[day].date().isoformat(), opening_equity=opening, variation_margin=vm, costs=fees, equity=cash,
@@ -409,4 +465,7 @@ def run_research(tape, strategy, protocol=ResearchProtocol(), detail=True):
         result["exit_plans"] = pd.DataFrame(exit_plans, columns=["session", "observation", "product", "contracts", "held_units", "required_units", "planned_units", "current_capacity", "conservative_capacity", "remaining_sessions", "early_retirement", "goal_units", "retired_near"])
     if p.entry_budget:
         result["entry_admissions"] = pd.DataFrame(admissions, columns=["session", "observation", "product", "contracts", "current_units", "deadline", "paired", "target_units", "conservative_capacity", "remaining_exit_sessions", "required_drain_sessions", "lead_ok", "drain_ok", "admitted", "reason"])
+    if stress is not None:
+        result["stress_budgets"] = pd.DataFrame(stress_budgets)
+        result["stress_sessions"] = pd.DataFrame(stress_sessions)
     return result

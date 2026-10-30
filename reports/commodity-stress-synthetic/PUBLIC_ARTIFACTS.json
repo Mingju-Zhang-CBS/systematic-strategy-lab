@@ -1,0 +1,312 @@
+{
+  "data_kind": "synthetic",
+  "rights": "Original invented curves, contracts and event schedules only; no licensed source or real derived findings",
+  "scope": "All 56 paths and event summaries, three figures and complete spread/delayed-carry traces for control, zero capacity and combined pressure. Full CLI regenerates all other account details.",
+  "reproduction": "python -m strategy_lab.commodities.stress_report --fixture --output NEW_DIRECTORY",
+  "files": [
+    {
+      "path": "REPORT.md",
+      "sha256": "5eeac7a25e5a87b8e38a66097415d81803cc73972972cef9acdd94d6a847436b"
+    },
+    {
+      "path": "RUN_MANIFEST.json",
+      "sha256": "c0ffa8f137005f23330011326e7a78cdb9372d324d52e5a81f895a6d11a07215"
+    },
+    {
+      "path": "FROZEN_RUN.json",
+      "sha256": "fabd09cf91145c784ac2ca25ef524b572b43831941cd38c57c7aeb4e0cce9262"
+    },
+    {
+      "path": "FROZEN_COHORTS.csv",
+      "sha256": "2fa5eb76d8a72ce90e07680fad34a833ade606850216294827c15c355b4f4b76"
+    },
+    {
+      "path": "all_windows.csv",
+      "sha256": "ef1b555fdf4782ca2861aef0fead47345c26c975945ec8a8fb0a0fd1355e389b"
+    },
+    {
+      "path": "summary.csv",
+      "sha256": "18d446b58e0e7514210f224a73a929228f2e1cbbc117fad453f1531f129d3039"
+    },
+    {
+      "path": "paired_inference.csv",
+      "sha256": "bb920674587bab7b31bbf4c701bd4ba5bad5132310c3196a7482f000012e9330"
+    },
+    {
+      "path": "completion.png",
+      "sha256": "55c14aee2249c969f1960afe563bdd3d7c18f48c5e1957cce8564bfc3fdd33df"
+    },
+    {
+      "path": "budget_and_funding.png",
+      "sha256": "7ea6251ea0ff6e92c9f1f3156712696864bc04a31afa02d6ea8ea8e2a1448174"
+    },
+    {
+      "path": "historical_intervals.png",
+      "sha256": "ca5fa95e3a7f742f57e9579fb7b6e66aba9b258812abe7b0092608757abd5a89"
+    },
+    {
+      "path": "control/base/bm_spread/ledger.csv.gz",
+      "sha256": "aaccc9e77a1fab6509936926b111b133424a51f7fb5c95d3b47fd769d43729cb"
+    },
+    {
+      "path": "control/base/bm_spread/trades.csv.gz",
+      "sha256": "189f49b9e4156f9ba50513b995821f35d2c0f95b4b9e2691ac2d7fb0ba0356bb"
+    },
+    {
+      "path": "control/base/bm_spread/events.csv.gz",
+      "sha256": "4783b113685a9532b25566dd41682ef62235007ace8c86d63feb7d0ef4fb72d0"
+    },
+    {
+      "path": "control/base/bm_spread/exit_plans.csv.gz",
+      "sha256": "0f128b8adf4a02de626811cdf6ede3a652acefc6fdc4dd1867344ca1710480eb"
+    },
+    {
+      "path": "control/base/bm_spread/entry_admissions.csv.gz",
+      "sha256": "78d347b4735c7d27261e5e2d7d1d9c04b4650dfb7262f4167da43406d38d74ac"
+    },
+    {
+      "path": "control/base/bm_spread/decisions.csv.gz",
+      "sha256": "e79cf8aea06543cb3d6983c9b7c35cbfb5002e8d2e36acb6118040bbb989c074"
+    },
+    {
+      "path": "control/base/bm_spread/holdings.csv.gz",
+      "sha256": "72ae48c83733548347ea20d5d1510edd335209ab98ae893b6e6b9cd8c51e8936"
+    },
+    {
+      "path": "control/base/bm_spread/pnl.csv.gz",
+      "sha256": "a87f9dde28cd07f774bfa07a4046e07d4cf210432e26df54e6985619bafbe2a5"
+    },
+    {
+      "path": "control/base/bm_spread/RECEIPT.json",
+      "sha256": "0e419548444ccb7bf2ed23bca1b8390d4e5af433ecd92ce2f363cf2a3e4094d2"
+    },
+    {
+      "path": "control/delay_plus_3/carry/ledger.csv.gz",
+      "sha256": "c9297c5c43eaf8d3c9c247ab53c956758b53a4d059e61591eba978768706786d"
+    },
+    {
+      "path": "control/delay_plus_3/carry/trades.csv.gz",
+      "sha256": "15ce8cfaa9599bea0d81bb0609f38b00772668a5c05ffd04ce0fc4d40432c16a"
+    },
+    {
+      "path": "control/delay_plus_3/carry/events.csv.gz",
+      "sha256": "79e01869e56d3d47fe45a72da4a0e3846585128af15ae98586c10f1fb74c46eb"
+    },
+    {
+      "path": "control/delay_plus_3/carry/exit_plans.csv.gz",
+      "sha256": "4ddbc55e1bd8787a9783164da6d0575c2ee2dd68900b898ea5917d76d2cbe4a2"
+    },
+    {
+      "path": "control/delay_plus_3/carry/entry_admissions.csv.gz",
+      "sha256": "18043ecb96c0621fa98aa938fe13490443bbc9215a063991a1ceb0f069ff43c9"
+    },
+    {
+      "path": "control/delay_plus_3/carry/decisions.csv.gz",
+      "sha256": "914c0076196af2213a02d8e429e8d059ab8331a531c79c4a9b94f360e0a683a4"
+    },
+    {
+      "path": "control/delay_plus_3/carry/holdings.csv.gz",
+      "sha256": "5e92df7e65985dfee71d7a04abac7c645287729773c59cdb44573deffd18eac0"
+    },
+    {
+      "path": "control/delay_plus_3/carry/pnl.csv.gz",
+      "sha256": "2477cdc796f5cba754dd6def7fdc06dc1d3bbbfaf61aa942557db966d15ba3dd"
+    },
+    {
+      "path": "control/delay_plus_3/carry/RECEIPT.json",
+      "sha256": "1ef2ea4625cdf3ce1297450e99a1111707dfd9cb048c87c70ed9c43bafceb0da"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/ledger.csv.gz",
+      "sha256": "d396691c2dc5894aa5ccefa83521170a7a5bb1e97d4014a5f5291388a645a8f1"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/trades.csv.gz",
+      "sha256": "f41f9677c4ec4c7da6dd60e66bc67a076a91fe38c7a79d2c5f96ffda037ed78f"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/events.csv.gz",
+      "sha256": "120887587b442db1fee01aa2a9d3d987fd2a1e7247d3a20f49bb6c88048f4427"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/exit_plans.csv.gz",
+      "sha256": "1346cbf8109f068f6958f1d09fb2a2d3cf7cfd3db1f1782faccab2261a330c0e"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/entry_admissions.csv.gz",
+      "sha256": "d97b81ba3c8e23469a120a71f44e06060c30a01cdca35a5c54a68faf3a8c7ee5"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/decisions.csv.gz",
+      "sha256": "04ccb85f39f2e997f92b98c610a1b0283df28fbd191fd915d334cf49e47d9c1b"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/holdings.csv.gz",
+      "sha256": "1024070e39168fb64da157b8ef9f3236169f7867281dc88f285d1c3e9bc244a3"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/pnl.csv.gz",
+      "sha256": "a8bc0e9d6ac16ec45622fb08ae1c13207e1106b3a8af18a1d24a48149234f8b9"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/RECEIPT.json",
+      "sha256": "2a1825eb7247d98bef29d0a9c17b4255d5c32ba92899840dda636a18b1a770ee"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/stress_budgets.csv.gz",
+      "sha256": "e4d47b6bdfd0be1268c3dcff25d28d7bd0f638ad527eb3970b597590fce7a509"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/stress_sessions.csv.gz",
+      "sha256": "9a95b02456b5fd39b2a80af023e3ff146c4451352efb45a85d8d3dd1a04c1f29"
+    },
+    {
+      "path": "capacity_zero_5/base/bm_spread/stress_windows.csv",
+      "sha256": "25103133ffeb93d762ed92b41a617ef2791e61ebc1f3dfa2472fe8fe5144c11c"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/ledger.csv.gz",
+      "sha256": "fd94a551313821f04b25a0f9197b81837c42ba0d4a2015f17fc967392ba6c61e"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/trades.csv.gz",
+      "sha256": "54560c6b90139754d85491e3c92eb50e04ea267db14e0d0689e0e4424102e840"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/events.csv.gz",
+      "sha256": "ea1f4d98134d5778ffab463047a75d9ac0ff349307cfdf52cc8c83403df17c60"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/exit_plans.csv.gz",
+      "sha256": "6e479142baef53800bcf05b21ce79e9d2ca34b5893811aa7bab45d654a81c985"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/entry_admissions.csv.gz",
+      "sha256": "a0a537fff653dc9f2414cb78eabf9fe9183d963901b29f692a703f6f7b04d2b8"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/decisions.csv.gz",
+      "sha256": "15ed8f5bdbb76f4e1df8671e57e689c2a03e5caed14b3c623cf0ec8c88921c56"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/holdings.csv.gz",
+      "sha256": "61db852d486033bd4bb6544d752d87f79472de19f300e3a3a19a4a636c54f8e8"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/pnl.csv.gz",
+      "sha256": "d635d31f3aefe4af96ee988c3364681c35a534d466bbf72bd6a3b7567715670d"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/RECEIPT.json",
+      "sha256": "bd2d40004ea179fb5e5596a4206861f173be33382197e60b2e70e8b5962611d1"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/stress_budgets.csv.gz",
+      "sha256": "5c44d30636d0a9e2eaff20397eef2c07d2af6857794de8410a73d10a79527bd3"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/stress_sessions.csv.gz",
+      "sha256": "02f0ae8cf9bf4328ea45aa2550b5e86b43d5f0fd6953ee9e0d8ac17f8f4d9d94"
+    },
+    {
+      "path": "capacity_zero_5/delay_plus_3/carry/stress_windows.csv",
+      "sha256": "4293da3b9e809392a62893b4cd4a03242b242ccb22b479fb369c14056c4e2b45"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/ledger.csv.gz",
+      "sha256": "5355403a30c7f747c8106bda0b6ba783e7809df09dc09d74a7bf2e47ae32b10a"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/trades.csv.gz",
+      "sha256": "60686e3ab43e38dbc33e3a9b745726ee337cde3ada78cf86bf1eb3c71a36e237"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/events.csv.gz",
+      "sha256": "16fb159b2739530791320c7611ac33f52d7c4d8b7e9b0e86f1efa3e0e32cb87b"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/exit_plans.csv.gz",
+      "sha256": "b16d9c7eeb4e34bd926f20de5416f79ceebe72bcc396822db865ccce302d1eb6"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/entry_admissions.csv.gz",
+      "sha256": "fea8ce491e1bc27d5e926a5f24353a504d9835c3b4384c58ddbdc014cf8b0b32"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/decisions.csv.gz",
+      "sha256": "cbdb8cbbb3f7ea12e334dbfc2635387c19ab2ce1e5caaee860853f386cfd1975"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/holdings.csv.gz",
+      "sha256": "81770c3b81552f4ed108fb8e2230fd9977813d81554c16615b1efc4e300e6907"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/pnl.csv.gz",
+      "sha256": "45e54bafba08a20cc69538e6a8d85a7a8bcb41e63237a39871ef59f9f32f154c"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/RECEIPT.json",
+      "sha256": "2c879d4f0dc8d0211171a5a5c81c86c9abcc22f5639eff50df87a0f6253fa411"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/stress_budgets.csv.gz",
+      "sha256": "377379f68a04afbedcff526848b47d9b27941b51c4cba374588848843b7d7c85"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/stress_sessions.csv.gz",
+      "sha256": "bea3a7e9ec383171207fcad0e0a0bb199b98572ad225a44d36ee7566af49b762"
+    },
+    {
+      "path": "combined_quarter_margin4_5/base/bm_spread/stress_windows.csv",
+      "sha256": "69eacfb362799ae0a692c1efc86d49408882b118082bc690f9a341d47b620dc4"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/ledger.csv.gz",
+      "sha256": "7131738327aefc2e6774b1e2f1725a09b38b5189010b3ac8fee0b5cd3be2820e"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/trades.csv.gz",
+      "sha256": "0234b6efd346f0d738b54c4dfa62d0fc0de2008302be9ba5efc31952cb66f031"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/events.csv.gz",
+      "sha256": "cb298c3c8b0c6cbc19e4500b2ae19ed9a3adcbd2365e185d4c9552f032298498"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/exit_plans.csv.gz",
+      "sha256": "0e06d8e873d619f7b95d16ddc7576d324775c007c70d576948d96b20c9d7f308"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/entry_admissions.csv.gz",
+      "sha256": "864cbec75b9569615edc30e01a98131867c35c9ddd8bfc86b5a9c27c76de5c7e"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/decisions.csv.gz",
+      "sha256": "d127e7482ec75976c02a999fe852648f92ae9f72573f12d571923627325ae263"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/holdings.csv.gz",
+      "sha256": "dbd58b57e342a477c568eb0086fa5f5d9b144bf6bb2a0658cb7a77e042ab02d0"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/pnl.csv.gz",
+      "sha256": "b4b020ab0e7ae332711043f0d6e3f28483d2db328728569bd76b1cf0947fcbd3"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/RECEIPT.json",
+      "sha256": "a25c525c26a362b20dcd31c2b3f1147275547cdf8c28f779462b5c1ea0c881ea"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/stress_budgets.csv.gz",
+      "sha256": "fbf859e2e223e33bac5d476f7cd1a62641ef087bc74cc5979205fa0a6e3b8a5a"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/stress_sessions.csv.gz",
+      "sha256": "2b8da5eee9b04c8fb064d63fe4e8e217fc7309f6f58052e34e99406667dbf98d"
+    },
+    {
+      "path": "combined_quarter_margin4_5/delay_plus_3/carry/stress_windows.csv",
+      "sha256": "ef435ee76913a8445ee59234956551965888b988785cca83d77820499615cf69"
+    }
+  ]
+}

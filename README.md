@@ -40,6 +40,15 @@ exposure before opening, using the same retirement lead and weaker-leg capacity.
 [Invented results](reports/commodity-entry-budget-synthetic/REPORT.md) distinguish
 admission, modeled fills and failed requests; old retirement baselines remain.
 
+## Does the exit survive a shock?
+
+The [post-admission stress study](docs/COMMODITY_STRESS.md) fixes next-session
+capacity cuts and announced proxy-reserve increases before comparing outcomes.
+Paired reductions can receive a smaller actual slice; new risk cannot bypass
+an old exit. A risk-buffer breach is distinct from cash collateral shortfall.
+[Invented results](reports/commodity-stress-synthetic/REPORT.md) preserve all
+fixed scenarios, while the previous admission baseline remains reproducible.
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

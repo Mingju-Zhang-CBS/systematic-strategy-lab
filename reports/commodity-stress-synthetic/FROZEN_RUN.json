@@ -1,0 +1,138 @@
+{
+  "created_utc": "2026-10-30T16:27:53.845356+00:00",
+  "data_kind": "synthetic",
+  "source": {
+    "data_kind": "synthetic",
+    "rights": "Original generated examples; no vendor records",
+    "vintage": "invented; seed=20261026",
+    "source": "research_fixture",
+    "calendar_basis": "authorized scheduled-settlement proxy"
+  },
+  "cases": [
+    {
+      "name": "control",
+      "capacity_fraction": 1.0,
+      "margin_multiple": 1.0,
+      "legs": "both",
+      "duration": 0
+    },
+    {
+      "name": "capacity_half_5",
+      "capacity_fraction": 0.5,
+      "margin_multiple": 1.0,
+      "legs": "both",
+      "duration": 5
+    },
+    {
+      "name": "capacity_quarter_5",
+      "capacity_fraction": 0.25,
+      "margin_multiple": 1.0,
+      "legs": "both",
+      "duration": 5
+    },
+    {
+      "name": "one_leg_quarter_5",
+      "capacity_fraction": 0.25,
+      "margin_multiple": 1.0,
+      "legs": "last",
+      "duration": 5
+    },
+    {
+      "name": "capacity_zero_5",
+      "capacity_fraction": 0.0,
+      "margin_multiple": 1.0,
+      "legs": "both",
+      "duration": 5
+    },
+    {
+      "name": "margin_double_5",
+      "capacity_fraction": 1.0,
+      "margin_multiple": 2.0,
+      "legs": "both",
+      "duration": 5
+    },
+    {
+      "name": "combined_quarter_margin4_5",
+      "capacity_fraction": 0.25,
+      "margin_multiple": 4.0,
+      "legs": "both",
+      "duration": 5
+    }
+  ],
+  "accounts": [
+    [
+      "base",
+      "long_only"
+    ],
+    [
+      "base",
+      "trend"
+    ],
+    [
+      "base",
+      "carry"
+    ],
+    [
+      "base",
+      "bm_outright"
+    ],
+    [
+      "base",
+      "bm_spread"
+    ],
+    [
+      "base",
+      "trend_half"
+    ],
+    [
+      "base",
+      "carry_half"
+    ],
+    [
+      "delay_plus_3",
+      "carry"
+    ]
+  ],
+  "protocol": {
+    "start": "2021-01-01",
+    "end": "2022-12-31",
+    "capital": 1000000,
+    "commission": 2.5,
+    "slippage_ticks": 1,
+    "participation": 0.01,
+    "reserve_rate": 0.1,
+    "reserve_limit": 0.5,
+    "gross_limit": 3,
+    "annual_risk_cap": 0.1,
+    "unit_window": 60,
+    "unit_minimum": 40,
+    "covariance_window": 252,
+    "covariance_minimum": 126,
+    "extra_delay": 0,
+    "exclude_sector": "",
+    "execution_policy": "staged",
+    "exit_lead": 10,
+    "capacity_window": 5,
+    "drain_buffer": 2,
+    "entry_budget": true
+  },
+  "code": {
+    "engine.py": "6addf84fd79e996644fae50eb933b62a5425cea5eb676f1d46a06dc77cbe3239",
+    "fixture.py": "f8ea1f21138f72389c36918efdcd68edad651890df48070d81241422c109f033",
+    "panel.py": "b0a5136a121843be2ce55b3b5edb709021c58bc9f59bc8475599239caa03ca70",
+    "research.py": "37998004ad7528ded1ed09d657f58722db64fd456c43ee32947543178147bd3c",
+    "research_fixture.py": "c1a74cba143c99b44cfd21d10ad61773b5b93b1fdf72fe1b7c58df5d126883fb",
+    "research_report.py": "31690ab2387b2466f5d4145468e7e5ddd985bad86774e9f54c8fcd6eb20fcd38",
+    "scenarios.py": "130b2298c9e47284214d840ac044d5a69bf2834855ecd7593e5f3feb5ed55045",
+    "scheduled.py": "f183c6893771d7262fc6c4294f7b8c59f8d36657b0e3f74dfa798b874d0b3d39",
+    "signals.py": "30380ffb193982e433b7cb1b14cf6f4d0e7461403d742ac12b8c6027ff7541e6",
+    "stress.py": "ac0cbe2d81a0bf7b79ead4ee4f326f05fe22e39c85663ac4b797fd0971cb43f1",
+    "stress_report.py": "409294431c76cc8b2d9492508aa9ba1f0eb0042e207d06a6d2291b2f12897e30",
+    "__init__.py": "77673cc060301e6fc8c1677ca8b63e92f4605ff71b2e38d991d1d615d768c544",
+    "__main__.py": "580194fffa54f74cdcc100771b7b82737eb6d7e224108105cb03d3d852d5407b"
+  },
+  "cohort_sha256": null,
+  "hypothesis": "Fixed post-admission supply/margin stresses; no return-selected scenarios or changed stopping boundaries",
+  "clocks": "Five-day shocks from next scheduled session. Offer surprises at execution, history visible with t-2 delay; current-day margin announcement before decisions.",
+  "scope": "Prior inspected historical paths; no new unseen OOS or 56-independent-observation claim"
+}

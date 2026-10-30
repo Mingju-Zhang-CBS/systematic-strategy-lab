@@ -7,6 +7,10 @@ both decisions. All earlier baselines, failures and reports remain available.
 Public examples are **invented**; licensed source data and all real derived
 findings remain private.
 
+See the [post-admission stress study](COMMODITY_STRESS.md) for capacity surprises
+and announced proxy-collateral increases after entry. This admission baseline
+remains unchanged and separately reproducible.
+
 ## Two protocols, one controlled change
 
 |Policy|Held-inventory retirement|Proposed additions|
