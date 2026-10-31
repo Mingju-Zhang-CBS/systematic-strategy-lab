@@ -23,3 +23,9 @@ Nineteen evidence cases cover nanosecond reconstruction, lot conversion, quote c
 [Precision and publication methods](INTRADAY_EVIDENCE.md) · [Invented evidence report](../reports/intraday-evidence-fixture/REPORT.md) · [Evidence tests](../tests/test_intraday_evidence.py). Licensed replay results and their retained source failures are private; a successful reconstruction still does not establish completed long-history performance.
 
 The source adapter's synthetic 2-for-1 case validates arithmetic and input gates. It does not establish an observed split event, complete original-release histories or universal corporate-action treatment. These are automated checks, not unaided human replication or a profitability claim.
+
+## Dated source selection and exchange release bounds — 30 October 2026 New York / v0.10.3
+
+A fresh Python 3.12 noneditable installation passed **200 tests**, dependency checks, the evidence report, original intraday/clock examples and default real-data allocation demonstration. Fourteen additional cases exercise vintage-specific self-NBBO indicators, duplicate capacity, conflicting sequence payloads, exact dated lot identities, future-source perturbation and a minute-resolution publication boundary. The engine bytes and financial rules remain unchanged.
+
+The new [source-selection figure](../reports/intraday-evidence-fixture/source_selection.png) uses invented messages. Linked official exchange listings strengthen selected issuer publication facts; they do not repair every earlier event or authorize restarting stopped accounts. Private frozen replays and independent ledgers remain separate from public demonstration outputs.

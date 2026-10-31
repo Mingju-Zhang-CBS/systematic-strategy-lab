@@ -1,6 +1,7 @@
 import pandas as pd
 import pytest
-from strategy_lab.intraday.evidence import recover_quote_clusters, evaluate_action_evidence
+from strategy_lab.intraday.evidence import (recover_quote_clusters, evaluate_action_evidence,
+                                           select_quote_sources, resolve_dated_lots)
 
 
 def clocks():
@@ -106,3 +107,70 @@ def test_incomplete_or_late_evidence_cannot_unlock_action(field, value, status):
     out = evaluate_action_evidence(e)
     assert not out.strict_usable.any()
     assert out.evidence_status.iloc[0] == status
+
+
+@pytest.mark.parametrize('source,indicator,date,accepted', [
+    ('N', '4', '2016-01-04', True), ('N', '0', '2016-01-04', False),
+    ('N', '2', '2016-01-04', False), ('C', '1', '2017-10-27', True),
+    ('C', 'G', '2017-10-27', False), ('C', 'G', '2017-10-30', True),
+    ('C', '1', '2017-10-30', False), ('C', 'U', '2017-10-30', False)])
+def test_only_dated_self_nbbo_cqm_can_supply_both_sides(source, indicator, date, accepted):
+    _, f = clocks(); f = f.iloc[:1].copy()
+    f['source'] = source; f['session'] = date
+    f['raw_file'] = 'CQM'; f['natbbo_ind'] = indicator
+    chosen, audit = select_quote_sources(f)
+    assert bool(len(chosen)) == accepted
+    assert audit.source_status.iloc[0] == ('source_eligible' if accepted else 'not_self_nbbo')
+
+
+def test_cross_file_duplicate_does_not_add_displayed_capacity():
+    _, f = clocks(); f['source'] = 'N'; f['session'] = '2020-01-02'
+    f['raw_file'] = 'NBBO'; f['natbbo_ind'] = '4'
+    copy = f.copy(); copy['raw_file'] = 'CQM'
+    chosen, audit = select_quote_sources(pd.concat([f, copy]))
+    assert len(audit) == 6 and len(chosen) == 3
+    assert chosen.bid_lots.sum() == f.bid_lots.sum()
+
+
+def test_conflicting_cross_file_sequence_is_quarantined_without_file_priority():
+    _, f = clocks(); f = f.iloc[:1].copy()
+    f['source'] = 'N'; f['session'] = '2020-01-02'
+    f['raw_file'] = 'NBBO'; f['natbbo_ind'] = '4'
+    copy = f.copy(); copy['raw_file'] = 'CQM'; copy['bid_lots'] = 100
+    chosen, audit = select_quote_sources(pd.concat([f, copy]))
+    assert chosen.empty
+    assert audit.source_status.eq('conflicting_sequence_payload').all()
+
+
+def test_exact_legacy_symbol_resolves_units_without_prefix_or_cross_date_fill():
+    m = pd.DataFrame({'symbol_15': ['SYNTH', 'SYNTHX', 'OTHER'],
+                      'sym_root': [None, None, None], 'sym_suffix': [None]*3,
+                      'round_lot': [100, 10, 50]})
+    result = resolve_dated_lots(m, ['SYNTH', 'MISSING'])
+    assert result.to_dict('records') == [{'asset': 'SYNTH', 'lot_size': 100}]
+
+
+def test_conflicting_lot_identity_does_not_choose_a_convenient_unit():
+    m = pd.DataFrame({'symbol_15': ['SYNTH', 'SYNTH'], 'sym_root': [None, 'SYNTH'],
+                      'sym_suffix': [None, None], 'round_lot': [100, 10]})
+    assert resolve_dated_lots(m, ['SYNTH']).empty
+
+
+def test_future_source_perturbation_does_not_change_past_eligible_quotes():
+    _, f = clocks(); f['source'] = 'N'; f['session'] = '2020-01-02'
+    f['raw_file'] = 'CQM'; f['natbbo_ind'] = '4'
+    expected, _ = select_quote_sources(f)
+    later = f.copy(); later['session'] = '2020-01-03'; later['bid_lots'] = 9999
+    actual, _ = select_quote_sources(pd.concat([f, later]))
+    pd.testing.assert_frame_equal(expected, actual.iloc[:3].reset_index(drop=True))
+
+
+def test_minute_resolution_release_uses_conservative_end_before_decision():
+    e = evidence()
+    listed = pd.Timestamp('2020-01-02T14:29:00Z')
+    e['published_at'] = listed + pd.Timedelta(minutes=1)
+    # A release somewhere in the preceding minute cannot be asserted strictly
+    # earlier than the decision when its conservative upper bound equals it.
+    assert not evaluate_action_evidence(e).strict_usable.any()
+    e['decision_at'] = '2020-01-02T14:30:01Z'
+    assert evaluate_action_evidence(e).strict_usable.all()

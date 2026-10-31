@@ -7,7 +7,8 @@ import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from strategy_lab.intraday.evidence import recover_quote_clusters, evaluate_action_evidence
+from strategy_lab.intraday.evidence import (recover_quote_clusters, evaluate_action_evidence,
+                                           select_quote_sources, resolve_dated_lots)
 from strategy_lab.intraday import evidence as evidence_module
 
 
@@ -36,8 +37,17 @@ def main():
                      'amount_verified': True, 'currency': 'USD', 'unit': 'gross_per_share',
                      'source_sha256': hashlib.sha256(key.encode()).hexdigest()})
     publication = evaluate_action_evidence(pd.DataFrame(rows))
+    supplemental = fine.copy()
+    supplemental['source'] = 'N'; supplemental['session'] = '2020-01-02'
+    supplemental['raw_file'] = 'CQM'; supplemental['natbbo_ind'] = ['4', '0', '4']
+    chosen, source_audit = select_quote_sources(supplemental)
+    master = pd.DataFrame({'symbol_15': ['SYNTH', 'SYNTHX'], 'sym_root': [None]*2,
+                           'sym_suffix': [None]*2, 'round_lot': [100, 10]})
+    lots = resolve_dated_lots(master, ['SYNTH'])
     for name, frame in [('coarse', coarse), ('fine', fine), ('recovered', recovered),
-                        ('cluster-audit', audit), ('publication', publication)]:
+                        ('cluster-audit', audit), ('publication', publication),
+                        ('source-input', supplemental), ('source-selected', chosen),
+                        ('source-audit', source_audit), ('dated-master', master), ('dated-lots', lots)]:
         frame.to_csv(args.output/f'{name}.csv', index=False)
     plt.rcParams.update({'figure.facecolor': '#FAF9F5', 'axes.facecolor': '#FAF9F5',
                          'text.color': '#101928', 'axes.spines.top': False,
@@ -64,6 +74,14 @@ def main():
            title='An amount and a release clock are separate facts')
     fig.suptitle('Source evidence before a trading claim | invented known-answer cases', fontsize=14)
     fig.savefig(args.output/'evidence_clocks.png', dpi=170); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(9, 3.8), layout='constrained')
+    ax.barh(['Self-NBBO / message 10', 'Venue-only / message 11', 'Self-NBBO / message 12'],
+            [1, 0, 1], color=['#36B3A8', '#AAB8C4', '#36B3A8'])
+    ax.invert_yaxis()
+    ax.set(xlim=(0, 1.2), xticks=[0, 1], xticklabels=['Excluded', 'Source eligible'],
+           title='A venue quote does not automatically establish both NBBO sides')
+    ax.set_xlabel('Invented source eligibility; exact tuple/clock checks still required')
+    fig.savefig(args.output/'source_selection.png', dpi=170); plt.close(fig)
     (args.output/'REPORT.md').write_text('''# Evidence Before Admission
 
 All clocks, quantities, securities and publication examples here are **invented**.
@@ -84,10 +102,34 @@ test; the function does not authenticate a document or prove feed availability.
 
 [Methods](../../docs/INTRADAY_EVIDENCE.md) · [Tests](../../tests/test_intraday_evidence.py)
 ''', encoding='utf-8')
+    with (args.output/'REPORT.md').open('a', encoding='utf-8') as report:
+        report.write('''
+
+## Which source may supply the missing observations?
+
+![Invented source selection](source_selection.png)
+
+The new invented input uses three CQM messages and documented UTP source-code
+semantics. Messages 10 and 12 carry self-NBBO indicator 4. Message 11 is an
+ordinary venue quote and is excluded even though its prices look plausible.
+The remaining source-eligible rows do **not** cover all three coarse tuples;
+the original cluster would therefore remain unresolved. Source eligibility is
+only the first gate, not permission to complete a book with guessed prices.
+
+The dated master fixture has an exact SYNTH symbol with a 100-share lot and a
+SYNTHX lookalike with a 10-share lot. Only the exact identity supplies units.
+Conflicting identities and missing dates are not filled from nearby records.
+Cross-file copies of one SIP message cannot create additional displayed size.
+
+For a release listing precise only to a minute, use the end of that minute as a
+conservative availability bound. A bound equal to the decision still fails the
+strict-before test. These examples contain no licensed market observations.
+''')
     implementation = Path(evidence_module.__file__)
     (args.output/'run.json').write_text(json.dumps({'data': 'invented known-answer fixtures',
         'implementation_sha256': hashlib.sha256(implementation.read_bytes()).hexdigest(),
         'cluster_status': audit.status.to_list(), 'admitted_publication_cases': int(publication.strict_usable.sum()),
+        'source_eligible_cases': len(chosen), 'dated_lot_matches': len(lots),
         'strategy_parameters_changed': False}, indent=2))
     print('Invented source-evidence report written; no market performance reported.')
 

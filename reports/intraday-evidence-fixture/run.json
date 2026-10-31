@@ -1,9 +1,11 @@
 {
   "data": "invented known-answer fixtures",
-  "implementation_sha256": "235d8b8a8bfb9e46a67e88fda55ed616facb6c86221d5d961fd6736b6194ad6b",
+  "implementation_sha256": "8195a40f8c2acd0f8182499a204998dbcd4b1bbe3c854c2c6b282b35f0338b87",
   "cluster_status": [
     "matched_fine_clock"
   ],
   "admitted_publication_cases": 1,
+  "source_eligible_cases": 2,
+  "dated_lot_matches": 1,
   "strategy_parameters_changed": false
 }

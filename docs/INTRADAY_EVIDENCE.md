@@ -31,6 +31,29 @@ fine messages, conversion evidence and recovery output as separate artifacts.
 An old stopped account remains an old stopped account even if a later source
 exception is repaired.
 
+### The raw NBBO file is not the only eligible source
+
+The [NYSE Daily TAQ specification](https://wrds-www.wharton.upenn.edu/documents/1967/Daily_TAQ_Client_Spec_v4.0.pdf)
+distinguishes NBBO appendages from quotes that themselves establish the new
+national best bid and offer. A CQM venue quote can supply both sides **only**
+under that explicit self-NBBO indicator: UTP source `N` uses `4`; CTA source `C`
+uses `1` before 30 October 2017 and `G` from that transition. Ordinary venue
+quotes and one-sided changes cannot fill a missing national quote. The document
+also records changes to NBBO-file inclusion; file coverage is vintage-dependent.
+
+`select_quote_sources` retains every input decision. It collapses cross-file
+copies only when clock, sequence and complete quote payload agree; conflicting
+copies are quarantined. It never adds the displayed quantities of duplicate
+messages. `recover_quote_clusters` then applies the original exact-tuple and
+clock gates. Selection of a source alone is insufficient to restore a cluster.
+
+Some dated master records expose the complete `symbol_15` while root/suffix are
+absent. `resolve_dated_lots` permits the **exact** full symbol in that case, with
+the same-day lot field. It does not match prefixes, choose between conflicting
+units or borrow a lot size from an adjacent date. The licensed source-to-quote
+map remains private; the [source-selection example](../reports/intraday-evidence-fixture/REPORT.md#which-source-may-supply-the-missing-observations)
+is invented.
+
 ## A distribution schedule is not an amount release
 
 Record security identity, **US** ex-date, gross currency/amount per share,
@@ -48,6 +71,32 @@ silently editing the source. The [US issuer history](https://www.invesco.com/us/
 lists the US ex-date as 22 September. Those sources support identity, amount and
 calendar distinctions; a printed date or a current page alone does not establish
 the exact historical publication timestamp.
+
+### A release listing can strengthen the evidence
+
+The [official HKEX QQQ announcement search](https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&from=20250101&lang=EN&market=SEHK&stockId=1000249048&t1code=10000&t2Gcode=3&t2code=13250&to=20251231)
+now provides a separately checked release listing for these amount documents.
+Times below are interpreted in Hong Kong local time; the linked documents
+identify the same trust and USD distribution per share across trading counters.
+
+| Distribution | USD/share | Listed release, Hong Kong time | Amount document |
+|---|---:|---|---|
+| 2025 Q1 | 0.71571 | 23 March 2025, 19:00 | [Issuer announcement](https://www1.hkexnews.hk/listedco/listconews/sehk/2025/0323/2025032300173.pdf) |
+| 2025 Q2 | 0.59111 | 22 June 2025, 18:31 | [Issuer announcement](https://www1.hkexnews.hk/listedco/listconews/sehk/2025/0622/2025062200033.pdf) |
+| 2025 Q3 | 0.69395 | 21 September 2025, 18:29 | [Issuer announcement](https://www1.hkexnews.hk/listedco/listconews/sehk/2025/0921/2025092100031.pdf) |
+| 2025 Q4 | 0.79408 | 22 December 2025, 06:10 | [Issuer announcement, DOCX](https://www1.hkexnews.hk/listedco/listconews/sehk/2025/1222/2025122200011.docx) |
+
+The listing has **minute** precision. Use the next minute boundary as a
+conservative availability upper bound, convert to UTC, and compare strictly
+with the actual US decision. Q4 illustrates why a Hong Kong release date can
+correspond to the preceding New York calendar date. Keep the printed document
+date, vendor declaration date, exchange release and US ex-date in separate
+fields. Never overwrite the original vendor date to manufacture agreement.
+
+This is stronger retrospective publication evidence for the matched events;
+it is not an independently archived snapshot of the page as originally served,
+proof of a participant's feed receipt, or evidence for every earlier dividend.
+Unresolved earlier events and original stopped accounts remain binding.
 
 `evaluate_action_evidence` checks an analyst-verified primary release clock
 strictly before the supplied decision. Date-only documents, schedules, unmatched

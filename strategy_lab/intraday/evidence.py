@@ -3,6 +3,57 @@ import numpy as np
 import pandas as pd
 
 
+def select_quote_sources(raw):
+    """Select raw NBBO and explicitly self-NBBO CQM messages, retaining rejects.
+
+    ``session`` is the source file's date, not a date inferred from a UTC clock.
+    Source N uses UTP indicator 4; source C uses the dated CTA 1/G convention.
+    This does not reconstruct an exchange book or infer the other NBBO side.
+    """
+    x = raw.copy()
+    dates = pd.to_datetime(x.session)
+    if (dates.isna().any() or dates.dt.tz is not None
+            or not dates.eq(dates.dt.normalize()).all()
+            or not x.raw_file.isin(['NBBO', 'CQM']).all()
+            or not x.source.isin(['N', 'C']).all()):
+        raise ValueError('Dated NBBO/CQM files and explicit SIP source required')
+    ind = x.natbbo_ind.fillna('').astype(str)
+    self_nbbo = (x.source.eq('N') & ind.eq('4')) | (
+        x.source.eq('C') & ((dates.lt('2017-10-30') & ind.eq('1'))
+                           | (dates.ge('2017-10-30') & ind.eq('G'))))
+    eligible = x.raw_file.eq('NBBO') | (x.raw_file.eq('CQM') & self_nbbo)
+    x['source_status'] = np.where(eligible, 'source_eligible', 'not_self_nbbo')
+    keys = ['asset', 'session', 'sip_time', 'nano', 'sequence', 'source',
+            'bid', 'ask', 'bid_lots', 'ask_lots', 'condition']
+    selected = x.loc[eligible].drop_duplicates(keys).copy()
+    # A repeated sequence with differing payloads is not resolved by file priority.
+    conflict = selected.duplicated(['asset', 'session', 'source', 'sequence'], keep=False)
+    bad_keys = selected.loc[conflict, ['asset', 'session', 'source', 'sequence']]
+    if not bad_keys.empty:
+        bad_index = pd.MultiIndex.from_frame(bad_keys)
+        mask = pd.MultiIndex.from_frame(x[['asset', 'session', 'source', 'sequence']]).isin(bad_index)
+        x.loc[eligible & mask, 'source_status'] = 'conflicting_sequence_payload'
+    selected = selected.loc[~conflict].drop(columns='source_status')
+    return selected.reset_index(drop=True), x
+
+
+def resolve_dated_lots(master, assets):
+    """Resolve one dated master file; never carry lot sizes across dates.
+
+    Exact symbol_15 is a fallback only when root and suffix are absent. Prefix
+    lookalikes and conflicting duplicate identities do not establish units.
+    """
+    m = master.copy()
+    root = m.sym_root.fillna('').str.strip()
+    suffix = m.sym_suffix.fillna('').str.strip()
+    symbol = m.symbol_15.fillna('').str.strip()
+    m['asset'] = root.where(root.ne(''), symbol)
+    m = m.loc[suffix.eq('') & m.asset.isin(assets), ['asset', 'round_lot']].drop_duplicates()
+    bad = (m.duplicated('asset', keep=False) | ~np.isfinite(m.round_lot)
+           | (m.round_lot <= 0) | (m.round_lot % 1 != 0))
+    return m.loc[~bad].rename(columns={'round_lot': 'lot_size'}).reset_index(drop=True)
+
+
 def recover_quote_clusters(coarse, fine):
     """Recover only uniquely matched microsecond clusters from finer SIP records.
 

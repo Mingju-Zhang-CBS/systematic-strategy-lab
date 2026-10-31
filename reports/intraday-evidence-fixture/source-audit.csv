@@ -1,0 +1,4 @@
+asset,sip_time,nano,bid,ask,bid_lots,ask_lots,lot_size,condition,source,sequence,session,raw_file,natbbo_ind,source_status
+SYNTH,2020-01-02 15:00:01.123456Z,600,100.0,100.01,2,5,100,R,N,10,2020-01-02,CQM,4,source_eligible
+SYNTH,2020-01-02 15:00:01.123456Z,800,100.0,100.01,3,5,100,R,N,11,2020-01-02,CQM,0,not_self_nbbo
+SYNTH,2020-01-02 15:00:01.123457Z,100,100.0,100.01,4,5,100,R,N,12,2020-01-02,CQM,4,source_eligible
