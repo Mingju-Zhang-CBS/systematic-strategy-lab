@@ -2,7 +2,7 @@
 
 **Question.** Does an interpretable SPY intraday breakout retain evidence after information timing, spread, partial fills and funding are made explicit?
 
-[Offline execution report](../reports/intraday-synthetic/REPORT.md) · [Engine](../strategy_lab/intraday/engine.py) · [Known-answer tests](../tests/test_intraday.py) · [Frozen protocol](INTRADAY_PROTOCOL.json) · [Current data gate](INTRADAY_DATA_STATUS.md)
+[Offline execution report](../reports/intraday-synthetic/REPORT.md) · [Engine](../strategy_lab/intraday/engine.py) · [Known-answer tests](../tests/test_intraday.py) · [Frozen protocol](INTRADAY_PROTOCOL.json) · [Source clocks and cash](INTRADAY_SOURCE_AUDIT.md) · [Current data gate](INTRADAY_DATA_STATUS.md)
 
 ## Evidence status
 

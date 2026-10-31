@@ -76,6 +76,8 @@ and original joint-shock failures remain separate and reproducible.
 
 The [intraday study](docs/INTRADAY_RESEARCH.md) reconstructs SPY breakout logic with quote-after-signal execution, displayed capacity, funding and retained failed exits. [Six fixed offline runs](reports/intraday-synthetic/REPORT.md) use invented inputs and preserve losses. The intended licensed SPY/QQQ history has separate coverage, auction, action and cash-reference gates; no long-history real performance claim is made.
 
+[Source clocks and independent ledger checks](docs/INTRADAY_SOURCE_AUDIT.md) now connect date-effective identity, action units, declared release evidence and a separate cash opportunity-cost benchmark. [Invented known-answer examples](reports/intraday-data-fixture/REPORT.md) show why correct dividend amounts can still be unavailable at decision time. Incomplete or stopped private replays are not promoted into completed performance evidence.
+
 ## The result worth reading
 
 In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.

@@ -1,0 +1,16 @@
+{
+  "type": "public summary of source/cash addenda; not a newly backdated freeze",
+  "original_protocol_sha256": "d63fb25899aac0bbbb9853ed1bcb53344a2cb11ac12a8a86be9511109d4576a0",
+  "source_addendum_sha256": "d19068d3edd4397807cd1e8b1ff6f5cb72b990e6c48befa973088e7c5b0be8cc",
+  "cash_clock_correction_sha256": "58a1cecbc1a1f2e2c52a1a1d574541502d6fd2c449fb4034b13ae7fcad7061b9",
+  "decision_records": "Private dated source decisions precede actual ledger outcome inspection; OS creation receipts retained",
+  "strategy_changes": "None; original three variants, two delays, costs, admission, funding, one-snapshot execution and stop rules retained",
+  "action_mapping": "Exactly one date-effective security identity; complete source-day coverage; event/daily amount and total-return checks; no unknown-event zero fill",
+  "action_timing": "Prior-date declaration receives end-of-day proxy; missing/same-day declaration remains unknown; current vintage does not establish original publication values",
+  "cash_reference": "Separate opportunity-cost comparator, primary next observed business date 14:45 ET; retain 09:15 sensitivity; ACT/360 New York calendar-day accrual",
+  "cash_order_effect": "None; original idle strategy cash remains unremunerated",
+  "ambiguity": "Quarantine conflicting same-time quotes; use only subsequently unambiguous quotes within unchanged timing limits; do not attribute source gaps to proven market illiquidity",
+  "stop_or_gate": "Retain residual inventory, mark provisionally and stop; do not cross an unresolved source clock or restart a failed account",
+  "inference": "No full-window statistics for truncated/stopped target paths; not estimated does not mean statistically nonsignificant",
+  "publication": "Licensed observations and source-derived actual ledgers/figures remain private; original methods and invented fixtures public"
+}

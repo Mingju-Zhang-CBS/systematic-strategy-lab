@@ -1,0 +1,4 @@
+asset,session,permno,cash_dividend,split,action_available_at,action_clock_known,source_ready,return_reconciliation_error,evidence
+SYNTH,2020-01-02,1,0.0,1.0,,True,True,0.0,current_vintage_no_event
+SYNTH,2020-01-03,1,1.0,1.0,,False,False,0.0,current_vintage_distribution
+SYNTH,2020-01-06,1,0.0,2.0,2020-01-02 23:59:59-05:00,True,True,0.0,current_vintage_distribution

@@ -72,3 +72,11 @@ def test_funding_budget_limits_new_risk():
     for r in o.loc[o.shares!=0].itertuples():
         equity=r.cash+r.position*r.price
         assert abs(r.position)*r.price<=equity+2
+
+
+def test_csv_clocks_with_mixed_subsecond_precision():
+    b,q=fixture();q.loc[0,'quote_time']+=pd.Timedelta(microseconds=1)
+    expected=backtest(b,q)
+    raw=q.copy();raw['quote_time']=raw.quote_time.astype(str)
+    actual=backtest(b,raw)
+    for a,c in zip(expected,actual):pd.testing.assert_frame_equal(a,c)

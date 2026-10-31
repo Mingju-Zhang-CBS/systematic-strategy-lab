@@ -23,8 +23,8 @@ def validate_inputs(bars, quotes, config):
     """Single boundary validation; downstream engine consumes normalized frames."""
     b, q = bars.copy(), quotes.copy()
     for col in ["bar_end", "session_open", "session_close"]:
-        b[col] = pd.to_datetime(b[col], utc=True)
-    q["quote_time"] = pd.to_datetime(q["quote_time"], utc=True)
+        b[col] = pd.to_datetime(b[col], utc=True, format="mixed")
+    q["quote_time"] = pd.to_datetime(q["quote_time"], utc=True, format="mixed")
     b["session"] = b.bar_end.dt.tz_convert("America/New_York").dt.strftime("%Y-%m-%d")
     b["slot"] = b.bar_end.dt.tz_convert("America/New_York").dt.strftime("%H:%M")
     numeric = ["close", "volume", "dollar_volume", "open_price", "cash_dividend", "split"]
