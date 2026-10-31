@@ -1,0 +1,2 @@
+asset,coarse_time,coarse_rows,fine_rows,status,max_clock_difference_ns
+SYNTH,2020-01-02 15:00:01.123457+00:00,3,3,matched_fine_clock,400

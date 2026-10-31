@@ -30,6 +30,8 @@ Identical timestamps can contain different prices or displayed quantities. Quara
 
 Opening-auction identification also requires the actual event time and listing-venue conventions. An auction outside a narrow extraction interval must be investigated rather than replaced by a bar close. If its time cannot be shown to precede the signal, it cannot supply that signal's opening reference.
 
+The [precision and publication study](INTRADAY_EVIDENCE.md) adds explicit fine-clock cluster matching and a primary publication-evidence check. A microsecond field must be combined with its separate nanosecond remainder before comparing a raw SIP clock with a lower-precision derived table. The extraction helper now searches for the primary opening auction before the first 10:00 signal, rather than assuming it occurred by 09:31; the original extraction and failed replay remain separate retained artifacts.
+
 ## 4. Reconstruct the account
 
 The independent audit uses signed order quantities, bid/ask observations, elapsed time and configured charges to recompute cash, financing, short-borrow costs, shares and marked equity. It checks fill latency, side price, displayed capacity and margin on new risk. Valid reductions remain separate from admission decisions.

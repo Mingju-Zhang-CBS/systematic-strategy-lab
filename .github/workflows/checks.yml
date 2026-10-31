@@ -16,6 +16,7 @@ jobs:
       - run: python -m pytest
       - run: python -m strategy_lab.intraday --demo --output local-runs/ci-intraday
       - run: python examples/explain_intraday_clocks.py --output local-runs/ci-intraday-clocks
+      - run: python examples/explain_intraday_evidence.py --output local-runs/ci-intraday-evidence
       - run: python -m strategy_lab --real --output local-runs/ci-real
       - run: python -m strategy_lab --output local-runs/ci-synthetic
       - run: python -m strategy_lab.commodities --fixture --output local-runs/ci-commodities

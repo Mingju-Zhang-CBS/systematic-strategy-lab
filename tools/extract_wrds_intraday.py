@@ -56,7 +56,7 @@ def main():
                  time_m AS opening_time,tr_scond,ex
            FROM {schema}.ctm_{stamp}
            WHERE sym_root=ANY(%s) AND (sym_suffix IS NULL OR trim(sym_suffix)='')
-             AND time_m BETWEEN '09:30:00' AND '09:31:00' AND tr_corr='00' AND price>0 AND size>0
+             AND time_m >= '09:30:00' AND time_m < '10:00:00' AND tr_corr='00' AND price>0 AND size>0
              AND ((sym_root='SPY' AND ex='P') OR (sym_root='QQQ' AND ex='Q'))
              AND position('Q' IN COALESCE(tr_scond,''))>0
            ORDER BY sym_root,time_m,time_m_nano,tr_seqnum"""
