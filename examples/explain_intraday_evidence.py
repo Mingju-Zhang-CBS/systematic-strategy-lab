@@ -31,6 +31,7 @@ def main():
         ('Verified amount', 'gross_cash_amount', 'exchange_release_timestamp', '2020-01-02T08:00:00+08:00'),
         ('Schedule only', 'distribution_schedule', 'exchange_release_timestamp', '2020-01-01T00:00:00Z'),
         ('Printed date only', 'gross_cash_amount', 'document_date_only', '2020-01-01T23:59:59+08:00'),
+        ('Vendor declaration proxy', 'gross_cash_amount', 'vendor_declaration_date_proxy', '2020-01-01T23:59:59-05:00'),
         ('Released at decision', 'gross_cash_amount', 'exchange_release_timestamp', '2020-01-02T14:30:00Z')]:
         rows.append({'evidence_id': key, 'kind': kind, 'clock_basis': basis, 'published_at': published,
                      'decision_at': '2020-01-02T14:30:00Z', 'identity_verified': True,
@@ -96,9 +97,14 @@ cannot justify picking the largest displayed quantity. Half-quantum ties,
 missing tuples and conflicting sequence scopes remain quarantined.
 
 The publication examples distinguish an actual amount release, a calendar,
-a printed document date and a release at the decision. Only the verified earlier
+a printed document date, a vendor declaration-date proxy and a release at the decision. Only the verified earlier
 amount passes. These inputs are analyst attestations exercised as a known-answer
 test; the function does not authenticate a document or prove feed availability.
+
+A vendor's prior declaration date can support a separately labeled current-vintage
+sensitivity under the original protocol when identity and amounts match exactly.
+It is not a verified primary release clock. The added invented proxy case remains
+blocked by the strict publication check even though its date precedes the decision.
 
 [Methods](../../docs/INTRADAY_EVIDENCE.md) · [Tests](../../tests/test_intraday_evidence.py)
 ''', encoding='utf-8')
@@ -127,6 +133,7 @@ strict-before test. These examples contain no licensed market observations.
 ''')
     implementation = Path(evidence_module.__file__)
     (args.output/'run.json').write_text(json.dumps({'data': 'invented known-answer fixtures',
+        'example_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'implementation_sha256': hashlib.sha256(implementation.read_bytes()).hexdigest(),
         'cluster_status': audit.status.to_list(), 'admitted_publication_cases': int(publication.strict_usable.sum()),
         'source_eligible_cases': len(chosen), 'dated_lot_matches': len(lots),

@@ -1,5 +1,6 @@
 {
   "data": "invented known-answer fixtures",
+  "example_sha256": "ef18e9af8c254508f91e1a4e76dde6c32d70fe87ef0cda5936d88507e658f030",
   "implementation_sha256": "8195a40f8c2acd0f8182499a204998dbcd4b1bbe3c854c2c6b282b35f0338b87",
   "cluster_status": [
     "matched_fine_clock"

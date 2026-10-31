@@ -12,9 +12,14 @@ cannot justify picking the largest displayed quantity. Half-quantum ties,
 missing tuples and conflicting sequence scopes remain quarantined.
 
 The publication examples distinguish an actual amount release, a calendar,
-a printed document date and a release at the decision. Only the verified earlier
+a printed document date, a vendor declaration-date proxy and a release at the decision. Only the verified earlier
 amount passes. These inputs are analyst attestations exercised as a known-answer
 test; the function does not authenticate a document or prove feed availability.
+
+A vendor's prior declaration date can support a separately labeled current-vintage
+sensitivity under the original protocol when identity and amounts match exactly.
+It is not a verified primary release clock. The added invented proxy case remains
+blocked by the strict publication check even though its date precedes the decision.
 
 [Methods](../../docs/INTRADAY_EVIDENCE.md) · [Tests](../../tests/test_intraday_evidence.py)
 

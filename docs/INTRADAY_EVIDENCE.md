@@ -110,6 +110,35 @@ may be evaluated under that same convention in a separately recorded overlay;
 it must not be relabeled as a verified primary publication timestamp. Missing
 or same-day dates remain unavailable before the open without additional evidence.
 
+### A declaration date is a different kind of evidence
+
+Keep two assessments separate: a primary amount-release clock and a
+current-vintage declaration-date sensitivity. The original prior-day proxy may
+use an alternate vendor record only after a unique date-effective security link,
+the same US ex-date, exact gross cash amount, currency, distribution components
+and adjustment factors have been verified. Record the original field and the
+alternate source separately. A proxy does not become a primary release timestamp
+because it precedes the ex-date, and it does not prove archived point-in-time data.
+
+Matching must preserve the frozen precision rule. In an **invented** example,
+USD 0.12345 and a second vendor's four-decimal USD 0.1234 are not an exact amount
+match. Do not round the first value, select a tolerance after seeing matches or
+copy a date from the nearest event. Record the precision difference and seek
+additional evidence. Missing declaration dates remain missing even when the
+cash amount itself agrees. The [invented publication example](../reports/intraday-evidence-fixture/REPORT.md)
+now includes an earlier vendor-date proxy that correctly fails the strict gate.
+
+The [earlier trust prospectus](https://www.sec.gov/Archives/edgar/data/1067839/000110465915004817/a15-1379_1485bpos.htm)
+describes a historical distribution calendar. It does not publish a later
+quarter's cash amount or its release time. The issuer's [ETF tax center](https://www.invesco.com/us/en/accounts/tax-center/etf-tax-center.html)
+distinguishes annually posted tax information from an estimated dividend calendar;
+neither substitutes for the amount announcement's publication evidence.
+
+An unavailable history page, unsuccessful archive query or missing vendor field
+is an **evidence gap**, not proof that no announcement existed. Keep the query,
+response and retrieval date. A newly found date proxy that occurs after an
+account's original stopping point cannot justify restarting that account.
+
 ## What changes, and what stays fixed
 
 Source adjudication changes a documented observation only when its evidence
