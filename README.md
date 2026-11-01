@@ -8,6 +8,27 @@ Does a momentum filter improve an allocation after publication delays, fees and 
 
 [Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
 
+### Daily trend / Does an online HMM add value?
+
+The [daily regime study](docs/REGIME_RESEARCH.md) compares buy and hold, volatility
+control, raw momentum, a matched EMA, Kalman momentum and Kalman with a causal
+HMM gate. Training excludes today's observation; state probabilities carry
+forward; frozen targets execute at the next session close in funded model
+total-return units. The matched EMA makes a useful control: fixed-variance
+Kalman smoothing approaches the same filter.
+
+The [public invented experiment](reports/regimes-synthetic/REPORT.md) retains all
+288 method/period/scenario metric rows, 96 paired intervals and unfavorable
+outcomes. Every public figure uses **synthetic inputs**. Separate current-vintage
+Yahoo ETF research, inputs and derived real results stay private; no trading
+alpha or complete historical PIT claim follows. [Chinese learning notes](docs/REGIME_LEARNING_CN.md)
+· [Reference and contribution](docs/REGIME_PROVENANCE.md) · [Tests](tests/test_regimes.py).
+
+```bash
+python -m strategy_lab.regimes --demo --output local-runs/regimes
+python tools/verify_regime_run.py local-runs/regimes
+```
+
 ### New study / Commodity curves: contracts before signals
 
 An [eight-product futures accounting module](docs/COMMODITY_ACCOUNTING.md) connects

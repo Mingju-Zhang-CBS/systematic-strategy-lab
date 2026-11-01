@@ -1,0 +1,68 @@
+{
+  "generated_utc": "2026-11-01T17:16:16.564160+00:00",
+  "data_kind": "synthetic",
+  "input_sha256": "6ce1d6284f67dfe9f3e83796a15e3e56b14baa189e33709f1f425fd202c0039e",
+  "protocol_sha256": "12b88ffdf42dcd47e663531eb152c6c6a66fa8076499daba87113cd0aebc4b0a",
+  "source": {
+    "origin": "independently generated invented business-day fixture"
+  },
+  "source_sha256": {
+    "__init__.py": "aec8df71f615cfb398b87d70612d8e8bc35c96fdf29dcffd2bf3c3bec30ce1ce",
+    "__main__.py": "ddd0e926c029869ce945795ccbb67b96ad5071accd8a9cf11a3d727f52943e63",
+    "config.py": "a75c7549a570ad0c57d7cbfe14b5cb43519552d9d59b4ffba143d98e2f585dc0",
+    "data.py": "38be0d51bd2733c8ca140d3b8a012a5889bc21f05db3aac0323804d487fa612e",
+    "engine.py": "01644b5840b44e7236848b66562b138e9c652b76aa47298eec9466f3b9f5904a",
+    "models.py": "6b72a63801a98bfbd6ec14a8559425c3cffec3a34130441792459e0fd31d7992",
+    "report.py": "8af6e4c80cfeb98d500f1b314b1ee92a3d935dafd281e87698c164434569e485"
+  },
+  "python": "3.12.6",
+  "packages": {
+    "numpy": "2.1.2",
+    "pandas": "2.2.3",
+    "scipy": "1.14.1",
+    "scikit-learn": "1.5.2",
+    "hmmlearn": "0.3.3",
+    "joblib": "1.4.2",
+    "threadpoolctl": "3.5.0",
+    "matplotlib": "3.9.2"
+  },
+  "artifacts": {
+    "QQQ/cost-05_cash-00/kalman_hmm_decisions.csv": "2fd67481d598395ca63fa6547b5465445f952fdf8d319f42dbe7ec117fc10354",
+    "QQQ/cost-05_cash-00/kalman_hmm_ledger.csv": "4bf1bf778fd56f384b200eeb376c77785f3d088e36126f19b6795c2e89ef5ba9",
+    "QQQ/cost-05_cash-00/kalman_hmm_trades.csv": "453626a27d6d1c215a66c71f4b0dd2887a87f622c6cac051df3d1464838c13fa",
+    "QQQ/cost-05_cash-00/kalman_momentum_decisions.csv": "035feb11f464d4b249484739d4bb42d69244833210e1e5d1e9464e91ebb8746b",
+    "QQQ/cost-05_cash-00/kalman_momentum_ledger.csv": "95497356463d5ec7bc7ec796b51be8ebe495e27aa85b9cacbff53833264aa51f",
+    "QQQ/cost-05_cash-00/kalman_momentum_trades.csv": "0b9b4e3f0a432cdf3275895f95bf29ba054c9dbc2d27c1cd4dbcfd02c8bf413e",
+    "QQQ/features.csv": "90c39434c2d36e490086c8f9b64b9b39a6a26256bd8dc5e60b41a6aafbcd4eda",
+    "QQQ/model_snapshots.json": "c1b09912991c170f087d39e7c2eb9ef1636dcb419a67dd15a3c00a85e7513689",
+    "QQQ/state_probabilities.csv": "540e0412913f5cb2adffdbf58c8ea740173db25d12474c4f01987f4ab90d78ce",
+    "QQQ/targets.csv": "50c03177797cd3e15202d585cf7690ee06fcf257df504bfaea2c932e268ac5f8",
+    "QQQ/training_events.csv": "a6dba35b18150fc7b6cb6af805709652dadf0be21712a50344f62e7b8e731053",
+    "REPORT.md": "8d02dca9642cf7d8fc90b3098f5612d711699097995d1b555958c9bfac6aa2c6",
+    "SNAPSHOT.md": "ad62fd208e40a237c5b990800c521ee38b80273b314a339e75ab6dc9368757cb",
+    "SPY/cost-05_cash-00/kalman_hmm_decisions.csv": "e048a25af9950728e7a21c341f5ef16ccc6c57037db9e37ad6b7c116a20574b5",
+    "SPY/cost-05_cash-00/kalman_hmm_ledger.csv": "d83994a270a7dd1e416c752633265c33106f0266cd90fb28737a44dbfa7d89c9",
+    "SPY/cost-05_cash-00/kalman_hmm_trades.csv": "bb0a4c8ff74201879cbdf3f3cf035a02bb1cd5900582a81aaf3e49b0e46905ab",
+    "SPY/cost-05_cash-00/kalman_momentum_decisions.csv": "aa9edad528525b4dc9b177fd4324ec5d7bda9ba49dabe5a843ff2b8dda7e8faf",
+    "SPY/cost-05_cash-00/kalman_momentum_ledger.csv": "718ea0b52b45725edc1c1dfdfa5ff8d5486a3cf8db047097f10964fdafc2465d",
+    "SPY/cost-05_cash-00/kalman_momentum_trades.csv": "f67d4e4a6117e07d1b95fe1c2ea6ed036e90eeff2a7686723600d38c716a4c98",
+    "SPY/features.csv": "526063abd9c5addd12b570144d4303fdad0e9028e09cdca9be14845a01a89ce8",
+    "SPY/model_snapshots.json": "9e343853175877c4dacec2a07b6d799a4e6a0d657f166308c73d580fa249cae6",
+    "SPY/state_probabilities.csv": "4be99edca8aac1a23af4435cad72a8f5d1802ff47490c2cc7dd702490c2d90c6",
+    "SPY/targets.csv": "ce355d6a8531126899081bbd9e4b37e3407f3a9a08c5e3923a8168817207e648",
+    "SPY/training_events.csv": "0e111614ab2ff22a52150e704dd2ff7eed6ca35a54017a90b4a5f5e4e0b51edf",
+    "metrics.csv": "1976d9edc90b85215592e2d72a1c166425da4f875d49e4e6262cd316b0b64d1d",
+    "paired_inference.csv": "6f19a74420b77d2aa3a4c166568ae4d7eaed15994ec11c01028dd6d2fd892640",
+    "paired_intervals.png": "843ddc3b7154d87ed7883eea6b3ac3dc931f41fd98d409f12cbc845113ed8ef3",
+    "protocol.json": "12b88ffdf42dcd47e663531eb152c6c6a66fa8076499daba87113cd0aebc4b0a",
+    "training_summary.csv": "4932dbe68f15813582b29da87cc643e494a29432583ca41139ee4c178ac72a8e",
+    "wealth.png": "8cc1c0e6a90c6c8279ad32a85e0e8e3254f23148f6439c90155b2fdfdca5ca9e"
+  },
+  "report_refresh_note": "Narrative and full sensitivity table regenerated from unchanged saved metric/inference CSVs; no parameter or accounting change.",
+  "snapshot": {
+    "complete_run_files": 234,
+    "retained_files": 31,
+    "complete_run_manifest_sha256": "68b7b16f9ab4c35530dac31229bd576585e235ea99d9056818b2959d730b53ce",
+    "reproduce": "python -m strategy_lab.regimes --demo --output local-runs/regimes"
+  }
+}

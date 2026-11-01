@@ -1,0 +1,9 @@
+asset,segment,observations,refits,failed_refits,cash_request_days
+SPY,development,1304,63,0,0
+SPY,validation,784,37,0,0
+SPY,confirmation,1304,62,0,0
+SPY,full,3392,162,0,0
+QQQ,development,1304,63,0,0
+QQQ,validation,784,37,0,0
+QQQ,confirmation,1304,62,0,0
+QQQ,full,3392,162,0,0

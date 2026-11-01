@@ -20,3 +20,9 @@ python-dateutil==3.0.0
 pytz==2026.5
 six==1.17.0
 tzdata==2026.5
+# Online regime study; optional runtime installed here for the complete test suite.
+hmmlearn==0.3.3
+scipy==1.14.1
+scikit-learn==1.5.2
+joblib==1.4.2
+threadpoolctl==3.5.0

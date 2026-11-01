@@ -1,0 +1,71 @@
+{
+  "protocol_version": "regimes-v1",
+  "config": {
+    "momentum": 20,
+    "volatility": 20,
+    "train_window": 756,
+    "refit_every": 21,
+    "states": 3,
+    "process_variance": 1e-05,
+    "measurement_variance": 0.001,
+    "target_vol": 0.15,
+    "initial_nav": 100000.0,
+    "seed": 42,
+    "max_iterations": 500,
+    "tolerance": 0.001,
+    "bootstrap_samples": 2000
+  },
+  "assets": [
+    "SPY",
+    "QQQ"
+  ],
+  "segments": {
+    "development": [
+      "2013-01-01",
+      "2017-12-31"
+    ],
+    "validation": [
+      "2018-01-01",
+      "2020-12-31"
+    ],
+    "confirmation": [
+      "2021-01-01",
+      "2025-12-31"
+    ],
+    "full": [
+      "2013-01-01",
+      "2025-12-31"
+    ]
+  },
+  "strategies": [
+    "buy_hold",
+    "vol_hold",
+    "raw_momentum",
+    "ema_momentum",
+    "kalman_momentum",
+    "kalman_hmm"
+  ],
+  "cost_bps": [
+    0,
+    5,
+    10
+  ],
+  "annual_continuous_cash_rates": [
+    0.0,
+    0.03
+  ],
+  "bootstrap_blocks": [
+    20,
+    63
+  ],
+  "ema_steady_gain": 0.09512492197250394,
+  "hmm_covariance": "diag",
+  "hmm_min_covar": 0.0001,
+  "execution": "signal after close t; frozen target fraction at close t+1",
+  "market_units": "adjusted-close total-return model units, not ETF shares",
+  "gate": "kalman momentum > 0 AND filtered weighted current-state log-return mean > 0",
+  "failure_policy": "request cash until next scheduled refit; fill one session later",
+  "evidence": "retrospective current-vintage experiment, no prospective or PIT claim",
+  "recorded_utc": "2026-11-01T17:14:31.254753+00:00",
+  "recorded_before": "First execution of either synthetic or real study in this implementation; historical data already familiar."
+}

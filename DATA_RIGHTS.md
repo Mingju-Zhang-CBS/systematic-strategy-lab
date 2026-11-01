@@ -1,5 +1,16 @@
 # Data rights, attribution and scope
 
+## Daily regime module: invented public demonstration
+
+The online HMM/trend study publishes original code, methodology and independently
+invented inputs/results in `reports/regimes-synthetic/`. SPY and QQQ identify
+roles in that fixture, not real ETF observations. Reference notebook code,
+saved results and figures are excluded. Current-vintage Yahoo adjusted closes,
+provider captures and all derived real reports/figures remain private pending
+their particular dissemination rights. yfinance's software license does not
+license Yahoo data. The TSP factual-data basis below does not extend to ETF
+vendor data. See [regime provenance](docs/REGIME_PROVENANCE.md).
+
 ## Commodity module: separate evidence and rights
 
 The [commodity module](docs/COMMODITY_ACCOUNTING.md) publishes original code,

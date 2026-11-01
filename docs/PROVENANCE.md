@@ -13,6 +13,16 @@ This independent public implementation was written from public financial concept
 
 The model's 11:00 request, publication allowance, proportional friction, risk thresholds and initial balance are research assumptions. They are not official TSP specifications, observed fills or measured fees. Sources do not validate this strategy's predictive value.
 
+## Daily online regime extension
+
+The independent [daily regime study](REGIME_RESEARCH.md) acknowledges the supplied
+third-party research notebooks and upstream software in its [source record](REGIME_PROVENANCE.md).
+New implementation covers training-only scaling, causal forward probabilities,
+refit snapshots, matched smoothing controls, next-close funded model accounts,
+fixed scenarios and dependent inference. Public evidence is invented; current-vintage
+Yahoo ETF inputs and derived real findings remain private. Implementation and
+writing were AI-assisted. No reference performance is transferred into this project.
+
 ## Personal implementation
 
 The implementation covers the offline snapshot schema, timing contract, capped momentum and shared-risk-budget control, self-financing fee solver, unit/P&L ledger, chronological experiment, paired inference, figures and tests. Mingju Zhang selected the research direction; code, experiment design, testing and writing were AI-assisted. Personal source contributions and human review are tracked separately. Python, NumPy, pandas, Matplotlib, psutil and pytest retain their own authorship and licenses. Familiar momentum and covariance methods are public building blocks; no novel signal is claimed.

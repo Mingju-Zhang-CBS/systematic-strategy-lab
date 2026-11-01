@@ -22,3 +22,10 @@ reports/commodity-stress-synthetic/** -text
 reports/commodity-joint-stress-synthetic/** -text
 
 reports/commodity-resilient-admission-synthetic/** -text
+
+# Online-regime code and recorded artifacts use stable portable bytes.
+strategy_lab/regimes/*.py text eol=lf
+tests/test_regimes.py text eol=lf
+tools/*regime*.py text eol=lf
+docs/REGIME* text eol=lf
+reports/regimes-synthetic/** -text
