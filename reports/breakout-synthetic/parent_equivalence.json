@@ -1,0 +1,216 @@
+{
+  "parent_bound": true,
+  "states": [
+    {
+      "asset": "SPY",
+      "state_rows": 3392,
+      "matching_fits": 162,
+      "maximum_parameter_difference": 0.0,
+      "state_probability_max_difference": 0.0,
+      "warning_note": "Environment warnings are retained but excluded from parameter equivalence"
+    },
+    {
+      "asset": "QQQ",
+      "state_rows": 3392,
+      "matching_fits": 162,
+      "maximum_parameter_difference": 0.0,
+      "state_probability_max_difference": 0.0,
+      "warning_note": "Environment warnings are retained but excluded from parameter equivalence"
+    }
+  ],
+  "controls": [
+    {
+      "asset": "SPY",
+      "scenario": "cost-00_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-00_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-00_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-00_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-05_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-05_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-05_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-05_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-10_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-10_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-10_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "SPY",
+      "scenario": "cost-10_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-00_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-00_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-00_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-00_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-05_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-05_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-05_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-05_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-10_cash-00",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-10_cash-00",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-10_cash-03",
+      "strategy": "buy_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    },
+    {
+      "asset": "QQQ",
+      "scenario": "cost-10_cash-03",
+      "strategy": "vol_hold",
+      "rows": 3392,
+      "byte_identical": true,
+      "maximum_nav_difference": 0.0
+    }
+  ],
+  "parent_manifest_sha256": "68b7b16f9ab4c35530dac31229bd576585e235ea99d9056818b2959d730b53ce"
+}

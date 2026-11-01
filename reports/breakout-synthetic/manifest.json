@@ -1,0 +1,344 @@
+{
+  "generated_utc": "2026-11-01T20:13:46.649283+00:00",
+  "data_kind": "synthetic",
+  "input_sha256": "0161a4a9127bb164b2eae8eecc2e5d8712cc5c9d00cf163f1d34f47bfc25edfe",
+  "analyzed_closes_sha256": "6ce1d6284f67dfe9f3e83796a15e3e56b14baa189e33709f1f425fd202c0039e",
+  "protocol_sha256": "e7e8c34ec026343a3803a87dca754035143dd66d7caabdcc3573cc6a08a8e7c6",
+  "source": {
+    "origin": "invented parent closes and independent invented OHLC envelopes"
+  },
+  "source_sha256": {
+    "__init__.py": "5a56a17a96c587bd734716c8e6344c67ecbca47d085b2c1af6d7c8c07bc52364",
+    "__main__.py": "6e3e1285ed7ca3142d8225eafc2fefce440a11bae4d821072b5be8fbdeb730eb",
+    "config.py": "eec0d8f15b2835489a14bf78f987550ea68f47e2d5d1fba08a7b54f4a68ead45",
+    "data.py": "44ee5fa06cbd596f8c0b7014ba5be8b68210e9467270a70cb2a911b85147ef3a",
+    "reference.py": "79fd1f77a53061d9f0488c684a96da6e0c71523c9f59908dc760c72c581fcbc0",
+    "report.py": "fb8bc11981fceca74b4fc9033ee2ed21690b60bc7b20f1da1e8c76892276c193",
+    "research.py": "866dacf66ae939944d19cd60fabb55c04193b79f67c4d336556c4e638778c1c8",
+    "signals.py": "d9077ea876dbe5f65668060b146635497a0f317a07319b2c60022049ecb2269a"
+  },
+  "frozen_parent_source_sha256": {
+    "config.py": "a75c7549a570ad0c57d7cbfe14b5cb43519552d9d59b4ffba143d98e2f585dc0",
+    "data.py": "38be0d51bd2733c8ca140d3b8a012a5889bc21f05db3aac0323804d487fa612e",
+    "models.py": "6b72a63801a98bfbd6ec14a8559425c3cffec3a34130441792459e0fd31d7992",
+    "engine.py": "01644b5840b44e7236848b66562b138e9c652b76aa47298eec9466f3b9f5904a"
+  },
+  "python": "3.12.6",
+  "packages": {
+    "numpy": "2.1.2",
+    "pandas": "2.2.3",
+    "scipy": "1.14.1",
+    "scikit-learn": "1.5.2",
+    "hmmlearn": "0.3.3",
+    "joblib": "1.4.2",
+    "threadpoolctl": "3.5.0",
+    "matplotlib": "3.9.2"
+  },
+  "artifacts": {
+    "exposure.png": "966efe8a6144d3dd3a4f03e895dda6c3e60efd634cc17ef419b992d92eac2a7e",
+    "metrics.csv": "dcfe0dcefcfb37b13bbc815405682ab446cefaadf366da645e4e140272f670ed",
+    "paired_inference.csv": "e82af5af2e81ea13d284a425716f6faed9f8070f893072a837dfe1251db0815a",
+    "paired_intervals.png": "76d450e73999765ffa972720af1bb61abf848164cd1819566b2ed0bad70cac9c",
+    "parent_equivalence.json": "986b3c24f6264c1f0c9045807b49f8562fd0e67c317455f6aca577b4973b6dfb",
+    "protocol.json": "e7e8c34ec026343a3803a87dca754035143dd66d7caabdcc3573cc6a08a8e7c6",
+    "QQQ/channel_signals.csv.gz": "f84f87648790dc0e2cde5bf2dbc4923e79abc0a76ffbe89c8c0c52545bf1d8d2",
+    "QQQ/cost-05_cash-00/buy_hold_decisions.csv.gz": "a2070d19a41f60b0e14c56943158500c224bae32c6eaeeb7d42644daa7ab52d1",
+    "QQQ/cost-05_cash-00/buy_hold_ledger.csv.gz": "71b028a3dd151749f4e3c9653e16ef70ffed4f50b69e406cb071aaf9631267d1",
+    "QQQ/cost-05_cash-00/buy_hold_trades.csv.gz": "379fe48696290f310fa12bc4fc82f27452f901a9f9a1db795233bd41ac9043a8",
+    "QQQ/cost-05_cash-00/channel55__breakout_decisions.csv.gz": "b104321cde08effc880070fd4dae4c54566ab9a5dcaddfe688afedb0f22f2079",
+    "QQQ/cost-05_cash-00/channel55__breakout_ledger.csv.gz": "917cd68d2d52df60dcb953ca8d3bb4078a61ac1858c7d60372639e4d9948f0b1",
+    "QQQ/cost-05_cash-00/channel55__breakout_trades.csv.gz": "33c3bd9937278990f3b958d0afb79cd8e7b79512a5c9d341d6d3776a5a577e74",
+    "QQQ/cost-05_cash-00/channel55__hmm_breakout_decisions.csv.gz": "0c65c3b6afa675acb2c6ef6e192450fd7c45a828940a78532f4cf6f9bfee4f1e",
+    "QQQ/cost-05_cash-00/channel55__hmm_breakout_ledger.csv.gz": "ee284fc42a076de6e1c76b43db304213e651fe596d3b6c487b07e63e7eeeed6d",
+    "QQQ/cost-05_cash-00/channel55__hmm_breakout_trades.csv.gz": "306d5ac848b249b8d0b89b169f906b5ddd6d14bfaa40a24d80aacd327a0b14d8",
+    "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv.gz": "fb9cbd10528ad371bc7dab84204e8424e2ce8885f30290cea9fe5e30c10e6997",
+    "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv.gz": "561390677c43a603e4877ed3648d42126354a0d312fef06404515f44c4e4a50d",
+    "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv.gz": "f35c2f8864a21d3f30886d6e06d1e3e8190929952034fa812ec9d8608f114bf5",
+    "QQQ/cost-05_cash-00/channel55__vol_breakout_decisions.csv.gz": "2411f8f173f61887eec939fbf242d6a6f6d99fb872908ae00bf0db89bca440ec",
+    "QQQ/cost-05_cash-00/channel55__vol_breakout_ledger.csv.gz": "55800f987029e64a006858b6b90dfadd489aa6c1f37ebe022a15f3d101366c82",
+    "QQQ/cost-05_cash-00/channel55__vol_breakout_trades.csv.gz": "db6addfe910e3f258f9ce40daea80431bb01d0717ad90712ea57fa6c1ac4db75",
+    "QQQ/cost-05_cash-00/vol_hold_decisions.csv.gz": "52714bff2372d77753775026a7e197264550e7480d388ee243357493583d3d42",
+    "QQQ/cost-05_cash-00/vol_hold_ledger.csv.gz": "57698e28021161441816cbae0f73fbba0900661df73df4d2962038952ad54dab",
+    "QQQ/cost-05_cash-00/vol_hold_trades.csv.gz": "131c70b871a64b874571ea49eae6acd12c95b0279132dd6f1d21cce419764ee5",
+    "QQQ/features.csv.gz": "55589fa1d1867717544bad1fa2619937a7cc34c309a0891698b8adbe993f5540",
+    "QQQ/model_snapshots.json.gz": "006241aad7cbd091ab0d2d6a40838b4eaf2848a8f9f7887e45fa0942890f195a",
+    "QQQ/state_probabilities.csv.gz": "6c3716dfd994f3760b977ce8722dd6afedcb61c1845755f3adf03bc9fd622f67",
+    "QQQ/targets.csv.gz": "5d782ca0b6c3866a04e937fb31bd7bfe7e03b8d70967cc6b7c4409edb1ec09da",
+    "QQQ/training_events.csv.gz": "b39d0ad8e1b1ad89ffff0dbebb0433f850c09eb964e6bdfc9f4f887e410ea6c3",
+    "REPORT.md": "20d2cf233e5c76471cb92ca7bc9857ee3c7639098e302b8925946832e787996e",
+    "SNAPSHOT.md": "6db8f0a112e1516752ef01ccde3a88f0f857a150f8741b4c3e567d6ae6fdb871",
+    "SPY/channel_signals.csv.gz": "1669b2e7f59056d2618cc5d7631da1e34557eccf6d0cf37cda7a590fa160d59d",
+    "SPY/cost-05_cash-00/buy_hold_decisions.csv.gz": "a2070d19a41f60b0e14c56943158500c224bae32c6eaeeb7d42644daa7ab52d1",
+    "SPY/cost-05_cash-00/buy_hold_ledger.csv.gz": "2701285e1000a9cb3845e8a393235305a8610a04fac4982be50c3f008ae5075b",
+    "SPY/cost-05_cash-00/buy_hold_trades.csv.gz": "d76d0b6120d8f4b39bd8273b29fd4d058b4962e14fe6039576e32efe83746f85",
+    "SPY/cost-05_cash-00/channel55__breakout_decisions.csv.gz": "eb10fad6f2ce52607cdce941347cb85d78efd374eaa905868401c05eab4a06da",
+    "SPY/cost-05_cash-00/channel55__breakout_ledger.csv.gz": "c41e89072d7589286a2de04966f36a67f9a2cdeb0d5c919df022b503190d16a6",
+    "SPY/cost-05_cash-00/channel55__breakout_trades.csv.gz": "675d06df68924770e3d10c26972edbe4113d87228524affa54f92c0b49d51088",
+    "SPY/cost-05_cash-00/channel55__hmm_breakout_decisions.csv.gz": "b4f90d3bf188ce72dd182f694a096f30ef50e629930a72bacbf3221efd145f07",
+    "SPY/cost-05_cash-00/channel55__hmm_breakout_ledger.csv.gz": "91340ca00d1453af26ecfee1287ff3740b8ec259a8450f78b9421cf4dae9f40c",
+    "SPY/cost-05_cash-00/channel55__hmm_breakout_trades.csv.gz": "67387f8ae9ed10ebe0c2cfe7e84be4280b982aacfadedcf2732096fbb452dfe7",
+    "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv.gz": "e49424a09cf8d61ac5d21f5f3e92b8e4d82e49634bc5abe909894bbf6256c03a",
+    "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv.gz": "07cde6d8a8a6cc0d591d8ea08e32dd7f0ab79965281e4c18df22611c698cce59",
+    "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv.gz": "46be52711177e1cfb1a19e36d65c57919f247c30a70e83c8a118af70c329402b",
+    "SPY/cost-05_cash-00/channel55__vol_breakout_decisions.csv.gz": "ad9cc24177cf87c35dc2751dd5177757a607818efa8ae8d5c8c09faade027564",
+    "SPY/cost-05_cash-00/channel55__vol_breakout_ledger.csv.gz": "8ed7ec7309661db1a74107fa9583ce2e9ae413ff56dc0c9556d6bbf4e4bc9576",
+    "SPY/cost-05_cash-00/channel55__vol_breakout_trades.csv.gz": "d5cc906cefa37320d041d54a93710b426e5be7a7a5d600144148e094ff74b3c5",
+    "SPY/cost-05_cash-00/vol_hold_decisions.csv.gz": "173e3214637c845ead40a829c37dc2c825e840e8f4f825d3e834e7d8c5f72c73",
+    "SPY/cost-05_cash-00/vol_hold_ledger.csv.gz": "71cad099fccdda0bf891de2e49900368b76298215b17277c818e291c3afbc47f",
+    "SPY/cost-05_cash-00/vol_hold_trades.csv.gz": "7f888534a52431afef03a7e8036109789979f50be5b7933e0960905ebac56280",
+    "SPY/features.csv.gz": "6ee3db0455242e7e8b333f36b3ea30a50a1947cb1f9a98a4f3b4fc7b09f8b206",
+    "SPY/model_snapshots.json.gz": "5a6268c23ad2cadbb32e1a2df32e598aab14290abf19791540fd8ed1db18bc2c",
+    "SPY/state_probabilities.csv.gz": "1663cc67576bcdb63900eb3ea910911f9d4f7168f3c3c7e518fe9886ccbedaca",
+    "SPY/targets.csv.gz": "fdbfe222f885dc42ca5940f552bd7c47ff8713a76c9a90b3cca078c419ee3423",
+    "SPY/training_events.csv.gz": "1cb1cb923e8ede40bdda89b747ed802cea29f8975e99b3520073b0580b85adea",
+    "training_summary.csv": "4932dbe68f15813582b29da87cc643e494a29432583ca41139ee4c178ac72a8e",
+    "wealth.png": "75668bb87016acbd4f8d89bce62842bf39e8f2ed1809620ac66e70df8e4b4a8d"
+  },
+  "snapshot": {
+    "original_manifest_sha256": "cec84aa725e9205d194772fab4720ed7ac805f990e29daba985b843f3cb6d62e",
+    "original_artifact_count": 669,
+    "retained_accounts": 12,
+    "compressed_artifacts": {
+      "SPY/features.csv.gz": {
+        "uncompressed_sha256": "526063abd9c5addd12b570144d4303fdad0e9028e09cdca9be14845a01a89ce8",
+        "original_path": "SPY/features.csv",
+        "uncompressed_bytes": 784522
+      },
+      "SPY/state_probabilities.csv.gz": {
+        "uncompressed_sha256": "4be99edca8aac1a23af4435cad72a8f5d1802ff47490c2cc7dd702490c2d90c6",
+        "original_path": "SPY/state_probabilities.csv",
+        "uncompressed_bytes": 376660
+      },
+      "SPY/training_events.csv.gz": {
+        "uncompressed_sha256": "0e111614ab2ff22a52150e704dd2ff7eed6ca35a54017a90b4a5f5e4e0b51edf",
+        "original_path": "SPY/training_events.csv",
+        "uncompressed_bytes": 11920
+      },
+      "SPY/model_snapshots.json.gz": {
+        "uncompressed_sha256": "bf66b5b633aa0b0c1f8630c8ee1866dbc51425c99555bba918b84c4f2516b491",
+        "original_path": "SPY/model_snapshots.json",
+        "uncompressed_bytes": 289769
+      },
+      "SPY/targets.csv.gz": {
+        "uncompressed_sha256": "da48fac11ebbc0676f6bd1ec04bcbf78cd88c24fff7f37448926270096b7a4fd",
+        "original_path": "SPY/targets.csv",
+        "uncompressed_bytes": 277426
+      },
+      "SPY/channel_signals.csv.gz": {
+        "uncompressed_sha256": "345472644b1569906c9b0ed471eb3ba4dd4f826d8b3957d21079024535a028ca",
+        "original_path": "SPY/channel_signals.csv",
+        "uncompressed_bytes": 1277110
+      },
+      "SPY/cost-05_cash-00/buy_hold_ledger.csv.gz": {
+        "uncompressed_sha256": "994a6910c6c686d8defd65e44fbf2549ca22f9349a66cfee47750c592f507068",
+        "original_path": "SPY/cost-05_cash-00/buy_hold_ledger.csv",
+        "uncompressed_bytes": 571350
+      },
+      "SPY/cost-05_cash-00/buy_hold_decisions.csv.gz": {
+        "uncompressed_sha256": "6657fb81a007af8dea4f1d79871c6d690f18ea136e5ae1cf6f22d5a1555ffb94",
+        "original_path": "SPY/cost-05_cash-00/buy_hold_decisions.csv",
+        "uncompressed_bytes": 84
+      },
+      "SPY/cost-05_cash-00/buy_hold_trades.csv.gz": {
+        "uncompressed_sha256": "a74cf57969b2c88aa9ba618f921d047cc6ea7b191fd2065cef5eb9d6104d262e",
+        "original_path": "SPY/cost-05_cash-00/buy_hold_trades.csv",
+        "uncompressed_bytes": 189
+      },
+      "SPY/cost-05_cash-00/vol_hold_ledger.csv.gz": {
+        "uncompressed_sha256": "ead87ca9a113a2338ce3cef78a22fc44552cca102daeba233701310f802d955b",
+        "original_path": "SPY/cost-05_cash-00/vol_hold_ledger.csv",
+        "uncompressed_bytes": 835391
+      },
+      "SPY/cost-05_cash-00/vol_hold_decisions.csv.gz": {
+        "uncompressed_sha256": "53fc24a45cda9e015c5167c9cb658bd21e7e87d13a4ea9cb34875536473a90d2",
+        "original_path": "SPY/cost-05_cash-00/vol_hold_decisions.csv",
+        "uncompressed_bytes": 149582
+      },
+      "SPY/cost-05_cash-00/vol_hold_trades.csv.gz": {
+        "uncompressed_sha256": "a086e588587e409fc6a12fa2e7d2cc4534f10a4a88674a0f3a1d7cb6606a5822",
+        "original_path": "SPY/cost-05_cash-00/vol_hold_trades.csv",
+        "uncompressed_bytes": 234596
+      },
+      "SPY/cost-05_cash-00/channel55__breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "5755cba1acf745b611079c671d17fd0e27f4e12d5b72742cfa28846b7bc34090",
+        "original_path": "SPY/cost-05_cash-00/channel55__breakout_ledger.csv",
+        "uncompressed_bytes": 518195
+      },
+      "SPY/cost-05_cash-00/channel55__breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "13617ee8d58354e886d4c70fbfb63d52bd5cd0ebce2b90a9eb4e392fa8d06182",
+        "original_path": "SPY/cost-05_cash-00/channel55__breakout_decisions.csv",
+        "uncompressed_bytes": 115387
+      },
+      "SPY/cost-05_cash-00/channel55__breakout_trades.csv.gz": {
+        "uncompressed_sha256": "099b4c39e86fb6c657a05747a8a38ed50de03053d13616e9103c3eba0e60daba",
+        "original_path": "SPY/cost-05_cash-00/channel55__breakout_trades.csv",
+        "uncompressed_bytes": 3813
+      },
+      "SPY/cost-05_cash-00/channel55__vol_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "6cf8f76b25a94f369ef6332c212e9b573dcdaeffdd44a66fe87c8e8f903b4da6",
+        "original_path": "SPY/cost-05_cash-00/channel55__vol_breakout_ledger.csv",
+        "uncompressed_bytes": 636232
+      },
+      "SPY/cost-05_cash-00/channel55__vol_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "33b74669c9947dbb630c72c2a897578ca82ee6cadc0d6f5c4e02bca9f18419d4",
+        "original_path": "SPY/cost-05_cash-00/channel55__vol_breakout_decisions.csv",
+        "uncompressed_bytes": 132709
+      },
+      "SPY/cost-05_cash-00/channel55__vol_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "25e86107e3d7fffe9abae3955d1ff2d1697f0614ea95ced53f622b5692827df9",
+        "original_path": "SPY/cost-05_cash-00/channel55__vol_breakout_trades.csv",
+        "uncompressed_bytes": 121204
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "038327f1ec6a19be7fdcf526623927ba0b25d1f860ded5a267d587f0a23aaa83",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_breakout_ledger.csv",
+        "uncompressed_bytes": 504123
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "c6cb5ed90205854b95726b7110d1123ddaf53d9c92b4908e7d66e58e6b91ef71",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_breakout_decisions.csv",
+        "uncompressed_bytes": 115387
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "94094c56d1ad4a88f3c5dc6243f868a3a6343d327fee9b734cbbe95547f87400",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_breakout_trades.csv",
+        "uncompressed_bytes": 18213
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "0bcad7d420ea25089055121a9a1084fdabd021d848bcf4512cc66183fc6fa9af",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv",
+        "uncompressed_bytes": 567455
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "11415b577bdcada32b5970c39bf804f0f28cb724a85642ed202dac6f7800ef96",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv",
+        "uncompressed_bytes": 125618
+      },
+      "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "dbfef65ae682984388120769a0b8cc62e2c61303112323c335b7394997ef27b8",
+        "original_path": "SPY/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv",
+        "uncompressed_bytes": 84675
+      },
+      "QQQ/features.csv.gz": {
+        "uncompressed_sha256": "90c39434c2d36e490086c8f9b64b9b39a6a26256bd8dc5e60b41a6aafbcd4eda",
+        "original_path": "QQQ/features.csv",
+        "uncompressed_bytes": 781381
+      },
+      "QQQ/state_probabilities.csv.gz": {
+        "uncompressed_sha256": "540e0412913f5cb2adffdbf58c8ea740173db25d12474c4f01987f4ab90d78ce",
+        "original_path": "QQQ/state_probabilities.csv",
+        "uncompressed_bytes": 377004
+      },
+      "QQQ/training_events.csv.gz": {
+        "uncompressed_sha256": "a6dba35b18150fc7b6cb6af805709652dadf0be21712a50344f62e7b8e731053",
+        "original_path": "QQQ/training_events.csv",
+        "uncompressed_bytes": 11965
+      },
+      "QQQ/model_snapshots.json.gz": {
+        "uncompressed_sha256": "53599de41e4733d11d63e1c2ae56e8ff4b7fc4c9ed3ad1caaf22a03c86f4bd8b",
+        "original_path": "QQQ/model_snapshots.json",
+        "uncompressed_bytes": 288576
+      },
+      "QQQ/targets.csv.gz": {
+        "uncompressed_sha256": "92240758c26595b0fa97e55e448efebd626efc14bdaef8c0d32b9607ed865be6",
+        "original_path": "QQQ/targets.csv",
+        "uncompressed_bytes": 338004
+      },
+      "QQQ/channel_signals.csv.gz": {
+        "uncompressed_sha256": "16803ba5dfb5eea99b7fb4ada1d217f7c00713316618b366d3b8e461ff823a58",
+        "original_path": "QQQ/channel_signals.csv",
+        "uncompressed_bytes": 1276441
+      },
+      "QQQ/cost-05_cash-00/buy_hold_ledger.csv.gz": {
+        "uncompressed_sha256": "864259ce8212a610c68bf8997b5a76399eefcc85889775ab44a89ba7544d8013",
+        "original_path": "QQQ/cost-05_cash-00/buy_hold_ledger.csv",
+        "uncompressed_bytes": 570681
+      },
+      "QQQ/cost-05_cash-00/buy_hold_decisions.csv.gz": {
+        "uncompressed_sha256": "6657fb81a007af8dea4f1d79871c6d690f18ea136e5ae1cf6f22d5a1555ffb94",
+        "original_path": "QQQ/cost-05_cash-00/buy_hold_decisions.csv",
+        "uncompressed_bytes": 84
+      },
+      "QQQ/cost-05_cash-00/buy_hold_trades.csv.gz": {
+        "uncompressed_sha256": "7739dec4b27733c8014e80ff257e8fb234b32dd6a5954e2e1bdac7b9f2ee7530",
+        "original_path": "QQQ/cost-05_cash-00/buy_hold_trades.csv",
+        "uncompressed_bytes": 188
+      },
+      "QQQ/cost-05_cash-00/vol_hold_ledger.csv.gz": {
+        "uncompressed_sha256": "222569e6cc3cbe4228b58609257d4c3ce3bcb2178e744c0ad1836261f35217c4",
+        "original_path": "QQQ/cost-05_cash-00/vol_hold_ledger.csv",
+        "uncompressed_bytes": 886925
+      },
+      "QQQ/cost-05_cash-00/vol_hold_decisions.csv.gz": {
+        "uncompressed_sha256": "2d2cf9a51064f175ca680c8d69b22945b863a3ea16a9e320165cf4dce8b43294",
+        "original_path": "QQQ/cost-05_cash-00/vol_hold_decisions.csv",
+        "uncompressed_bytes": 160724
+      },
+      "QQQ/cost-05_cash-00/vol_hold_trades.csv.gz": {
+        "uncompressed_sha256": "b9913ac153ea4e978016616e26654d1e79240ced6b88f2154c4c87a4b77e9108",
+        "original_path": "QQQ/cost-05_cash-00/vol_hold_trades.csv",
+        "uncompressed_bytes": 306734
+      },
+      "QQQ/cost-05_cash-00/channel55__breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "4346af232711979ade8a2984482d2aa0afab96ed67d1118f34a78c19ec38fc04",
+        "original_path": "QQQ/cost-05_cash-00/channel55__breakout_ledger.csv",
+        "uncompressed_bytes": 524710
+      },
+      "QQQ/cost-05_cash-00/channel55__breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "6b9758b8f3c9309c1df9d0ea049c97b0dc2bd698627b03d637b8fac3cd8c3071",
+        "original_path": "QQQ/cost-05_cash-00/channel55__breakout_decisions.csv",
+        "uncompressed_bytes": 115387
+      },
+      "QQQ/cost-05_cash-00/channel55__breakout_trades.csv.gz": {
+        "uncompressed_sha256": "4fdda1eadcb2fa2751e820dfed514302e05cff25b0b19783e781b832832160df",
+        "original_path": "QQQ/cost-05_cash-00/channel55__breakout_trades.csv",
+        "uncompressed_bytes": 3916
+      },
+      "QQQ/cost-05_cash-00/channel55__vol_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "dff413d4d16d6bceeed7396034462ffca23a2795bad35ff870138eec54328950",
+        "original_path": "QQQ/cost-05_cash-00/channel55__vol_breakout_ledger.csv",
+        "uncompressed_bytes": 661343
+      },
+      "QQQ/cost-05_cash-00/channel55__vol_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "7b4bece6e7f11c320216b65d935e30933f6fb4b4d6a6b9cae95163679df48b30",
+        "original_path": "QQQ/cost-05_cash-00/channel55__vol_breakout_decisions.csv",
+        "uncompressed_bytes": 139030
+      },
+      "QQQ/cost-05_cash-00/channel55__vol_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "7640b4c8b74748d2cfd36c8bae9ab864e69141e5204d59eb819fe3f8f574caf3",
+        "original_path": "QQQ/cost-05_cash-00/channel55__vol_breakout_trades.csv",
+        "uncompressed_bytes": 162828
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "6730686881224754e07b74a42b9e692b32114591709cfadfbb02a5242b4bc08c",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_breakout_ledger.csv",
+        "uncompressed_bytes": 510595
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "0113f402a589f7d82457c2fd9cd833fa9db77c033d3bf6d6c57796e4a903888e",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_breakout_decisions.csv",
+        "uncompressed_bytes": 115387
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "9584968a6dec4412b8523a2254de5c8eb4c26c90d1b667f5d8fe86c87d501a6e",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_breakout_trades.csv",
+        "uncompressed_bytes": 35710
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv.gz": {
+        "uncompressed_sha256": "aa76f4ddeb0dc99425989848abfd90f77e8ac4f5d2ffe3044da9c12c14844a96",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_ledger.csv",
+        "uncompressed_bytes": 605566
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv.gz": {
+        "uncompressed_sha256": "64812f882b79f5d4babf3da35ed97a828f1246e980367147c2ea271963fb77ec",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_decisions.csv",
+        "uncompressed_bytes": 132520
+      },
+      "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv.gz": {
+        "uncompressed_sha256": "a763841c990ca81aaa8c5be00ba417d5edff2ac5b89f8fed8d3fab6c654c9143",
+        "original_path": "QQQ/cost-05_cash-00/channel55__hmm_vol_breakout_trades.csv",
+        "uncompressed_bytes": 138747
+      }
+    }
+  }
+}

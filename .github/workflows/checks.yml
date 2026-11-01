@@ -17,6 +17,8 @@ jobs:
       - run: python -m strategy_lab.allocation --demo --output local-runs/ci-allocation
       - run: python tools/verify_allocation_run.py local-runs/ci-allocation
       - run: python -m strategy_lab.regimes --demo --output local-runs/ci-regimes
+      - run: python -m strategy_lab.regimes.breakout --demo --parent local-runs/ci-regimes --output local-runs/ci-breakout
+      - run: python tools/verify_breakout_run.py local-runs/ci-breakout
       - run: python -m strategy_lab.intraday --demo --output local-runs/ci-intraday
       - run: python examples/explain_intraday_clocks.py --output local-runs/ci-intraday-clocks
       - run: python examples/explain_intraday_evidence.py --output local-runs/ci-intraday-evidence

@@ -50,6 +50,24 @@ python -m strategy_lab.regimes --demo --output local-runs/regimes
 python tools/verify_regime_run.py local-runs/regimes
 ```
 
+### HMM transfer / Does the gate help a breakout signal?
+
+The [breakout transfer study](docs/BREAKOUT_RESEARCH.md) freezes the existing HMM
+and replaces momentum with a prior-high/low channel. A four-way comparison
+separates the state gate from volatility sizing, with fixed window and pulse
+sensitivities. Parent state probabilities, fitted parameters and shared control
+accounts are checked against the earlier experiment.
+
+The [invented report](reports/breakout-synthetic/REPORT.md) retains all 864 metric
+rows and 480 paired intervals. **Every public figure is synthetic**; real OHLC,
+models and derived findings stay private. [Chinese notes](docs/BREAKOUT_LEARNING_CN.md)
+· [Sources](docs/BREAKOUT_PROVENANCE.md) · [Validation](docs/BREAKOUT_VALIDATION.md).
+
+```bash
+python -m strategy_lab.regimes.breakout --demo --output local-runs/breakout
+python tools/verify_breakout_run.py local-runs/breakout
+```
+
 ### New study / Commodity curves: contracts before signals
 
 An [eight-product futures accounting module](docs/COMMODITY_ACCOUNTING.md) connects

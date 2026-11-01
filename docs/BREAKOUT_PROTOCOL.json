@@ -1,0 +1,153 @@
+{
+  "version": "hmm-breakout-transfer-v1",
+  "config": {
+    "primary_window": 55,
+    "comparison_rtol": 1e-12,
+    "envelope_seed": 20261103
+  },
+  "hmm_config": {
+    "momentum": 20,
+    "volatility": 20,
+    "train_window": 756,
+    "refit_every": 21,
+    "states": 3,
+    "process_variance": 1e-05,
+    "measurement_variance": 0.001,
+    "target_vol": 0.15,
+    "initial_nav": 100000.0,
+    "seed": 42,
+    "max_iterations": 500,
+    "tolerance": 0.001,
+    "bootstrap_samples": 2000
+  },
+  "assets": [
+    "SPY",
+    "QQQ"
+  ],
+  "asset_roles": {
+    "SPY": "primary",
+    "QQQ": "same-rule transfer"
+  },
+  "segments": {
+    "development": [
+      "2013-01-01",
+      "2017-12-31"
+    ],
+    "validation": [
+      "2018-01-01",
+      "2020-12-31"
+    ],
+    "confirmation": [
+      "2021-01-01",
+      "2025-12-31"
+    ],
+    "full": [
+      "2013-01-01",
+      "2025-12-31"
+    ]
+  },
+  "signal_specifications": [
+    {
+      "name": "channel55",
+      "window": 55,
+      "pulse": false
+    },
+    {
+      "name": "channel20",
+      "window": 20,
+      "pulse": false
+    },
+    {
+      "name": "channel100",
+      "window": 100,
+      "pulse": false
+    },
+    {
+      "name": "pulse55",
+      "window": 55,
+      "pulse": true
+    }
+  ],
+  "strategies": [
+    "buy_hold",
+    "vol_hold",
+    "channel55__breakout",
+    "channel55__vol_breakout",
+    "channel55__hmm_breakout",
+    "channel55__hmm_vol_breakout",
+    "channel20__breakout",
+    "channel20__vol_breakout",
+    "channel20__hmm_breakout",
+    "channel20__hmm_vol_breakout",
+    "channel100__breakout",
+    "channel100__vol_breakout",
+    "channel100__hmm_breakout",
+    "channel100__hmm_vol_breakout",
+    "pulse55__breakout",
+    "pulse55__vol_breakout",
+    "pulse55__hmm_breakout",
+    "pulse55__hmm_vol_breakout"
+  ],
+  "primary_strategies": [
+    "buy_hold",
+    "vol_hold",
+    "channel55__breakout",
+    "channel55__vol_breakout",
+    "channel55__hmm_breakout",
+    "channel55__hmm_vol_breakout"
+  ],
+  "comparisons": [
+    {
+      "alternative": "hmm_vol_breakout",
+      "control": "vol_breakout"
+    },
+    {
+      "alternative": "vol_breakout",
+      "control": "breakout"
+    },
+    {
+      "alternative": "hmm_breakout",
+      "control": "breakout"
+    },
+    {
+      "alternative": "hmm_vol_breakout",
+      "control": "hmm_breakout"
+    },
+    {
+      "alternative": "interaction",
+      "control": "2x2 difference-in-differences"
+    }
+  ],
+  "cost_bps": [
+    0,
+    5,
+    10
+  ],
+  "continuous_cash_rates": [
+    0.0,
+    0.03
+  ],
+  "bootstrap_blocks": [
+    20,
+    63
+  ],
+  "hmm_features": [
+    "log_return",
+    "volatility"
+  ],
+  "hmm_gate": "unchanged: status ok and filtered state-weighted current log-return mean > 0",
+  "channel": "prior-window adjusted highs/lows, excluding current bar; enter above upper, exit below lower, otherwise carry",
+  "initialization": "signal latch starts flat at first bar, evolves through warmup; accounts start cash in 2013; no segment reset",
+  "pulse_sensitivity": "hold only when current close exceeds prior 55 highs; otherwise request cash",
+  "overlay": "continuous gate on independent underlying trend state; gate recovery can reenter without a new channel breakout",
+  "execution": "after-close t frozen fractions execute at close t+1; adjusted model units, not ETF fills",
+  "risk": "same 20-session log-return volatility, 15% target and 100% cap as parent; no shorting or leverage",
+  "failure": "unchanged HMM failure requests cash until scheduled successful refit, with normal one-session fill delay",
+  "parent_equivalence": "recompute unchanged HMM; compare state probabilities, fitted parameters and all buy/hold and vol/hold ledgers with bound parent",
+  "synthetic_closes": "reuse parent independently invented generator, seed 20261101; add invented OHLC envelope only",
+  "real_source": "derive adjusted OHLC from hash-verified archived parent provider responses and exactly the parent analyzed closes; no refreshed vintage",
+  "inference": "five predeclared primary-55 contrasts including interaction; descriptive dependent-data intervals, no multiplicity adjustment",
+  "evidence": "retrospective strategy/asset transfer; prior returns already inspected, no independent prospective holdout",
+  "recorded_utc": "2026-11-01T20:06:27.279018+00:00",
+  "recorded_before": "First breakout performance calculation in this implementation; parent historical results are already known."
+}

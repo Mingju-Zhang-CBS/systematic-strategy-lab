@@ -3,8 +3,9 @@
 The question is whether a causal HMM adds value beyond ordinary trend, smoothing
 and volatility control. SPY is the primary study; QQQ is a fixed-rule transfer
 check. This is a daily study, separate from the repository's intraday breakout
-and fund-NAV allocation studies. The first release covers momentum; a Donchian
-breakout transfer experiment is future work.
+and fund-NAV allocation studies. This parent release covers momentum; the
+[breakout transfer experiment](BREAKOUT_RESEARCH.md) now keeps this HMM fixed
+while testing prior-high/low channels with and without volatility sizing.
 
 [Invented results](../reports/regimes-synthetic/REPORT.md) ·
 [Frozen protocol](REGIME_PROTOCOL.json) · [Tests](../tests/test_regimes.py) · [Validation](REGIME_VALIDATION.md) ·

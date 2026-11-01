@@ -35,3 +35,9 @@ tests/test_allocation.py text eol=lf
 tools/*allocation*.py text eol=lf
 docs/ALLOCATION* text eol=lf
 reports/allocation-synthetic/** -text
+
+strategy_lab/regimes/breakout/*.py text eol=lf
+tests/test_breakout.py text eol=lf
+tools/*breakout*.py text eol=lf
+docs/BREAKOUT* text eol=lf
+reports/breakout-synthetic/** -text

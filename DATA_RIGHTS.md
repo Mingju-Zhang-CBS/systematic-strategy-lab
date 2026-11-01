@@ -72,3 +72,13 @@ This is an October 2026 capture of published historical values. It is not an arc
 ## Refreshing data
 
 The checked-in snapshot makes offline reproduction possible without services, credentials or a downloader that depends on site internals. To propose an update, retrieve the official table through its public interface, preserve a private source capture, normalize exactly the six columns, document rights and meaning, and create a new source fingerprint and protocol version before evaluating a new horizon. Do not overwrite the snapshot and continue citing the old results. The website's current interface and data availability can change.
+
+## Daily HMM breakout transfer
+
+`reports/breakout-synthetic/` uses independently invented OHLC, including every
+public model snapshot, result table and figure. Private real OHLC are derived
+from the parent Yahoo capture at the same vintage. Real inputs, fitted models,
+ledgers, figures, reports and derived findings remain outside public repositories.
+See [source and contribution](docs/BREAKOUT_PROVENANCE.md); no Yahoo or reference
+notebook redistribution right is inferred from public access or this code license.
+

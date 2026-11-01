@@ -1,5 +1,10 @@
 # Sources, contribution and limits
 
+The independently implemented [HMM breakout transfer](BREAKOUT_RESEARCH.md)
+extends the online-HMM topic under frozen parent rules. Its [source record](BREAKOUT_PROVENANCE.md)
+distinguishes the supplied notebook idea, original implementation, AI assistance,
+invented public evidence and private real inputs/results.
+
 This independent public implementation was written from public financial concepts. Prior academic or professional interests motivated the questions; original coursework, internship workbooks, recruiting tasks, internal APIs and employer data are not copied into this repository. No official trading-competition result is claimed for this study. Development and documentation were AI-assisted.
 
 ## Data and permissions
