@@ -1,5 +1,16 @@
 # Data rights, attribution and scope
 
+## Robust allocation module: invented public evidence
+
+The Markowitz/Black–Litterman and risk-budget study uses independently invented
+inputs for all public allocation numbers, model snapshots and figures in
+`reports/allocation-synthetic/`. The reference notebooks' code and saved results
+are excluded. Personal real ETF observations, estimated real parameters, ledgers,
+perturbation findings, performance summaries and figures remain private. Neither
+MIT code licensing nor public Yahoo access establishes redistribution rights.
+See [allocation provenance](docs/ALLOCATION_PROVENANCE.md); the separate TSP
+factual-data basis does not extend to these ETF vendor observations.
+
 ## Daily regime module: invented public demonstration
 
 The online HMM/trend study publishes original code, methodology and independently

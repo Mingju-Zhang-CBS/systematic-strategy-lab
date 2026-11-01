@@ -29,3 +29,9 @@ tests/test_regimes.py text eol=lf
 tools/*regime*.py text eol=lf
 docs/REGIME* text eol=lf
 reports/regimes-synthetic/** -text
+
+strategy_lab/allocation/*.py text eol=lf
+tests/test_allocation.py text eol=lf
+tools/*allocation*.py text eol=lf
+docs/ALLOCATION* text eol=lf
+reports/allocation-synthetic/** -text

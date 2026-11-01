@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "systematic-strategy-lab"
-version = "0.11.0"
+version = "0.12.0"
 description = "Independent, reproducible quantitative finance portfolio research"
 requires-python = ">=3.12,<3.13"
 license = {file = "LICENSE"}
@@ -20,6 +20,8 @@ test = ["pytest>=8,<10"]
 regimes = ["hmmlearn==0.3.3", "scipy==1.14.1", "scikit-learn==1.5.2",
            "joblib==1.4.2", "threadpoolctl==3.5.0"]
 regimes-download = ["yfinance==1.7.0", "exchange-calendars==4.13.2"]
+allocation = ["scipy==1.14.1", "scikit-learn==1.5.2", "threadpoolctl==3.5.0"]
+allocation-download = ["yfinance==1.7.0", "exchange-calendars==4.13.2"]
 
 [tool.setuptools.packages.find]
 include = ["strategy_lab*"]

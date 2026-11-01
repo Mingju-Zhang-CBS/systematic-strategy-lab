@@ -1,0 +1,162 @@
+{
+  "generated_utc": "2026-11-01T18:59:34.179714+00:00",
+  "data_kind": "synthetic",
+  "input_sha256": "b9635d22a4ae14bbe50c1e94d1411681c2f85b7a27c12ba50e89409a2a2d9972",
+  "protocol_sha256": "fc8c8385c056f5afd350849b660f3b3f42dbb8bfc2e8a9bbbe40d2354e41d093",
+  "source": {
+    "origin": "independently invented factor fixture; not actual ETF prices"
+  },
+  "source_sha256": {
+    "__init__.py": "bf2e422781d37cbfc5e28c803bebc7f016a4071144d6e5be08e0795556112ff2",
+    "__main__.py": "b2386df5e2c6158fbda9e0c447eb5ae086304b1cec9725a6c23069649c29f054",
+    "config.py": "d70af7768e349065119ffd4b5484fa74b8b304c7d4857ea36be5da4c874d8889",
+    "data.py": "3b5beff91b97ef8fd7a4686e376507009ca00e9cc05afbfb8df7c90767cc28ac",
+    "engine.py": "0749b6c308be252effc4eeb4f656a35ebbabefc12dce52ee6ba571dd6429acc0",
+    "models.py": "6b411b5e92cba930d5a8db9a7be83e5efdef1123fc815ebfff89f3b9aced5c3f",
+    "report.py": "189624bc3522958e7ead44cafbf4386b93c8aab834849854c10494c51d8e4a94",
+    "research.py": "59a2cc82b00f213d249e0492753a11c2657f429129bbd6a24d7eaf76a1dd93f3"
+  },
+  "shared_code_sha256": {
+    "regimes/engine.py": "01644b5840b44e7236848b66562b138e9c652b76aa47298eec9466f3b9f5904a",
+    "runtime.py": "f13a499971d7a1d51ea7409b0e02d50129167868fa4adfa39e236dae0b6a8db7"
+  },
+  "python": "3.12.6",
+  "packages": {
+    "numpy": "2.1.2",
+    "pandas": "2.2.3",
+    "scipy": "1.14.1",
+    "scikit-learn": "1.5.2",
+    "threadpoolctl": "3.5.0",
+    "matplotlib": "3.9.2"
+  },
+  "artifacts": {
+    "black_litterman_targets.csv": "830a297d6aacfa0e521bee699529380814386f093ef6e2fd696d60f012428cea",
+    "cost-05_cash-00/black_litterman_decisions.csv.gz": "1ccc80cf170250f2793687c13614e2711b4830aed285980e945dc5678e2f6334",
+    "cost-05_cash-00/black_litterman_ledger.csv.gz": "367e3f9e534cb3339f3d907a0baec97214ab0c05986a28eb0feb0df200926120",
+    "cost-05_cash-00/black_litterman_trades.csv.gz": "f7288eba4fce4ac64725db933ff097d0e967cf4cf43e9941a90840a224ca52af",
+    "cost-05_cash-00/equal_weight_decisions.csv.gz": "1a28229e488f722dc59a4c4a2806bed073800a58a4321c224dacf112d633c8a4",
+    "cost-05_cash-00/equal_weight_ledger.csv.gz": "5333b0423e4db3f67f5052d0d6d3dd8c235bac1434529adcec426c0682ec7540",
+    "cost-05_cash-00/equal_weight_trades.csv.gz": "5223a0d5906d0c1fe62283830450903b227f108f63bff3906771ed98f7437e64",
+    "cost-05_cash-00/mean_variance_decisions.csv.gz": "a19e81d474aa2af11972b22b2ab3920f55ba42923a20277edb56aabe4fa0d8db",
+    "cost-05_cash-00/mean_variance_ledger.csv.gz": "003d6fe4130c33f3d8a50acf44fe3a60ed8ce354140354af1cf791ae7fdce01e",
+    "cost-05_cash-00/mean_variance_trades.csv.gz": "c47d7e44ecec0d753ee8c812d84d65949dc6954104938e763bc95f99c073ab56",
+    "cost-05_cash-00/min_variance_decisions.csv.gz": "385ce57d9d45633a44c99f2f7550a9f5643327e2cc193d67fdfeb0b3fe1a972f",
+    "cost-05_cash-00/min_variance_ledger.csv.gz": "f0f2976033aba23f7e96e219cbf26e61fd219ba5b39b02f5458a536de020534e",
+    "cost-05_cash-00/min_variance_trades.csv.gz": "12c0b47e777a2b08d85b1b150d69423004228395e308140ef9499b58a0230e86",
+    "cost-05_cash-00/return_tilted_budget_decisions.csv.gz": "a50a30f8eb00d49c605d69be4fda89f10de04cd66afafeb830f202e2d6dcd0ea",
+    "cost-05_cash-00/return_tilted_budget_ledger.csv.gz": "5e8be8d9cc79dc0bb8e8d7d9d240a650195b5fd6a1c3335bfd44405c8d0b90ce",
+    "cost-05_cash-00/return_tilted_budget_trades.csv.gz": "5455970eb59287b55ac3ee770a04206a64673f82f447ce7d435b3118c5081349",
+    "cost-05_cash-00/risk_budget_decisions.csv.gz": "221f099c7a0d57965e1773e381beaba896cf8710cec5f5f6402ddd21da464b5d",
+    "cost-05_cash-00/risk_budget_ledger.csv.gz": "ed34765f123109a6e5b5db4d69a65b069c0a452ca2479c79bb74acec65833ba7",
+    "cost-05_cash-00/risk_budget_trades.csv.gz": "2b8fd69e6a9eb92f19b3acc8e6af51698b56dd6557cb3f6b734f9e50d96f5e59",
+    "equal_weight_targets.csv": "e0c7bf4158b6f26e5a16b7f8a0206d16bc5d7b5c08284ba799b6b57ca3135915",
+    "forecast_perturbations.csv.gz": "9da8542615246ebfb81ace0b13f2bbedd695c367086c7c96a6c3adab39fc86bc",
+    "forecast_sensitivity.png": "5d815ea99b502bf394868b486b5906617966f4b56470fc3cc00fbc8a7aa50be8",
+    "mean_variance_targets.csv": "754cda1f8e938d3cbbd7f261457b886a09a62fd9c5d9ea29b1f3e21af95ee8b4",
+    "metrics.csv": "e64237c62314e473b801118cae15b7f1816591148b776f2e59257b69bf55a87c",
+    "min_variance_targets.csv": "704098a250b92e070c05f7a3d478dd25aae47075f2df9afcd7549bb058077f4d",
+    "optimization_events.csv.gz": "fadb2cfaeeab6466256374eaff0a027cb3865591e87b12f10d0e5cb255872255",
+    "optimization_summary.csv": "5ac57d2d2051b6fda3e71b4ff0816dd99503b397d8eb69c082c8e21a3e4572a8",
+    "paired_inference.csv": "975f140b6721d7904396df8dbb46a6c5a4ca6a2e7f0e8992b9201904b18df6f9",
+    "parameter_snapshots.json.gz": "45c9c1a60201201d1493b49a580bbd4c201dff7ce3c8611b225c7e7a4b39fa0c",
+    "perturbation_summary.csv": "661f709695ee0981ba420b886b889ffd3636152154fbc63008ee63d30312a126",
+    "protocol.json": "fc8c8385c056f5afd350849b660f3b3f42dbb8bfc2e8a9bbbe40d2354e41d093",
+    "REPORT.md": "bbe3462a5774ee293dc5a5e185375e78578eef1c9137592c0b5bd1bc1e156495",
+    "return_tilted_budget_targets.csv": "0c421f018720d20e77294f5725fae955657f8221c2b600c7898f431b7b5a8147",
+    "risk_budget_targets.csv": "0012ce69f8c3105e8e662ace08eb501328c64e92fb9370dc48540e3ea06b6323",
+    "risk_contributions.png": "9be23b6dc2fcf5124b9d83da1116522d0ed23bb61e840cbb8550609110b37c91",
+    "SNAPSHOT.md": "bba9873ecb92be3d016276a02e2e5fbc79cbc3544ee68f9989f707d530864752",
+    "wealth_and_exposure.png": "3063e4a1665ee7dbe3cd54a23f65971af7e0693d4a0950bcd001c861e4015d53"
+  },
+  "snapshot": {
+    "complete_run_files": 450,
+    "complete_manifest_sha256": "8568cd5f9d1114644d8156dfd6ee4ce98def041f33357d65abdd963347707710",
+    "compressed_artifacts": {
+      "optimization_events.csv.gz": {
+        "uncompressed_path": "optimization_events.csv",
+        "uncompressed_sha256": "72fcc367da57aafc2e63cf778b72c9d0393c4abda2ce027ebaa82bd428f5972c"
+      },
+      "parameter_snapshots.json.gz": {
+        "uncompressed_path": "parameter_snapshots.json",
+        "uncompressed_sha256": "8828f9071fc4ea962953f853af1113272a351c444d1a411d5de2cd8df5a8eb9e"
+      },
+      "forecast_perturbations.csv.gz": {
+        "uncompressed_path": "forecast_perturbations.csv",
+        "uncompressed_sha256": "509da928217b93b79c789f568a2ad93e1d29058d08ecfdf2ba9666cfb33da5fa"
+      },
+      "cost-05_cash-00/equal_weight_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/equal_weight_ledger.csv",
+        "uncompressed_sha256": "b4e95bc40458dba21bbbd259abf1ab17580643d14dfefe53fbc785625eaf0b57"
+      },
+      "cost-05_cash-00/equal_weight_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/equal_weight_decisions.csv",
+        "uncompressed_sha256": "f1b2e19ba010be49e641a7d5bee268561d229cb81d68824fe931d72d26a4f507"
+      },
+      "cost-05_cash-00/equal_weight_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/equal_weight_trades.csv",
+        "uncompressed_sha256": "6a40c8e5123ddc83c94dd86ce15bfd9b8a860adb5565cb69cb97cafeb9c31cb0"
+      },
+      "cost-05_cash-00/min_variance_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/min_variance_ledger.csv",
+        "uncompressed_sha256": "dbf9a310cfef724f07e8a8f5b4da2bba9ff622713064794376521ba72e2228a9"
+      },
+      "cost-05_cash-00/min_variance_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/min_variance_decisions.csv",
+        "uncompressed_sha256": "68c158d1cb1edb1702f4adb5cc291d31ef9e63127452ac1f0c2dd9e15e0f14d2"
+      },
+      "cost-05_cash-00/min_variance_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/min_variance_trades.csv",
+        "uncompressed_sha256": "8091b5cdc9745733fd65831e1678a8cbc8790cd0d1a73eb36466c65b52e0bcd4"
+      },
+      "cost-05_cash-00/mean_variance_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/mean_variance_ledger.csv",
+        "uncompressed_sha256": "51e51a7c8c783702f88d30f1586561180a4bba0fcf9c24c2ccd0a7b1b91ecb58"
+      },
+      "cost-05_cash-00/mean_variance_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/mean_variance_decisions.csv",
+        "uncompressed_sha256": "ca2cbee6f8f80dd6985bcfe2cb5d40c100cdb943aecc09a1a76e810bd1e15163"
+      },
+      "cost-05_cash-00/mean_variance_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/mean_variance_trades.csv",
+        "uncompressed_sha256": "80a7a96aba80e85c3b9eba23dab27737a5592987233aa54857c27ded5656577c"
+      },
+      "cost-05_cash-00/black_litterman_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/black_litterman_ledger.csv",
+        "uncompressed_sha256": "1bc2b6a95057361d928611342d8c89ad52a77e6d5945e556f4860bce2da57626"
+      },
+      "cost-05_cash-00/black_litterman_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/black_litterman_decisions.csv",
+        "uncompressed_sha256": "b72631d495d09d61d7a54d2d27b6d7b39cdef900eed852289b188e501dbf9e6b"
+      },
+      "cost-05_cash-00/black_litterman_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/black_litterman_trades.csv",
+        "uncompressed_sha256": "3c32a0ce4aff92e5b3728361d61e471bf0b2f9c7384104c538c19c9eb0635200"
+      },
+      "cost-05_cash-00/risk_budget_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/risk_budget_ledger.csv",
+        "uncompressed_sha256": "467b975c67845ffa36ab4348fdac25b628edde19459a7be23ec713b789c1310b"
+      },
+      "cost-05_cash-00/risk_budget_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/risk_budget_decisions.csv",
+        "uncompressed_sha256": "78b37d4400a733aa6fd2eb37051db2189754bad400a45bb7392e3575c734e3bf"
+      },
+      "cost-05_cash-00/risk_budget_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/risk_budget_trades.csv",
+        "uncompressed_sha256": "676e502d778ab3ebc43db5dcaa2974791e836266a28f3a9934070bce26595365"
+      },
+      "cost-05_cash-00/return_tilted_budget_ledger.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/return_tilted_budget_ledger.csv",
+        "uncompressed_sha256": "0b2c1265dbfd1dda2c43b19427f2484e7c952f2dd5802944d5c1ba877bf5c080"
+      },
+      "cost-05_cash-00/return_tilted_budget_decisions.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/return_tilted_budget_decisions.csv",
+        "uncompressed_sha256": "da21a0c9d08f3c9ae15ac8b6e3269113cabef42ddbc109a9fb3c6d647105b84f"
+      },
+      "cost-05_cash-00/return_tilted_budget_trades.csv.gz": {
+        "uncompressed_path": "cost-05_cash-00/return_tilted_budget_trades.csv",
+        "uncompressed_sha256": "dcc37b585fef99835ab1ae695ef4aee8a92dbe139a6b84803311379515a76eb6"
+      }
+    },
+    "retained_primary_accounts": 6
+  }
+}

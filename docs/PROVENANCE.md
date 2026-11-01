@@ -25,6 +25,14 @@ writing were AI-assisted. No reference performance is transferred into this proj
 
 ## Personal implementation
 
+The [robust allocation extension](ALLOCATION_RESEARCH.md) independently combines
+label-aligned Black–Litterman, shared-risk constrained optimization, dimensionless
+return-tilted budgets, forecast perturbations and a funded multi-asset account.
+Its [source record](ALLOCATION_PROVENANCE.md) distinguishes reference notebooks,
+standard mathematics, upstream software and new AI-assisted implementation.
+Only invented allocation evidence is public; current-vintage real ETF inputs
+and all derived findings remain private.
+
 The implementation covers the offline snapshot schema, timing contract, capped momentum and shared-risk-budget control, self-financing fee solver, unit/P&L ledger, chronological experiment, paired inference, figures and tests. Mingju Zhang selected the research direction; code, experiment design, testing and writing were AI-assisted. Personal source contributions and human review are tracked separately. Python, NumPy, pandas, Matplotlib, psutil and pytest retain their own authorship and licenses. Familiar momentum and covariance methods are public building blocks; no novel signal is claimed.
 
 ## Remaining uncertainty

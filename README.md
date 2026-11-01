@@ -8,6 +8,27 @@ Does a momentum filter improve an allocation after publication delays, fees and 
 
 [Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
 
+### Robust allocation / How much does a noisy forecast move the portfolio?
+
+The [allocation study](docs/ALLOCATION_RESEARCH.md) compares equal weight,
+minimum variance, mean–variance, Black–Litterman, bounded risk budgeting and a
+defined return-tilted risk-budget model. Named views reach a return-aware
+objective; common covariance, concentration limits, risk scaling and next-close
+funding make the comparison inspectable. Binding caps and rejected solver
+results remain explicit.
+
+The [invented experiment](reports/allocation-synthetic/REPORT.md) retains 23
+fixed specifications, all cost/cash cases, forecast perturbations, risk
+contributions and paired uncertainty. Every public number and figure in this
+topic uses **synthetic inputs**; current-vintage real ETF observations and all
+derived real findings remain private. [Chinese learning notes](docs/ALLOCATION_LEARNING_CN.md)
+· [Sources](docs/ALLOCATION_PROVENANCE.md) · [Validation](docs/ALLOCATION_VALIDATION.md).
+
+```bash
+python -m strategy_lab.allocation --demo --output local-runs/allocation
+python tools/verify_allocation_run.py local-runs/allocation
+```
+
 ### Daily trend / Does an online HMM add value?
 
 The [daily regime study](docs/REGIME_RESEARCH.md) compares buy and hold, volatility
