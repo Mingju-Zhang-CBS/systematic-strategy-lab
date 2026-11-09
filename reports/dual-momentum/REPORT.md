@@ -22,6 +22,20 @@ python -m pytest tests/test_dual_momentum_attribution.py
 ```
 
 
+## Rebound follow-up
+
+Two fixed variants respond to the missed rallies on the same historical window. The half-risk floor keeps half of each closed sleeve in its 12-month winner. The three-month rule keeps the initial cash exit. On later monthly decisions while the long gate is still shut, the same 12-month winner can re-enter if its three-month return beats cash over the same period. Both variants keep the original signal clock, next-session close, cost grid and asset universe. The four original strategies reconcile across all four costs.
+
+The half-risk floor recovered about half of the original missed exposure P&L and retained about half of the protection on the original cash spells. It improved growth and excess Sharpe versus original dual across the cost grid. It still trailed pure relative momentum and the trailing-exposure control on both measures. The faster rule restored risk in relatively few of the original missed spells, entered during several of the protective spells and increased turnover. Its improvement over original dual was small and the paired interval included zero. Neither variant improved the original worst daily drawdown, which occurred before the April 2020 cash exits.
+
+The private report compares all six arms and costs, retains both positive and negative cash spells and reports the 2020 equity and real estate cases, the protective real-estate spell that began in 2022, and the full calendar-year panel. The missed and protective groups use the sign of each original spell's realized exposure effect. The comparison sums variant exposure contributions over those same windows and evaluates fees separately in the portfolio accounts. The two rules were specified after observing the original attribution and before running the variants. The historical evaluation therefore measures the trade-off in this sample.
+
+```bash
+python -m tools.run_dual_momentum_rebound --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m pytest tests/test_dual_momentum_rebound.py
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)

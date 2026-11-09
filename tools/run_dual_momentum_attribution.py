@@ -12,7 +12,8 @@ from strategy_lab import dual_momentum_attribution as attr
 from tools import run_dual_momentum_wrds as baseline
 
 
-def run(db, rf_path, base_dir):
+def load_frozen_inputs(db, rf_path, base_dir):
+    """Verify the input vintage before reconstructing the original signals."""
     summary = json.loads((base_dir / "summary.json").read_text(encoding="utf-8"))
     if summary["run_id"] != baseline.RUN_ID:
         raise ValueError("Unexpected baseline run")
@@ -31,6 +32,11 @@ def run(db, rf_path, base_dir):
     rf.index = pd.PeriodIndex(rf.index, freq="M")
     returns = dm.session_returns(etf, rf)
     targets = dm.target_weights(formation.assign(RF=rf))
+    return returns, closes, formation.assign(RF=rf), rf, targets
+
+
+def run(db, rf_path, base_dir):
+    returns, closes, _, _, targets = load_frozen_inputs(db, rf_path, base_dir)
     saved = {
         arm: pd.read_csv(
             base_dir / f"{arm}_{attr.PRIMARY_COST}bps_daily.csv", index_col="session", parse_dates=True
