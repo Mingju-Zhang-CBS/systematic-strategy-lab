@@ -52,6 +52,20 @@ python -m pytest tests/test_dual_momentum_walkforward.py
 ```
 
 
+## Volatility-matched test of the 75% floor
+
+At each annual fold, the two strategies are matched to the lower of their unscaled prior 60-month volatilities. Risk is the annualized volatility of net monthly excess returns over cash from a funded replay at the primary cost. The higher-risk portfolio scales all of its ETF targets down and leaves the residual in cash. The scale is frozen for the next test fold and used at all four costs. The accounts keep the original next-session close, cash proxy and trade fees, including resizing. They carry positions across folds.
+
+The 75% rule kept a small pooled growth lead after matching, but the lead narrowed at every cost. The paired intervals included zero, excess Sharpe was essentially the same at the primary fee, and the matched floor still realized higher pooled volatility. Trailing exposure had the lower training risk in every fold and kept its original weights.
+
+Scaling reduced the 75% portfolio's 2022 loss and daily drawdown. Trailing exposure still lost less and drew down less over the full calendar year. The scaled 75% account retained slightly more of original dual's protection on the original protective cash fragments than it did before resizing. The full calendar outcome and cash-fragment result measure different portions of the portfolio path. The report evaluates time-ordered historical holdouts on the same research sample.
+
+```bash
+python -m tools.run_dual_momentum_volmatch --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m pytest tests/test_dual_momentum_volmatch.py
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)

@@ -65,7 +65,7 @@ def holdout_ledger(ledger, start=TEST_START):
     return sample
 
 
-def cash_spell_fragments(daily, accounts, start=TEST_START):
+def cash_spell_fragments(daily, accounts, start=TEST_START, compared=(*FLOORS, ADAPTIVE)):
     """Slice original off-gate spells into forward-fold fragments and link effects."""
     index = daily.index
     excess = daily[list(dm.ASSETS)].sub(daily.RF, axis=0).to_numpy(dtype=float)
@@ -73,7 +73,7 @@ def cash_spell_fragments(daily, accounts, start=TEST_START):
     original, off = attr.components(dual, relative, excess, index)
     effects = {
         arm: attr.components(accounts[arm], dual, excess, index)[0]
-        for arm in (*FLOORS, ADAPTIVE)
+        for arm in compared
     }
     in_test = index.to_period("M") >= pd.Period(start, "M")
     rows = []
