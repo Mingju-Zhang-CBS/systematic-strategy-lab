@@ -8,6 +8,20 @@ The cash gate reduced annualized volatility and month-end drawdown. It gave up c
 
 Within the same gate, choosing the stronger ETF compounded faster than splitting the sleeve equally. The paired interval at the primary cost included zero, so this sample leaves the size and sign of that ranking benefit uncertain. The two paired log-growth intervals against relative-only and trailing exposure were below zero at the primary cost. These are conditional historical comparisons for one fixed universe and window.
 
+## What drove the gap
+
+Cash spells explain most of the underperformance against the two relative-momentum controls. The largest calendar-period losses were in 2020, 2023 and 2016. Equity and real estate exits missed rebounds after the March 2020 decline. In 2022, cash helped, particularly in real estate and credit. Real estate was the largest full-window detractor against both relative controls. Equity and gold/Treasuries also detracted, while credit was close to flat against relative-only.
+
+Both relative controls select the same winner as dual whenever they hold a risky position. Their gap is attributable to exposure and fees. Against the same-gate equal pair, selection helped on average, led by gold/Treasuries, with sizeable losing intervals as well. In March 2020 the real estate sleeve's choice of VNQ helped against the equal pair through the execution close. The subsequent VNQ exit missed the recovery captured by relative-only. Higher turnover widened the return gap. Winner rotations accounted for the largest share of dual's own trading cost, and cash exits and re-entries added turnover. Both relative controls also rotated, limiting the relative fee drag.
+
+The attribution replays the frozen accounts and checks daily NAV, net returns and turnover. Within each sleeve it separates differences in risky weight, ETF mix and fees. On days only one account is invested, its mix anchors the comparison, assigning the gap to exposure. Each day's components are linked to the difference in net log returns, so they add across sleeves and calendar periods. The private report retains the full year-by-sleeve matrices, both favorable and unfavorable trades, and the detailed fees. These effects describe the historical paths under the recorded execution rule.
+
+```bash
+python -m tools.run_dual_momentum_attribution --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m pytest tests/test_dual_momentum_attribution.py
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)
