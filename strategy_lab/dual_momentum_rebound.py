@@ -61,25 +61,31 @@ def compare_cash_spells(daily, accounts, original_spells):
     return pd.concat(frames, ignore_index=True)
 
 
+def exposure_tradeoff(original, delta):
+    """Aggregate linked exposure over positive and negative baseline windows."""
+    miss = original.lt(0)
+    save = original.gt(0)
+    missed = -original[miss].sum()
+    saved = original[save].sum()
+    recovered = delta[miss].sum()
+    surrendered = -delta[save].sum()
+    return {
+        "baseline_missed_pp": float(missed),
+        "baseline_saved_pp": float(saved),
+        "recovered_pp": float(recovered),
+        "surrendered_pp": float(surrendered),
+        "miss_capture_fraction": float(recovered / missed) if missed else None,
+        "protection_retained_fraction": float(1 - surrendered / saved) if saved else None,
+    }
+
+
 def spell_summary(spells):
     rows = {}
     for arm, sample in spells.groupby("arm", sort=False):
         original = sample.original_cash_effect_pp
-        delta = sample.variant_exposure_vs_dual_pp
-        miss = original.lt(0)
-        save = original.gt(0)
-        missed = -original[miss].sum()
-        saved = original[save].sum()
-        recovered = delta[miss].sum()
-        surrendered = -delta[save].sum()
         rows[arm] = {
-            "baseline_missed_pp": float(missed),
-            "baseline_saved_pp": float(saved),
-            "recovered_pp": float(recovered),
-            "surrendered_pp": float(surrendered),
-            "miss_capture_fraction": float(recovered / missed) if missed else None,
-            "protection_retained_fraction": float(1 - surrendered / saved) if saved else None,
-            "touched_missed_spells": int(sample.loc[miss, "first_variant_risk_close"].notna().sum()),
-            "touched_protective_spells": int(sample.loc[save, "first_variant_risk_close"].notna().sum()),
+            **exposure_tradeoff(original, sample.variant_exposure_vs_dual_pp),
+            "touched_missed_spells": int(sample.loc[original.lt(0), "first_variant_risk_close"].notna().sum()),
+            "touched_protective_spells": int(sample.loc[original.gt(0), "first_variant_risk_close"].notna().sum()),
         }
     return rows

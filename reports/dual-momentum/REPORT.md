@@ -36,6 +36,22 @@ python -m pytest tests/test_dual_momentum_rebound.py
 ```
 
 
+## Rolling cash-floor validation
+
+Three fixed candidates retain 25%, 50% or 75% of a closed sleeve in its same 12-month winner. They use annual historical holdouts beginning in 2017 and ending in June 2026. The fixed accounts and original controls carry holdings across all year boundaries. A separate selector ranks the fixed candidates by net excess Sharpe over the prior 60 completed months at the primary cost, chooses once per year and trades one continuous account. Its decisions are frozen across the four cost levels. The original accounts and earlier half-risk result were reconciled before evaluating the holdout.
+
+The half-risk floor consistently recovered about half of the original missed cash-spell exposure and retained about half of the protection where those effects were present. That stability is consistent with scaling the same ETF exposure. Half risk improved growth over original dual and fell short of the trailing-exposure control in the pooled holdout at every cost. It won half the calendar folds against that control and the paired interval included zero. Its month-end drawdown was shallower than the control's, while its daily drawdown was deeper.
+
+The 25% floor retained the most protection and grew the slowest among the candidates. The 75% floor had the strongest growth among the floors and exceeded trailing exposure in pooled net growth at every cost. It gave up most of the original cash-spell protection, with a deeper daily drawdown than trailing exposure and a paired interval that included zero. The rolling selector matched the fixed 75% result. Its switch to 50% occurred in a holdout period when no closed-gate returns were observed.
+
+The private report keeps all calendar folds, training scores, all four costs, paired intervals and cash-fragment denominators. For each fold the original cash spells are split at its boundaries, labeled by their realized original effect, and compared against the same days under the new floors. The original attribution informed the test, so the results describe historical holdouts on a reused sample.
+
+```bash
+python -m tools.run_dual_momentum_walkforward --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m pytest tests/test_dual_momentum_walkforward.py
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)
