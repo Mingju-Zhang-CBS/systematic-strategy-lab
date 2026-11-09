@@ -8,6 +8,15 @@ Does a momentum filter improve an allocation after publication delays, fees and 
 
 [Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
 
+### ETF dual momentum / WRDS replication
+
+The [dual-momentum study](reports/dual-momentum/REPORT.md) holds eight ETFs and
+one next-session execution rule fixed. The cash gate reduced volatility and
+month-end drawdown, but lagged both relative-only and trailing-exposure
+controls on compound growth and excess Sharpe. The report also traces the
+REM March 2020 discrepancy to distribution adjustment conventions and
+keeps the daily drawdown and same-gate ranking results visible.
+
 ### Robust allocation / How much does a noisy forecast move the portfolio?
 
 The [allocation study](docs/ALLOCATION_RESEARCH.md) compares equal weight,

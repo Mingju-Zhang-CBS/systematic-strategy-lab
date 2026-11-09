@@ -82,3 +82,12 @@ ledgers, figures, reports and derived findings remain outside public repositorie
 See [source and contribution](docs/BREAKOUT_PROVENANCE.md); no Yahoo or reference
 notebook redistribution right is inferred from public access or this code license.
 
+
+## ETF dual momentum
+
+The [dual-momentum report](reports/dual-momentum/REPORT.md) documents independent
+research on the CRSP US Stock Database, CIZ, via WRDS. The public materials contain
+original code, tests, methodology and narrative research findings. The licensed
+records, archived course inputs, position paths and numerical result tables stay
+private. A valid WRDS login does not confer a right to redistribute vendor data
+or its numerical derivatives. [WRDS data policy](https://wrds-www.wharton.upenn.edu/pages/about/data-download-and-analysis-policy/)
