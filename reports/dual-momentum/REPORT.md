@@ -95,6 +95,21 @@ python -m pytest tests/test_dual_momentum_monthly_volmatch.py
 ```
 
 
+## Why the 12-month version earned less
+
+The account attribution replays the existing 12-month and 60-month monthly targets and both matched and original past-exposure controls. It checks the recorded trades, daily NAVs, returns and turnover. The yearly and sleeve contributions include fees and reconcile to the realized net log-return differences.
+
+Against 60 months, the shortfall was concentrated in gold/Treasuries, particularly sustained small GLD positions during the later sample. Some losing intervals began with fresh risk reductions. Others involved increased targets that remained below the longer-window account. Real estate partly offset the shortfall, and fees helped slightly in this comparison. Against original past exposure, real estate, equities and gold/Treasuries detracted while credit helped. The original cash-gate reductions also missed rebound intervals, including April 2020.
+
+Most of the 2022 advantage over 60 months arose while the original gate remained open. Smaller equity and real-estate positions helped before and during early-year losses. Against past exposure, equity and credit protection outweighed real-estate and gold/Treasury drags. The private report keeps the annual-by-sleeve matrices, both adverse and favorable execution intervals, the full gold holding record and the gate-state breakdown for 2022.
+
+Holding intervals earn the old target through the following execution close. The opening test mark is recorded separately so the complete attribution remains additive. The event record distinguishes the change in the risk scalar from the change in the full sleeve target, which can also reflect the original gate. This analysis explains the already observed historical paths.
+
+```bash
+python -m tools.run_dual_momentum_12m_attribution --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)
