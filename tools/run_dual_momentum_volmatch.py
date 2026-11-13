@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from strategy_lab import dual_momentum_monthly_volmatch as monthly_vm
 from strategy_lab import dual_momentum as dm
 from strategy_lab import dual_momentum_attribution as attr
 from strategy_lab import dual_momentum_volmatch as vm
@@ -27,16 +28,32 @@ def load_windows(base_dir):
     return windows
 
 
-def run(db, rf_path, base_dir):
+def run(db, rf_path, base_dir, cadence="annual"):
+    if cadence not in ("annual", "monthly"):
+        raise ValueError("Unknown calibration cadence")
     daily, closes, _, rf, original = load_frozen_inputs(db, rf_path, base_dir)
     candidates = {"floor_75": wf.fixed_targets(original)["floor_75"], "trailing36": original["trailing36"]}
     windows = load_windows(base_dir)
-    schedule = vm.calibrate(daily, closes, candidates, rf, windows)
+    if cadence == "monthly":
+        schedule = monthly_vm.calibrate(daily, closes, candidates, rf)
+    else:
+        schedule = vm.calibrate(daily, closes, candidates, rf, windows)
     targets = {**candidates, **vm.apply_schedule(candidates, schedule)}
-    output = base_dir / "floor_volmatch_v1"
+    if cadence == "monthly":
+        annual = pd.read_csv(base_dir / "floor_volmatch_v1" / "volatility_schedule.csv", index_col="year")
+        for column in vm.WINDOW_COLUMNS:
+            annual[column] = pd.PeriodIndex(annual[column], freq="M")
+        targets.update({
+            name.replace("_matched", "_annual"): weights
+            for name, weights in vm.apply_schedule(candidates, annual).items()
+        })
+    output = base_dir / ("floor_monthly_volmatch_v1" if cadence == "monthly" else "floor_volmatch_v1")
     output.mkdir(exist_ok=True)
     result = {
-        "run_id": RUN_ID,
+        "run_id": "dual-momentum-floor-monthly-volmatch-v1-20261113" if cadence == "monthly" else RUN_ID,
+        "cadence": cadence,
+        "calibration_count": len(schedule),
+        "monthly_model_sha256": sha256(Path(monthly_vm.__file__).read_bytes()).hexdigest(),
         "model_sha256": sha256(Path(vm.__file__).read_bytes()).hexdigest(),
         "runner_sha256": sha256(Path(__file__).read_bytes()).hexdigest(),
         "metrics": {},
@@ -53,6 +70,14 @@ def run(db, rf_path, base_dir):
             base_dir / "floor_walkforward_v1" / f"floor_75_{cost}bps_holdout.csv",
         )
         result["reconciled"] += 2
+        if cadence == "monthly":
+            for arm in vm.BASES:
+                name = arm + "_annual"
+                reconcile(
+                    wf.holdout_ledger(books[name]),
+                    base_dir / "floor_volmatch_v1" / f"{arm}_matched_{cost}bps_holdout.csv",
+                )
+                result["reconciled"] += 1
         result["metrics"][cost] = {}
         months = {}
         for arm, ledger in books.items():
@@ -66,6 +91,10 @@ def run(db, rf_path, base_dir):
             "unscaled": dm.paired_log_growth(months["floor_75"], months["trailing36"]),
             "matched": dm.paired_log_growth(months[vm.MATCHED[0]], months[vm.MATCHED[1]]),
         }
+        if cadence == "monthly":
+            result["paired"][cost]["monthly_minus_annual_floor"] = dm.paired_log_growth(
+                months["floor_75_matched"], months["floor_75_annual"]
+            )
         if cost == attr.PRIMARY_COST:
             primary = books
             result["test_months"] = len(months[vm.MATCHED[0]])
@@ -77,7 +106,7 @@ def run(db, rf_path, base_dir):
         result["reconciled"] += 1
 
     folds = {}
-    for year, row in schedule.iterrows():
+    for year, row in windows.iterrows():
         folds[int(year)] = {
             arm: vm.period_risk(ledger, rf, row.test_first, row.test_last)
             for arm, ledger in primary.items()
@@ -94,7 +123,22 @@ def run(db, rf_path, base_dir):
     }
     fragments = wf.cash_spell_fragments(daily.loc[primary["dual"].index], accounts, compared=tuple(targets))
     _, detail = wf.fragment_summary(fragments, [2022])
+    monthly_2022 = pd.DataFrame({
+        arm: dm.monthly_marks(ledger.loc["2022", "return"]) for arm, ledger in primary.items()
+    })
+    result["months_2022"] = monthly_2022.to_dict(orient="index")
+    result["months_2022"] = {str(k): v for k, v in result["months_2022"].items()}
     result["protection_2022"] = detail[2022]
+    if cadence == "monthly":
+        result["mean_absolute_fold_vol_gap"] = {
+            label: float(np.mean([
+                abs(row[left]["excess_vol"] - row[right]["excess_vol"]) for row in folds.values()
+            ]))
+            for label, left, right in [
+                ("monthly", "floor_75_matched", "trailing36_matched"),
+                ("annual", "floor_75_annual", "trailing36_annual"),
+            ]
+        }
     result["max_training_vol_gap"] = float((schedule[f"{vm.BASES[0]}_fitted_vol"] - schedule[f"{vm.BASES[1]}_fitted_vol"]).abs().max())
     if result["max_training_vol_gap"] > vm.VOL_TOL:
         raise ArithmeticError("Volatility match failed")
@@ -111,12 +155,13 @@ def main():
     import wrds
 
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cadence", choices=("annual", "monthly"), default="annual")
     parser.add_argument("--rf", type=Path, required=True)
     parser.add_argument("--base-dir", type=Path, required=True, help="Private baseline and walk-forward outputs")
     args = parser.parse_args()
     db = wrds.Connection()
     try:
-        result, _ = run(db, args.rf, args.base_dir)
+        result, _ = run(db, args.rf, args.base_dir, args.cadence)
         print(f"Saved {result['run_id']} with {result['test_months']} matched test months.")
     finally:
         db.close()
