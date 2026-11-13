@@ -80,6 +80,21 @@ python -m pytest tests/test_dual_momentum_monthly_volmatch.py
 ```
 
 
+## Monthly matching with 12- and 24-month estimates
+
+Both shorter windows retain the 114 test months, same original strategies, funded risk estimator, monthly decision and next-session close. Their scale paths are estimated at the primary fee and reused across the cost grid. The annual and 60-month monthly accounts reconcile against the earlier files. Training risk ordering changes in some short windows, so each horizon has its own matched trailing-exposure account. Original trailing exposure remains a separate comparison.
+
+The 12-month version brought actual risk closer in both the pooled sample and the average calendar fold. The 24-month version improved pooled risk matching while making the average within-fold gap larger than the 60-month version. Both shorter floors gave up the earlier full-period growth lead. They trailed both their matched controls and original trailing exposure at every fee. Paired intervals included zero, and neither shorter horizon showed a reliable growth improvement over the 60-month floor.
+
+The shorter versions improved 2022 defense. Twelve months lost less and had a shallower within-year daily drawdown than both the 60-month floor and trailing exposure. Twenty-four months improved on the 60-month floor but still lost more and drew down more than trailing exposure. Protection on the original cash fragments also improved, with a smaller change than in the full-calendar measure. The private report preserves all horizon and fee results, each calendar fold, matched and original controls, and the 2022 monthly scalar and return record. These comparisons extend the same historical research sample.
+
+```bash
+python -m tools.run_dual_momentum_volmatch --cadence monthly --train-months 12 --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m tools.run_dual_momentum_volmatch --cadence monthly --train-months 24 --rf local-runs/rf.csv --base-dir local-runs/dual-momentum
+python -m pytest tests/test_dual_momentum_monthly_volmatch.py
+```
+
+
 ## REM distribution audit
 
 The archived March 2020 adjusted-close return and the CRSP CIZ daily compound differ. Their unadjusted close-to-close moves agree to quote precision. The issuer records a March 25 ex-date and a USD 0.826951 distribution. CRSP's ex-date close reinvestment and the archive's prior-close adjustment each reproduce their respective monthly measures to rounding precision. With a single distribution and no split, the multipliers applied to the monthly price gross return are `1 + D/P_ex` and `P_prev/(P_prev - D)`, respectively. A one-event convention substitution left every executed target unchanged and preserved the four-way ranking. [Issuer distribution record](https://www.ishares.com/us/literature/tax-information/2020-ishares-distribution-summary.pdf) · [WRDS CIZ compounding](https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-compound-ciz/)

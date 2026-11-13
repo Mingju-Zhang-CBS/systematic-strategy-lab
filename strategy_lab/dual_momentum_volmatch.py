@@ -56,14 +56,16 @@ def fit_scale(vol_at_scale, unscaled, common):
     raise ArithmeticError("Could not match training volatility")
 
 
-def calibrate(daily, closes, candidates, rf, windows):
+def calibrate(daily, closes, candidates, rf, windows, train_months=wf.TRAIN_MONTHS):
     """Use the archived fold boundaries to calibrate risk before the holdout."""
+    if not isinstance(train_months, int) or train_months < 2:
+        raise ValueError("Training window must contain at least two completed months")
     rows = []
     for window in windows.itertuples():
         first, last = window.train_first, window.train_last
         if (
             last != window.test_first - 1
-            or first != window.test_first - wf.TRAIN_MONTHS
+            or first != window.test_first - train_months
             or window.test_first > window.test_last
         ):
             raise ValueError("Training and test windows do not match the archived clock")

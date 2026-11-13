@@ -28,14 +28,16 @@ def load_windows(base_dir):
     return windows
 
 
-def run(db, rf_path, base_dir, cadence="annual"):
+def run(db, rf_path, base_dir, cadence="annual", train_months=wf.TRAIN_MONTHS):
     if cadence not in ("annual", "monthly"):
         raise ValueError("Unknown calibration cadence")
+    if train_months not in (12, 24, 60) or (cadence == "annual" and train_months != 60):
+        raise ValueError("Use monthly 12, 24 or 60 months, or annual 60 months")
     daily, closes, _, rf, original = load_frozen_inputs(db, rf_path, base_dir)
     candidates = {"floor_75": wf.fixed_targets(original)["floor_75"], "trailing36": original["trailing36"]}
     windows = load_windows(base_dir)
     if cadence == "monthly":
-        schedule = monthly_vm.calibrate(daily, closes, candidates, rf)
+        schedule = monthly_vm.calibrate(daily, closes, candidates, rf, train_months=train_months)
     else:
         schedule = vm.calibrate(daily, closes, candidates, rf, windows)
     targets = {**candidates, **vm.apply_schedule(candidates, schedule)}
@@ -47,11 +49,25 @@ def run(db, rf_path, base_dir, cadence="annual"):
             name.replace("_matched", "_annual"): weights
             for name, weights in vm.apply_schedule(candidates, annual).items()
         })
-    output = base_dir / ("floor_monthly_volmatch_v1" if cadence == "monthly" else "floor_volmatch_v1")
+    if train_months != 60:
+        reference = pd.read_csv(
+            base_dir / "floor_monthly_volmatch_v1" / "volatility_schedule.csv", index_col="test_month"
+        )
+        for column in vm.WINDOW_COLUMNS:
+            reference[column] = pd.PeriodIndex(reference[column], freq="M")
+        targets.update({
+            name.replace("_matched", "_60m"): weights
+            for name, weights in vm.apply_schedule(candidates, reference).items()
+        })
+    folder = "floor_monthly_volmatch_v1" if cadence == "monthly" else "floor_volmatch_v1"
+    if train_months != 60:
+        folder = f"floor_monthly_volmatch_{train_months}m_v1"
+    output = base_dir / folder
     output.mkdir(exist_ok=True)
     result = {
         "run_id": "dual-momentum-floor-monthly-volmatch-v1-20261113" if cadence == "monthly" else RUN_ID,
         "cadence": cadence,
+        "training_months": train_months,
         "calibration_count": len(schedule),
         "monthly_model_sha256": sha256(Path(monthly_vm.__file__).read_bytes()).hexdigest(),
         "model_sha256": sha256(Path(vm.__file__).read_bytes()).hexdigest(),
@@ -61,6 +77,8 @@ def run(db, rf_path, base_dir, cadence="annual"):
         "reconciled": 0,
         "test_months": 0,
     }
+    if train_months != 60:
+        result["run_id"] = f"dual-momentum-floor-monthly-volmatch-{train_months}m-v1-20261113"
     primary = {}
     for cost in dm.COSTS_BPS:
         books = {arm: dm.simulate(daily, closes, weights, cost) for arm, weights in targets.items()}
@@ -76,6 +94,13 @@ def run(db, rf_path, base_dir, cadence="annual"):
                 reconcile(
                     wf.holdout_ledger(books[name]),
                     base_dir / "floor_volmatch_v1" / f"{arm}_matched_{cost}bps_holdout.csv",
+                )
+                result["reconciled"] += 1
+        if train_months != 60:
+            for arm in vm.BASES:
+                reconcile(
+                    wf.holdout_ledger(books[arm + "_60m"]),
+                    base_dir / "floor_monthly_volmatch_v1" / f"{arm}_matched_{cost}bps_holdout.csv",
                 )
                 result["reconciled"] += 1
         result["metrics"][cost] = {}
@@ -94,6 +119,13 @@ def run(db, rf_path, base_dir, cadence="annual"):
         if cadence == "monthly":
             result["paired"][cost]["monthly_minus_annual_floor"] = dm.paired_log_growth(
                 months["floor_75_matched"], months["floor_75_annual"]
+            )
+        if train_months != 60:
+            result["paired"][cost]["short_minus_60m_floor"] = dm.paired_log_growth(
+                months["floor_75_matched"], months["floor_75_60m"]
+            )
+            result["paired"][cost]["short_minus_original_trailing"] = dm.paired_log_growth(
+                months["floor_75_matched"], months["trailing36"]
             )
         if cost == attr.PRIMARY_COST:
             primary = books
@@ -139,6 +171,19 @@ def run(db, rf_path, base_dir, cadence="annual"):
                 ("annual", "floor_75_annual", "trailing36_annual"),
             ]
         }
+    if train_months != 60:
+        result["mean_absolute_fold_vol_gap"]["60m"] = float(np.mean([
+            abs(row["floor_75_60m"]["excess_vol"] - row["trailing36_60m"]["excess_vol"])
+            for row in folds.values()
+        ]))
+    result["scale_summary"] = {
+        arm: {
+            "min": float(schedule[arm + "_scale"].min()),
+            "max": float(schedule[arm + "_scale"].max()),
+            "below_one_months": int(schedule[arm + "_scale"].lt(1).sum()),
+        }
+        for arm in vm.BASES
+    }
     result["max_training_vol_gap"] = float((schedule[f"{vm.BASES[0]}_fitted_vol"] - schedule[f"{vm.BASES[1]}_fitted_vol"]).abs().max())
     if result["max_training_vol_gap"] > vm.VOL_TOL:
         raise ArithmeticError("Volatility match failed")
@@ -156,12 +201,13 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cadence", choices=("annual", "monthly"), default="annual")
+    parser.add_argument("--train-months", type=int, choices=(12, 24, 60), default=60)
     parser.add_argument("--rf", type=Path, required=True)
     parser.add_argument("--base-dir", type=Path, required=True, help="Private baseline and walk-forward outputs")
     args = parser.parse_args()
     db = wrds.Connection()
     try:
-        result, _ = run(db, args.rf, args.base_dir, args.cadence)
+        result, _ = run(db, args.rf, args.base_dir, args.cadence, args.train_months)
         print(f"Saved {result['run_id']} with {result['test_months']} matched test months.")
     finally:
         db.close()

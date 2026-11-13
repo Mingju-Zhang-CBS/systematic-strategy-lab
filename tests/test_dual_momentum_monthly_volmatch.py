@@ -1,23 +1,26 @@
 import numpy as np
 import pandas as pd
+import pytest
 
 from strategy_lab import dual_momentum as dm
 from strategy_lab import dual_momentum_volmatch as vm
 from strategy_lab import dual_momentum_monthly_volmatch as monthly
 
 
-def test_monthly_windows_use_only_previous_60_completed_months():
-    windows = monthly.monthly_windows()
+@pytest.mark.parametrize("months", [12, 24, 60])
+def test_monthly_windows_use_only_completed_months(months):
+    windows = monthly.monthly_windows(train_months=months)
     assert len(windows) == 114
-    assert windows.iloc[0].train_first == pd.Period("2012-01", "M")
+    assert windows.iloc[0].train_first == pd.Period("2017-01", "M") - months
     assert windows.iloc[0].train_last == pd.Period("2016-12", "M")
-    assert windows.iloc[1].train_first == pd.Period("2012-02", "M")
+    assert windows.iloc[1].train_first == pd.Period("2017-02", "M") - months
     assert windows.iloc[-1].test_first == pd.Period("2026-06", "M")
     assert windows.test_first.equals(windows.test_last)
     assert (windows.train_last == windows.test_first - 1).all()
 
 
-def test_new_month_observation_changes_only_later_calibration(monkeypatch):
+@pytest.mark.parametrize("months", [12, 24, 60])
+def test_new_month_observation_changes_only_later_calibration(monkeypatch, months):
     periods = pd.period_range("2011-12", "2017-02", freq="M")
     dates = pd.DatetimeIndex([
         day for period in periods
@@ -33,12 +36,12 @@ def test_new_month_observation_changes_only_later_calibration(monkeypatch):
         weights["SPY"], weights["RF"] = size, 1 - size
         candidates[arm] = weights
     rf = pd.Series(0.0, index=periods)
-    windows = monthly.monthly_windows("2017-01", "2017-02")
-    monkeypatch.setattr(monthly, "monthly_windows", lambda: windows)
-    before = monthly.calibrate(daily, closes, candidates, rf)
+    windows = monthly.monthly_windows("2017-01", "2017-02", train_months=months)
+    monkeypatch.setattr(monthly, "monthly_windows", lambda **kwargs: windows)
+    before = monthly.calibrate(daily, closes, candidates, rf, train_months=months)
     changed = daily.copy()
     changed.loc[changed.index.to_period("M") == pd.Period("2017-01", "M"), "SPY"] = 0.80
-    after = monthly.calibrate(changed, closes, candidates, rf)
+    after = monthly.calibrate(changed, closes, candidates, rf, train_months=months)
     pd.testing.assert_series_equal(before.loc["2017-01"], after.loc["2017-01"])
     assert before.loc["2017-02", "common_vol"] != after.loc["2017-02", "common_vol"]
     assert (after.floor_75_fitted_vol - after.trailing36_fitted_vol).abs().max() <= vm.VOL_TOL
@@ -48,3 +51,8 @@ def test_new_month_observation_changes_only_later_calibration(monkeypatch):
     feb_signal = pd.Period("2017-01", "M")
     assert targets["floor_75_matched"].at[jan_signal, "SPY"] == 0.75 * before.loc["2017-01", "floor_75_scale"]
     assert targets["floor_75_matched"].at[feb_signal, "SPY"] == 0.75 * before.loc["2017-02", "floor_75_scale"]
+
+
+def test_single_observation_risk_window_is_rejected():
+    with pytest.raises(ValueError, match="at least two"):
+        monthly.monthly_windows(train_months=1)
