@@ -1,228 +1,55 @@
-![Systematic Strategy Lab — Investing with an information clock](assets/header.svg)
-
 # Systematic Strategy Lab
 
-**Real multi-asset fund NAVs · allocation research · funded implementation**
+Does a momentum signal improve multi-asset allocation after publication delays, trading costs and a matched risk-budget procedure? The main study models allocations using official public TSP fund NAVs, with a static control, C and G fund buy-and-hold references, and a funded account.
 
-Does a momentum filter improve an allocation after publication delays, fees and a fair risk-budget comparison? I study five official TSP fund share-value series covering U.S. large-cap and smaller-company equities, international equities, bonds and a government-securities reserve. The study connects investment judgment to data lineage, temporal validation and daily account economics.
+**Finding.** In the 2020–2025 historical confirmation window, momentum returned **30.69%** versus **33.97%** for the static control. Its annualized paired log-return difference was **−0.42 percentage points**, with a 20-session block 95% interval of **[−3.23, +2.33] percentage points**. The experiment did not establish a momentum advantage.
 
-[Research findings](reports/real/REPORT.md) · [Worked explanation](docs/WALKTHROUGH.md) · [Methods](docs/METHODS.md) · [Data rights](DATA_RIGHTS.md) · [Validation](docs/VALIDATION.md) · [Portfolio directory](https://github.com/Mingju-Zhang-CBS/Quant)
+[NAV results](reports/real/REPORT.md) · [Methods](docs/METHODS.md) · [Run the NAV study](#run-the-nav-study) · [Research tracks](#research-tracks)
 
-### ETF dual momentum / WRDS replication
+![Modeled fund allocation wealth and drawdowns using observed TSP fund NAVs](reports/real/performance.png)
 
-The [dual-momentum study](reports/dual-momentum/REPORT.md) holds eight ETFs and
-one next-session execution rule fixed. The cash gate reduced volatility and
-month-end drawdown, but lagged both relative-only and trailing-exposure
-controls on compound growth and excess Sharpe. The report also traces the
-REM March 2020 discrepancy to distribution adjustment conventions and
-keeps the daily drawdown and same-gate ranking results visible.
+*Official public TSP fund share NAVs, 2003–2025. The chart shows hypothetical accounts and comparison fund holdings. The base model charges 3 bps per gross dollar traded, including the reserve leg.*
 
-### Robust allocation / How much does a noisy forecast move the portfolio?
+## Controls and implementation
 
-The [allocation study](docs/ALLOCATION_RESEARCH.md) compares equal weight,
-minimum variance, mean–variance, Black–Litterman, bounded risk budgeting and a
-defined return-tilted risk-budget model. Named views reach a return-aware
-objective; common covariance, concentration limits, risk scaling and next-close
-funding make the comparison inspectable. Binding caps and rejected solver
-results remain explicit.
+The signal uses observations through t, reserves a full intervening NAV session for assumed publication and models a request at 11:00 New York time on t+2. The request posts at that session’s closing NAV under the ordinary-processing assumption. Momentum and the static control use identical risk scaling, costs and posting rules. The 63-session block interval also includes zero, and all nine predefined cost and delay scenarios produce a negative confirmation difference.
 
-The [invented experiment](reports/allocation-synthetic/REPORT.md) retains 23
-fixed specifications, all cost/cash cases, forecast perturbations, risk
-contributions and paired uncertainty. Every public number and figure in this
-topic uses **synthetic inputs**; current-vintage real ETF observations and all
-derived real findings remain private. [Chinese learning notes](docs/ALLOCATION_LEARNING_CN.md)
-· [Sources](docs/ALLOCATION_PROVENANCE.md) · [Validation](docs/ALLOCATION_VALIDATION.md).
+TSP accumulation NAV already reflects fund investment income and operating expenses, so the account adds zero separate dividends or fund expenses. The snapshot uses the current historical vintage and the release lag is assumed. [Timing and funded transfer](docs/WALKTHROUGH.md) · [Worked example](examples/explain_nav_transfer.py) · [Uncertainty](reports/real/uncertainty.png) · [Data rights](DATA_RIGHTS.md)
 
-```bash
-python -m strategy_lab.allocation --demo --output local-runs/allocation
-python tools/verify_allocation_run.py local-runs/allocation
-```
+## Research tracks
 
-### Daily trend / Does an online HMM add value?
+### Asset allocation and signals
 
-The [daily regime study](docs/REGIME_RESEARCH.md) compares buy and hold, volatility
-control, raw momentum, a matched EMA, Kalman momentum and Kalman with a causal
-HMM gate. Training excludes today's observation; state probabilities carry
-forward; frozen targets execute at the next session close in funded model
-total-return units. The matched EMA makes a useful control: fixed-variance
-Kalman smoothing approaches the same filter.
+- **ETF dual momentum.** [WRDS replication report](reports/dual-momentum/REPORT.md) documents the cash gate, ranking and execution controls, including the REM distribution-adjustment discrepancy. Consult its data and reproduction notes for access boundaries.
+- **Robust allocation.** [Methods](docs/ALLOCATION_RESEARCH.md) and [synthetic results](reports/allocation-synthetic/REPORT.md) cover six allocation families and sensitivity to return views under shared constraints. [Chinese notes](docs/ALLOCATION_LEARNING_CN.md) · [Provenance](docs/ALLOCATION_PROVENANCE.md) · [Validation](docs/ALLOCATION_VALIDATION.md)
+- **Regimes and trend.** [Methods](docs/REGIME_RESEARCH.md) and [synthetic results](reports/regimes-synthetic/REPORT.md) compare causal HMM filtering, matched EMA/Kalman controls and volatility sizing. [Chinese notes](docs/REGIME_LEARNING_CN.md) · [Provenance](docs/REGIME_PROVENANCE.md) · [Tests](tests/test_regimes.py)
+- **Breakout transfer.** [Methods](docs/BREAKOUT_RESEARCH.md) and [synthetic results](reports/breakout-synthetic/REPORT.md) hold the HMM fixed while separating the channel signal, state gate and volatility sizing. [Chinese notes](docs/BREAKOUT_LEARNING_CN.md) · [Provenance](docs/BREAKOUT_PROVENANCE.md) · [Validation](docs/BREAKOUT_VALIDATION.md)
 
-The [public invented experiment](reports/regimes-synthetic/REPORT.md) retains all
-288 method/period/scenario metric rows, 96 paired intervals and unfavorable
-outcomes. Every public figure uses **synthetic inputs**. Separate current-vintage
-Yahoo ETF research, inputs and derived real results stay private; no trading
-alpha or complete historical PIT claim follows. [Chinese learning notes](docs/REGIME_LEARNING_CN.md)
-· [Reference and contribution](docs/REGIME_PROVENANCE.md) · [Tests](tests/test_regimes.py).
+### Commodity curves and funding
 
-```bash
-python -m strategy_lab.regimes --demo --output local-runs/regimes
-python tools/verify_regime_run.py local-runs/regimes
-```
+The public results in this track use synthetic futures inputs. Follow the progression from [contract accounting](docs/COMMODITY_ACCOUNTING.md) and [input specifications](docs/COMMODITY_INPUTS.md) to [curve signals](docs/COMMODITY_RESEARCH.md). The [worked signal example](examples/explain_curve_signals.py) and [initial ledger report](reports/commodities/REPORT.md) show contract identity, delayed inputs and costs.
 
-### HMM transfer / Does the gate help a breakout signal?
+- **Exits and admission.** [Exit priority](docs/COMMODITY_EXECUTION.md) ([results](reports/commodity-exit-priority-synthetic/REPORT.md)), [staged retirement](docs/COMMODITY_STAGED_EXITS.md) ([results](reports/commodity-staged-exit-synthetic/REPORT.md)) and [paired entry/exit budgets](docs/COMMODITY_ADMISSION.md) ([results](reports/commodity-entry-budget-synthetic/REPORT.md)).
+- **Stress and cash capacity.** [Post-admission stress](docs/COMMODITY_STRESS.md) ([results](reports/commodity-stress-synthetic/REPORT.md)), [joint shocks](docs/COMMODITY_JOINT_STRESS.md) ([results](reports/commodity-joint-stress-synthetic/REPORT.md)) and [cash-buffer admission](docs/COMMODITY_RESILIENT_ADMISSION.md) ([results](reports/commodity-resilient-admission-synthetic/REPORT.md)) retain failed exits, residual positions and collateral shortfalls.
 
-The [breakout transfer study](docs/BREAKOUT_RESEARCH.md) freezes the existing HMM
-and replaces momentum with a prior-high/low channel. A four-way comparison
-separates the state gate from volatility sizing, with fixed window and pulse
-sensitivities. Parent state probabilities, fitted parameters and shared control
-accounts are checked against the earlier experiment.
+### Intraday execution
 
-The [invented report](reports/breakout-synthetic/REPORT.md) retains all 864 metric
-rows and 480 paired intervals. **Every public figure is synthetic**; real OHLC,
-models and derived findings stay private. [Chinese notes](docs/BREAKOUT_LEARNING_CN.md)
-· [Sources](docs/BREAKOUT_PROVENANCE.md) · [Validation](docs/BREAKOUT_VALIDATION.md).
+[Intraday methods](docs/INTRADAY_RESEARCH.md) and [synthetic runs](reports/intraday-synthetic/REPORT.md) model quote-after-signal execution, displayed capacity, funding and failed closes. [Source evidence](docs/INTRADAY_EVIDENCE.md) and its [worked fixture](reports/intraday-evidence-fixture/REPORT.md) show how rounding can obscure quote order. The [source audit](docs/INTRADAY_SOURCE_AUDIT.md) and [ledger fixture](reports/intraday-data-fixture/REPORT.md) cover dated identity, distributions and a separate cash benchmark. The full licensed historical replay has additional evidence requirements.
 
-```bash
-python -m strategy_lab.regimes.breakout --demo --output local-runs/breakout
-python tools/verify_breakout_run.py local-runs/breakout
-```
+## Run the NAV study
 
-### New study / Commodity curves: contracts before signals
-
-An [eight-product futures accounting module](docs/COMMODITY_ACCOUNTING.md) connects
-contract identity and delayed information to safe delivery exits, independent-leg
-costs and a funded daily ledger. Its **public results are synthetic**: fixed near/far
-requests, model collateral and deliberately retained failures. Licensed WRDS/LSEG
-audit work stays private; historical commodity strategy performance is not claimed.
-[Methods](docs/COMMODITY_ACCOUNTING.md) · [Results and failures](reports/commodities/REPORT.md) · [Input specification](docs/COMMODITY_INPUTS.md) · [Tests](tests/test_commodities.py)
-
-The [exploratory research runner](docs/COMMODITY_RESEARCH.md) connects carry,
-trend and basis-momentum with same-contract return histories, integer risk
-allocation and stopped funding paths. It makes the scheduled-calendar and
-collateral assumptions explicit. The [public demonstration](reports/commodity-research-synthetic/REPORT.md)
-is entirely invented; licensed real-reference findings remain private. Run the
-[signal example](examples/explain_curve_signals.py) or the complete offline study.
-
-**Execution matters:** the [exit-first comparison](docs/COMMODITY_EXECUTION.md)
-processes old-risk reductions before optional replacements, checks sustained
-lagged liquidity and prevents backward maturity rolls. The original coupled
-baseline is retained. [Run and inspect the invented example](reports/commodity-exit-priority-synthetic/REPORT.md);
-neither a correct ledger nor a longer surviving path establishes tradable alpha.
-
-The [paired retirement extension](docs/COMMODITY_STAGED_EXITS.md) diagnoses old
-legs, latches capacity-sized reductions across days and tests a fixed early-exit
-rule. [Invented results](reports/commodity-staged-exit-synthetic/REPORT.md) retain
-fees, rejections and failed paths; all previous baselines remain reproducible.
-
-The [entry/exit budget study](docs/COMMODITY_ADMISSION.md) checks total proposed
-exposure before opening, using the same retirement lead and weaker-leg capacity.
-[Invented results](reports/commodity-entry-budget-synthetic/REPORT.md) distinguish
-admission, modeled fills and failed requests; old retirement baselines remain.
-
-## Does the exit survive a shock?
-
-The [post-admission stress study](docs/COMMODITY_STRESS.md) fixes next-session
-capacity cuts and announced proxy-reserve increases before comparing outcomes.
-Paired reductions can receive a smaller actual slice; new risk cannot bypass
-an old exit. A risk-buffer breach is distinct from cash collateral shortfall.
-[Invented results](reports/commodity-stress-synthetic/REPORT.md) preserve all
-fixed scenarios, while the previous admission baseline remains reproducible.
-
-### Longer outages, adverse prices and cash sufficiency
-
-The [joint-stress study](docs/COMMODITY_JOINT_STRESS.md) extends zero offered
-supply to 10/20 scheduled sessions and combines it with fixed adverse leg-price
-steps and a 40% proxy reserve. It preserves paired reductions, unchanged delivery
-boundaries, residual positions and simultaneous failure causes. Price offsets
-persist after liquidity returns. The [72-path invented demonstration](reports/commodity-joint-stress-synthetic/REPORT.md)
-retains 29 failures and distinguishes cash shortfalls from exit failures; these
-are synthetic outcomes. No cross-strategy performance inference is made from
-account-specific adverse worlds. Earlier baselines remain unchanged.
-
-
-
-### Connect new risk to exit time and cash
-
-The [joint admission buffer](docs/COMMODITY_RESILIENT_ADMISSION.md) adds a fixed
-20-session outage allowance and a single portfolio cash envelope for adverse VM,
-proxy collateral, funded transition/exit fees and retained cash. Expected old-position exits
-release no budget; refusals preserve paired reductions. The [invented comparison](reports/commodity-resilient-admission-synthetic/policy_comparison.png)
-shows completion together with control exposure, rather than ranking stopped
-paths by returns. The [complete invented experiment](reports/commodity-resilient-admission-synthetic/REPORT.md)
-and original joint-shock failures remain separate and reproducible.
-
-## Intraday execution: a separate research track
-
-[Source evidence in practice](docs/INTRADAY_EVIDENCE.md) examines nanosecond remainders, dated self-NBBO source selection, exact lot identities and the difference between a distribution schedule, an amount and a release timestamp. Official exchange listings add a separate publication clock to selected issuer amounts; alternate declaration dates remain a separately labeled sensitivity. The [invented worked report](reports/intraday-evidence-fixture/REPORT.md) shows how an apparently eligible rounded quote can precede the order. Source corrections retain the frozen trading rules and original failed accounts; the complete ten-year historical evaluation remains gated.
-
-The [intraday study](docs/INTRADAY_RESEARCH.md) reconstructs SPY breakout logic with quote-after-signal execution, displayed capacity, funding and retained failed exits. [Six fixed offline runs](reports/intraday-synthetic/REPORT.md) use invented inputs and preserve losses. The intended licensed SPY/QQQ history has separate coverage, auction, action and cash-reference gates; no long-history real performance claim is made.
-
-[Source clocks and independent ledger checks](docs/INTRADAY_SOURCE_AUDIT.md) now connect date-effective identity, action units, declared release evidence and a separate cash opportunity-cost benchmark. [Invented known-answer examples](reports/intraday-data-fixture/REPORT.md) show why correct dividend amounts can still be unavailable at decision time. Incomplete or stopped private replays are not promoted into completed performance evidence.
-
-## The result worth reading
-
-In the **2020–2025 chronological confirmation window**, the fixed momentum allocation returned **30.69%**, versus **33.97%** for the static control using the same risk-budget procedure. The annualized paired daily log-return difference was **−0.42 percentage points**, with a 95% moving-block interval of **[−3.23, +2.33] percentage points** using 20-session blocks. The 63-session interval also contains zero. All nine predefined cost/delay scenarios produced a negative confirmation difference.
-
-**The evidence does not establish an incremental momentum advantage.** A useful implementation can expose an economically weak hypothesis. These are modeled allocations on real fund NAVs, not observed fund trades or independently unseen future performance.
-
-![Actual fund NAVs, modeled portfolio wealth and drawdown](reports/real/performance.png)
-
-## What I built, and what it demonstrates
-
-|Capability|Concrete implementation|Why it matters|
-|---|---|---|
-|Investment research|Fixed momentum, a shared-risk-budget static control, C and G buy-and-hold|Compare the signal with both a fair process control and opportunity cost|
-|Financial data judgment|5,639 common NAV dates, source fingerprint, rights record and explicit current-vintage limitation|A downloadable file is not automatically a point-in-time total-return dataset|
-|Portfolio and risk|Long-only whole-percent targets, trailing covariance, risk scaling and a reserve sleeve|Translate a signal into a funded, constrained allocation|
-|Implementation economics|Publication lag, frozen requests, later NAV posting and two-leg friction|Separate what was known from what was later paid|
-|Statistical reasoning|Chronological windows, continuous holdings, yearly diagnostics and paired block intervals|Keep uncertainty, unfavorable periods and model-selection limits visible|
-|Research engineering|Offline packaged snapshot, accounting tests, ledgers, source-bound manifests and CI|Make every displayed result inspectable and reproducible|
-
-The independently written implementation covers the data contract, allocation/account engine, tests, experiment protocol, reporting and interpretation. Mingju Zhang selected the research direction; implementation, experiments and writing were AI-assisted, with personal review tracked separately. TSP supplies the public numerical NAV facts; upstream methods and Python libraries retain attribution. No employer code, recruiting task or licensed market-data feed is included.
-
-## Reproduce the real study
-
-Use **Python 3.12**. Install the tested dependency closure in a fresh environment:
+Use Python 3.12 from the repository root. Activate the virtual environment with `.venv\Scripts\Activate.ps1` in PowerShell or `source .venv/bin/activate` on macOS/Linux.
 
 ```bash
 python -m venv .venv
-# Activate .venv using your shell's standard activation command.
+# Activate the environment before installing.
 python -m pip install -r requirements.lock.txt
 python -m pip install --no-deps -e .
 python -m pip check
-python -m pytest
+python -m pytest -q tests
 python -m strategy_lab --real --output local-runs/real
-python examples/explain_nav_transfer.py
 ```
 
-The research command reads the checked-in snapshot and needs **no network, key, paid service or GPU**. Choose a new empty output folder for each run; existing results are not silently overwritten. The [checked-in report](reports/real/REPORT.md) contains four strategies, three chronological windows plus a full-period summary, 22 yearly slices, both uncertainty intervals and all nine stress scenarios. Configuration, data, code and generated-file fingerprints accompany the output.
+The command uses the bundled NAV snapshot offline after installation. Use a fresh output directory. The report includes individual years, funded ledgers, both interval lengths and all cost/delay scenarios. The [earlier synthetic accounting demo](reports/demo/REPORT.md) covers split units and delayed dividend payments.
 
-## Read the information clock before the performance curve
-
-![Observation, publication, request and posting](assets/workflow.svg)
-
-The signal uses observations through **t**. A complete intervening NAV session is reserved for publication, targets are frozen after it, and a request is modeled at **11:00 New York time on t+2**, before that day's NAV is known. Posting at the closing NAV is an ordinary-processing assumption. The report also shows three- and five-session delays.
-
-Historical publication timestamps and release vintages are unavailable. This conservative lag cannot eliminate unknown historical revisions. The protocol was recorded before this implementation calculated returns; development (July 2004–2014), validation (2015–2019) and confirmation (2020–2025) remain **historical temporal checks**, not prospective proof. No setting is selected from the confirmation results. Covariance uses only trailing observations and holdings continue across window boundaries.
-
-## Income, costs and funding
-
-TSP share NAVs already incorporate investment income and fund expenses. The real study adds **zero separate dividends**, **zero extra fund-expense debit** and **zero extra cash-interest credit**. G is a specific reserve fund earning its observed NAV return; it is not a universally accessible cash account. Underlying dividend ex/pay dates cannot be recovered from these fund NAVs.
-
-The base stress charges **3 bp per gross dollar bought or sold**, including the reserve leg; it is not an actual TSP commission or measured bid/ask spread. At each transfer:
-
-```text
-after-fee value + modeled fee = pre-transfer value
-fee = friction rate × sum(abs(new dollar holdings − old dollar holdings))
-new units = frozen target percentage × after-fee value / posting NAV
-```
-
-For example, transferring $100,000 from G to C at 10 bp per leg leaves **$99,800.20** invested and pays **$199.80**. A subsequent 2% accumulation-NAV increase produces **$101,796.20**; adding a separate 2% dividend would double-count income. See the [executable example](examples/explain_nav_transfer.py).
-
-![Paired uncertainty, including insignificant results](reports/real/uncertainty.png)
-
-## Scope, source and honest limits
-
-The snapshot contains independently transcribed **public numerical facts** from the [official TSP service](https://www.tsp.gov/share-price-history/). The [rights record](DATA_RIGHTS.md) documents the factual-data/U.S.-government-work basis, attribution and exclusions; it does not invent a Creative Commons license for TSP or relicense third-party index data. Fund units are available only to eligible plan participants. Whole-percent targets and monthly transfer-count audits approximate core rules; fractional-unit rounding, exceptional processing, taxes, contributions and withdrawals are outside scope. This is not an ETF execution or complete participant-account simulator. The I Fund's benchmark changed during 2024.
-
-The [legacy synthetic study](reports/demo/REPORT.md) remains a separately labeled accounting demonstration. Its raw-price engine tests split units, ex-date dividend receivables and delayed payments; its SPY/IEF/GLD/DBC/QQQ labels are simulated roles, not actual ETF histories. Run it with `python -m strategy_lab --output local-runs/synthetic` and `python examples/explain_accounting.py`. Its older static control has a different risk procedure and is not the real study's comparison.
-
-## Continue the conversation
-
-- [Methods and equations](docs/METHODS.md) — signal, units, risk, metrics and inference.
-- [Numerical walkthrough](docs/WALKTHROUGH.md) — a request, funded transfer and NAV bridge.
-- [Validation record](docs/VALIDATION.md) — leakage probes, conservation and installed-package checks.
-- [Sources and contribution](docs/PROVENANCE.md) — data rights, public rules and boundaries.
-- [Technical discussion](docs/DISCUSSION.md).
-
-For investing and asset allocation, pair this with [Financial Text Validation](https://github.com/Mingju-Zhang-CBS/financial-text-validation). For markets and product risk, compare its funding logic with [Defined-Outcome Research](https://github.com/Mingju-Zhang-CBS/defined-outcome-research) and [Market Making Lab](https://github.com/Mingju-Zhang-CBS/market-making-lab).
+[Validation](docs/VALIDATION.md) · [Attribution and AI assistance](docs/PROVENANCE.md) · [Technical discussion](docs/DISCUSSION.md) · [Research directory](https://github.com/Mingju-Zhang-CBS/Quant)
